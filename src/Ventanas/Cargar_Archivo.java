@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import clases.*;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     public Cargar_Archivo() {
         initComponents();
         this.setLocationRelativeTo(null);
+        dataSet dataser = new dataSet();
     }
 
     /**
@@ -68,7 +70,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private String cargarArchivo() {
-  String aux="";   
+  String aux;   
   String texto="";
   try
   {
@@ -78,15 +80,21 @@ public class Cargar_Archivo extends javax.swing.JFrame {
    /**abrimos el archivo seleccionado*/
    File abre=file.getSelectedFile();
  
-   /**recorremos el archivo, lo leemos para plasmarlo
-   *en el area de texto*/
+   /**recorremos el archivo*/
    if(abre!=null)
    {     
       FileReader archivos=new FileReader(abre);
       BufferedReader lee=new BufferedReader(archivos);
       while((aux=lee.readLine())!=null)
       {
-         texto+= aux+ "\n";
+        // texto+= aux+ "\n";
+         if(aux.startsWith("%")){
+             //es comentario
+             texto +=aux+ "\n";
+         }
+         if(aux.startsWith("@relation")){
+             break;
+         }
       }
          lee.close();
     }    
@@ -102,6 +110,9 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       String texto =  cargarArchivo();
+      if(texto == ""){
+          texto = "No se leyeron datos";
+      } 
        JOptionPane.showMessageDialog(null,
          texto,
              "Datos Leidos",JOptionPane.INFORMATION_MESSAGE);
