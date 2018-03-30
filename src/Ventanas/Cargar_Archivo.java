@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import clases.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,9 +26,9 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     public Cargar_Archivo() {
         initComponents();
         this.setLocationRelativeTo(null);
-        dataSet dataser = new dataSet();
+        
     }
-
+    dataSet baseDatos = new dataSet();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,31 +38,80 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonCargarArchivo = new javax.swing.JButton();
+        jButtonSalir = new javax.swing.JButton();
+        jButtonGuardar = new javax.swing.JButton();
+        jButtonGuardarComo = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        LabelNombre = new javax.swing.JLabel();
+        LabelNumInstancias = new javax.swing.JLabel();
+        LabelNumAtri = new javax.swing.JLabel();
+        LabellValoresPerdidos = new javax.swing.JLabel();
+        jButtonMostrarTabla = new javax.swing.JButton();
         Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton1.setText("Cargar Archivo");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCargarArchivo.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        jButtonCargarArchivo.setText("Abrir");
+        jButtonCargarArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonCargarArchivoActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, 180, 50));
+        getContentPane().add(jButtonCargarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 40));
 
-        jButton2.setBackground(new java.awt.Color(102, 102, 102));
-        jButton2.setText("Salir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSalir.setBackground(new java.awt.Color(102, 102, 102));
+        jButtonSalir.setText("Salir");
+        jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, -1, -1));
+        getContentPane().add(jButtonSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, -1, -1));
+
+        jButtonGuardar.setText("Guardar");
+        getContentPane().add(jButtonGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 0, 100, 40));
+
+        jButtonGuardarComo.setText("Guardar como");
+        getContentPane().add(jButtonGuardarComo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 110, 40));
+
+        jLabel1.setText("Valores perdidos ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
+
+        jLabel2.setText("numero de Atributos:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
+
+        jLabel3.setText("numero de instancias");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
+
+        jLabel4.setText("nombre: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 100, -1, -1));
+
+        LabelNombre.setText("N/A");
+        getContentPane().add(LabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, -1, -1));
+
+        LabelNumInstancias.setText("N/A");
+        getContentPane().add(LabelNumInstancias, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
+
+        LabelNumAtri.setText("N/A");
+        getContentPane().add(LabelNumAtri, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, -1, -1));
+
+        LabellValoresPerdidos.setText("N/A");
+        getContentPane().add(LabellValoresPerdidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, -1, -1));
+
+        jButtonMostrarTabla.setText("Mostrar tabla");
+        jButtonMostrarTabla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMostrarTablaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonMostrarTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 210, 120, 30));
 
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/5236392-gray-wallpaper.jpg"))); // NOI18N
         getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 421));
@@ -72,6 +122,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     private String cargarArchivo() {
   String aux;   
   String texto="";
+  ArrayList<atributo> atributos = new ArrayList<>();
   try
   {
    /**llamamos el metodo que permite cargar la ventana*/
@@ -79,7 +130,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
    file.showOpenDialog(this);
    /**abrimos el archivo seleccionado*/
    File abre=file.getSelectedFile();
- 
+   boolean cargaDatos = false;
    /**recorremos el archivo*/
    if(abre!=null)
    {     
@@ -87,16 +138,40 @@ public class Cargar_Archivo extends javax.swing.JFrame {
       BufferedReader lee=new BufferedReader(archivos);
       while((aux=lee.readLine())!=null)
       {
-        // texto+= aux+ "\n";
-         if(aux.startsWith("%")){
+        if(cargaDatos){
+            String[] campos = aux.split(",");
+            int numeroAtributos = campos.length;
+            for(int i =0;i<numeroAtributos;i++){
+               atributos.get(i).getInstancias().add(campos[i]);
+            }
+        }
+        else if(aux.startsWith("%")){
              //es comentario
              texto +=aux+ "\n";
          }
-         if(aux.startsWith("@relation")){
-             break;
+         else if(aux.startsWith("@relation")){
+             baseDatos.setNombre(aux.substring(10));
          }
+         else if(aux.startsWith("@attribute")){
+             String[] parts = aux.split(" ");
+             atributo atr = new atributo(parts[1],parts[3],parts[2]);
+             atributos.add(atr);
+             /*JOptionPane.showMessageDialog(null,
+                atr.getNombre(),
+             "Datos Leidos",JOptionPane.INFORMATION_MESSAGE);*/
+         }
+         else if(aux.startsWith("@missingValue")){
+             baseDatos.setFaltante(aux.substring(14));
+         }
+        else if(aux.startsWith("@data")){
+            cargaDatos = true;
+         }
+         
+         
       }
          lee.close();
+         baseDatos.setAtributos(atributos);
+         baseDatos.updateNumAtributos();
     }    
    }
    catch(IOException ex)
@@ -108,19 +183,34 @@ public class Cargar_Archivo extends javax.swing.JFrame {
   return texto;
 }
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+  private void acutlizarInterfaz(){
+     LabelNombre.setText(baseDatos.getNombre());
+    
+    LabelNumAtri.setText( String.valueOf(baseDatos.getAtributos().size()));
+    LabelNumInstancias.setText(" "+baseDatos.getNumAtributos());
+    LabellValoresPerdidos.setText(baseDatos.getFaltante());
+  }
+  
+  
+    private void jButtonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarArchivoActionPerformed
       String texto =  cargarArchivo();
       if(texto == ""){
           texto = "No se leyeron datos";
       } 
+      //baseDatos.getAtributos().size()
        JOptionPane.showMessageDialog(null,
-         texto,
+       baseDatos.getAtributos().get(1).getInstancias().size()  ,
              "Datos Leidos",JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton1ActionPerformed
+       acutlizarInterfaz();
+    }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonSalirActionPerformed
+
+    private void jButtonMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarTablaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonMostrarTablaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,6 +242,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new Cargar_Archivo().setVisible(true);
             }
         });
@@ -159,7 +250,18 @@ public class Cargar_Archivo extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Fondo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel LabelNombre;
+    private javax.swing.JLabel LabelNumAtri;
+    private javax.swing.JLabel LabelNumInstancias;
+    private javax.swing.JLabel LabellValoresPerdidos;
+    private javax.swing.JButton jButtonCargarArchivo;
+    private javax.swing.JButton jButtonGuardar;
+    private javax.swing.JButton jButtonGuardarComo;
+    private javax.swing.JButton jButtonMostrarTabla;
+    private javax.swing.JButton jButtonSalir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
 }
