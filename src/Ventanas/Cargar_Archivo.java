@@ -156,9 +156,9 @@ public class Cargar_Archivo extends javax.swing.JFrame {
              String[] parts = aux.split(" ");
              atributo atr = new atributo(parts[1],parts[3],parts[2]);
              atributos.add(atr);
-             JOptionPane.showMessageDialog(null,
+             /*JOptionPane.showMessageDialog(null,
                 atr.getNombre(),
-             "Datos Leidos",JOptionPane.INFORMATION_MESSAGE);
+             "Datos Leidos",JOptionPane.INFORMATION_MESSAGE);*/
          }
          else if(aux.startsWith("@missingValue")){
              baseDatos.setFaltante(aux.substring(14));
@@ -171,6 +171,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
       }
          lee.close();
          baseDatos.setAtributos(atributos);
+         baseDatos.updateNumAtributos();
     }    
    }
    catch(IOException ex)
@@ -186,7 +187,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
      LabelNombre.setText(baseDatos.getNombre());
     
     LabelNumAtri.setText( String.valueOf(baseDatos.getAtributos().size()));
-    LabelNumInstancias.setText(baseDatos.getNombre());
+    LabelNumInstancias.setText(" "+baseDatos.getNumAtributos());
     LabellValoresPerdidos.setText(baseDatos.getFaltante());
   }
   
