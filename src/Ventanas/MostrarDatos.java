@@ -288,7 +288,6 @@ public class MostrarDatos extends javax.swing.JFrame {
             dataGrid.setModel(modelo);
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar una fila primero.");
-
         }
     }//GEN-LAST:event_botonEliminarMouseClicked
 
