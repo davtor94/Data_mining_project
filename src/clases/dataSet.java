@@ -5,7 +5,6 @@
  */
 package clases;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 /**
@@ -16,12 +15,20 @@ public class dataSet {
     private String nombre;
     private int numInstancias;
     private int numAtributos;
-    protected ArrayList<atributo> atributos = new ArrayList<>();
+    private String faltante;
+
+    
+
+   
+     ArrayList<atributo> atributos = new ArrayList<>();
     
     //los datos los podemos manejar como string y que cada dato este separado con una coma,
     //y los descomponemos en la ventana donde se muestra el grid
     //esto nadamas para almacenar todo lo del archivo en memoria ram y trabajarlo desde aqui
     //y nos ayudaria a guardar los datos en un nuevo archivo de texto en caso de ser neceario
+
+    public dataSet() {
+    }
 
     public dataSet(String nombre, int numInstancias, int numAtributos) {
         this.nombre = nombre;
@@ -29,6 +36,9 @@ public class dataSet {
         this.numAtributos = numAtributos;
     }
 
+    public void setFaltante(String faltante) {
+        this.faltante = faltante;
+    }
     
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -46,7 +56,10 @@ public class dataSet {
         this.atributos = atributos;
     }
     
-
+    public String getFaltante() {
+           return faltante;
+       }
+    
     public String getNombre() {
         return nombre;
     }
