@@ -15,6 +15,7 @@ public class atributo {
     private String nombre;
     private String dominio;
     private String tipoDato;
+    private int numeroValoresFaltantes;
     protected ArrayList<String> instancias = new ArrayList<>();
 
     public atributo(String nombre, String dominio, String tipoDato) {
@@ -38,6 +39,10 @@ public class atributo {
     public void setInstancias(ArrayList<String> instancias) {
         this.instancias = instancias;
     }
+    
+        public void setValoresFaltantes(int numeroValoresFaltantes) {
+        this.numeroValoresFaltantes = numeroValoresFaltantes;
+    }
 
     public String getNombre() {
         return nombre;
@@ -55,5 +60,8 @@ public class atributo {
         return instancias;
     }
     
+    public int getValoresFaltantes() {
+        return numeroValoresFaltantes;
+    }
     
 }
