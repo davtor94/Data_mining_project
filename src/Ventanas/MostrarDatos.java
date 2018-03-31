@@ -10,6 +10,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import clases.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -20,29 +23,42 @@ public class MostrarDatos extends javax.swing.JFrame {
     /**
      * Creates new form MostrarDatos
      */
-    public MostrarDatos() {
+    DataSet baseDatos = new DataSet();
+
+    public MostrarDatos(DataSet baseDatos) {
         initComponents();
-        String[] columnas = {"cñora", "su", "hijo", "esta", "leyendo", "la", "Biblia"};
+        this.baseDatos = baseDatos;
+        titulo.setText(baseDatos.getNombre());
+        String[] columnas = new String[baseDatos.getNumAtributos() + 1];
+        columnas[0] = "ID";
+        for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
+            columnas[i + 1] = baseDatos.getAtributos().get(i).getNombre();
+        }
         DefaultTableModel modelo = new DefaultTableModel(0, 0);
         DefaultListModel listaModelo = new DefaultListModel();
         for (int i = 0; i < columnas.length; i++) {
             modelo.addColumn(columnas[i]);
+        }
+
+        for (int i = 1; i < columnas.length; i++) {
             listaModelo.addElement(columnas[i]);
         }
+
+        for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
+            columnas[0] = String.valueOf((i + 1));
+            for (int j = 0; j < baseDatos.getNumAtributos(); j++) {
+                columnas[j + 1] = baseDatos.getAtributos().get(j).getInstancias().get(i);
+            }
+            modelo.addRow(columnas);
+        }
+
         listaAtributos.setModel(listaModelo);
-        dataGrid.setModel(modelo);
         dataGrid.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        dataGrid.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         dataGrid.setAutoscrolls(true);
-        datosGenerales.append("Numero de Instancias: \n");
-        datosGenerales.append("Numero de Atributos: \n");
-        datosGenerales.append("Numero de Valores Faltantes: \n");
+        datosGenerales.append("Numero de Instancias: " + baseDatos.getNumInstancias() + "\n");
+        datosGenerales.append("Numero de Atributos: " + baseDatos.getNumAtributos() + "\n");
+        datosGenerales.append("Numero de Valores Faltantes: " + "\n");
         datosGenerales.append("Porcentaje de Valores Faltantes: \n");
-        modelo = (DefaultTableModel) dataGrid.getModel();
-        String[] datos = new String[6];
-        modelo.addRow(datos);
-        modelo.addRow(datos);
-        modelo.addRow(datos);
         dataGrid.setModel(modelo);
     }
 
@@ -61,11 +77,11 @@ public class MostrarDatos extends javax.swing.JFrame {
         dataGrid = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         datosGenerales = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textAreaAtributo = new javax.swing.JTextArea();
         botonAgregar = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -105,20 +121,22 @@ public class MostrarDatos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(dataGrid);
 
+        datosGenerales.setEditable(false);
         datosGenerales.setColumns(20);
         datosGenerales.setRows(5);
         jScrollPane2.setViewportView(datosGenerales);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Nombre de la Base de Datos xD");
+        titulo.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        titulo.setText("Nombre de la Base de Datos xD");
 
         jLabel2.setText("Datos Generales de la Base de Datos");
 
         jLabel3.setText("Datos del Atributo");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        textAreaAtributo.setEditable(false);
+        textAreaAtributo.setColumns(20);
+        textAreaAtributo.setRows(5);
+        jScrollPane3.setViewportView(textAreaAtributo);
 
         botonAgregar.setText("Agregar");
         botonAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -139,12 +157,22 @@ public class MostrarDatos extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listaAtributos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaAtributosValueChanged(evt);
+            }
+        });
         jScrollPane4.setViewportView(listaAtributos);
 
         botonEliminarAtributo.setText("Eliminar");
         botonEliminarAtributo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botonEliminarAtributoMouseClicked(evt);
+            }
+        });
+        botonEliminarAtributo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminarAtributoActionPerformed(evt);
             }
         });
 
@@ -208,64 +236,59 @@ public class MostrarDatos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane3))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(botonEliminarAtributo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botonEditarAtributo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botonExpresion)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(botonEliminarAtributo)
+                                .addGap(18, 18, 18)
+                                .addComponent(botonEditarAtributo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botonExpresion))
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(134, 134, 134)
-                .addComponent(jLabel1)
+                .addComponent(titulo)
                 .addGap(205, 205, 205)
                 .addComponent(jLabel2)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(14, 14, 14))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 28, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonAgregar)
-                            .addComponent(botonEliminar)))
+                        .addComponent(titulo)
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 28, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3)
-                            .addComponent(jScrollPane4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonEliminarAtributo)
                             .addComponent(botonEditarAtributo)
-                            .addComponent(botonExpresion))))
+                            .addComponent(botonExpresion)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonAgregar)
+                    .addComponent(botonEliminar))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
@@ -296,9 +319,17 @@ public class MostrarDatos extends javax.swing.JFrame {
             String respuesta = "";
             respuesta = JOptionPane.showInputDialog(null, "Introduce el nuevo Nombre:", listaAtributos.getSelectedValue());
             if (respuesta != null && !respuesta.equals("")) {
+                int indice = listaAtributos.getSelectedIndex();
+                //Actualizacion del header de la tabla
+                TableColumnModel tableColumnModel = dataGrid.getColumnModel();
+                tableColumnModel.getColumn(indice + 1).setHeaderValue(respuesta);
+                dataGrid.setColumnModel(tableColumnModel);
+                //Actualizacion del JList
                 DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
-                listaModelo.set(listaAtributos.getSelectedIndex(), respuesta);
+                listaModelo.set(indice, respuesta);
                 listaAtributos.setModel(listaModelo);
+                //actualizacion del dato en Memoria
+                baseDatos.getAtributos().get(indice).setNombre(respuesta);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
@@ -307,9 +338,14 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void botonEliminarAtributoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarAtributoMouseClicked
         if (listaAtributos.getSelectedIndex() >= 0) {
+            //int indice = listaAtributos.getSelectedIndex();
+            //Eliminado del Jlist
             DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
             listaModelo.remove(listaAtributos.getSelectedIndex());
             listaAtributos.setModel(listaModelo);
+            //Eliminacion de la columna
+            //TableColumn tcol = dataGrid.getColumnModel().getColumn(indice + 1);
+            //dataGrid.getColumnModel().removeColumn(tcol);
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
         }
@@ -319,12 +355,26 @@ public class MostrarDatos extends javax.swing.JFrame {
         if (listaAtributos.getSelectedIndex() >= 0) {
             String respuesta = JOptionPane.showInputDialog(null, "Actualiza la expresion:", listaAtributos.getSelectedValue());
             if (respuesta != null && !respuesta.equals("")) {
-                
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
         }
     }//GEN-LAST:event_botonExpresionMouseClicked
+
+    private void listaAtributosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaAtributosValueChanged
+        textAreaAtributo.setText(null);
+        int indice = listaAtributos.getSelectedIndex();
+        float porcentaje = (baseDatos.getAtributos().get(indice).getValoresFaltantes() * 100) / baseDatos.getNumInstancias();
+        textAreaAtributo.append("Tipo: " + baseDatos.getAtributos().get(indice).getTipoDato() + "\n");
+        textAreaAtributo.append("Expresion Regular: " + baseDatos.getAtributos().get(indice).getDominio() + "\n");
+        textAreaAtributo.append("Valores Faltantes: " + baseDatos.getAtributos().get(indice).getValoresFaltantes() + "\n");
+        textAreaAtributo.append("Porcentaje de Valores Faltantes: " + porcentaje + "% \n");
+    }//GEN-LAST:event_listaAtributosValueChanged
+
+    private void botonEliminarAtributoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarAtributoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonEliminarAtributoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -335,7 +385,6 @@ public class MostrarDatos extends javax.swing.JFrame {
     private javax.swing.JButton botonExpresion;
     private javax.swing.JTable dataGrid;
     private javax.swing.JTextArea datosGenerales;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
@@ -353,7 +402,8 @@ public class MostrarDatos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JList<String> listaAtributos;
+    private javax.swing.JTextArea textAreaAtributo;
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }
