@@ -89,6 +89,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         botonEliminarAtributo = new javax.swing.JButton();
         botonEditarAtributo = new javax.swing.JButton();
         botonExpresion = new javax.swing.JButton();
+        botonAnalisisUnivariable = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -190,6 +191,13 @@ public class MostrarDatos extends javax.swing.JFrame {
             }
         });
 
+        botonAnalisisUnivariable.setText("Analisis Univariablle");
+        botonAnalisisUnivariable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonAnalisisUnivariableMouseClicked(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
 
         jMenuItem4.setText("Cargar ");
@@ -241,14 +249,16 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(botonEliminarAtributo)
                                 .addGap(18, 18, 18)
                                 .addComponent(botonEditarAtributo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botonExpresion))
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(botonExpresion)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botonAnalisisUnivariable)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -283,7 +293,8 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonEliminarAtributo)
                             .addComponent(botonEditarAtributo)
-                            .addComponent(botonExpresion)))
+                            .addComponent(botonExpresion)
+                            .addComponent(botonAnalisisUnivariable)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,9 +386,22 @@ public class MostrarDatos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botonEliminarAtributoActionPerformed
 
+    private void botonAnalisisUnivariableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAnalisisUnivariableMouseClicked
+     
+        int indice = listaAtributos.getSelectedIndex();
+        if(indice>-1){
+           atributo atr = baseDatos.getAtributos().get(indice);
+           
+        }
+        else{
+             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
+        }
+    }//GEN-LAST:event_botonAnalisisUnivariableMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregar;
+    private javax.swing.JButton botonAnalisisUnivariable;
     private javax.swing.JButton botonEditarAtributo;
     private javax.swing.JButton botonEliminar;
     private javax.swing.JButton botonEliminarAtributo;
