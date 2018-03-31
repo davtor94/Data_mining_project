@@ -28,7 +28,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
     }
-    dataSet baseDatos = new dataSet();
+    DataSet baseDatos = new DataSet();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -172,6 +172,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
          lee.close();
          baseDatos.setAtributos(atributos);
          baseDatos.updateNumAtributos();
+         baseDatos.updateNumInstancias();
+         baseDatos.calcularValoresFaltantes();
     }    
    }
    catch(IOException ex)
@@ -185,8 +187,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     
   private void acutlizarInterfaz(){
      LabelNombre.setText(baseDatos.getNombre());
-    
-    LabelNumAtri.setText( String.valueOf(baseDatos.getAtributos().size()));
+    LabelNumAtri.setText( String.valueOf(baseDatos.getNumInstancias()));
     LabelNumInstancias.setText(" "+baseDatos.getNumAtributos());
     LabellValoresPerdidos.setText(baseDatos.getFaltante());
   }
@@ -197,10 +198,6 @@ public class Cargar_Archivo extends javax.swing.JFrame {
       if(texto == ""){
           texto = "No se leyeron datos";
       } 
-      //baseDatos.getAtributos().size()
-       JOptionPane.showMessageDialog(null,
-       baseDatos.getAtributos().get(1).getInstancias().size()  ,
-             "Datos Leidos",JOptionPane.INFORMATION_MESSAGE);
        acutlizarInterfaz();
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
@@ -209,7 +206,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarTablaActionPerformed
-        // TODO add your handling code here:
+        MostrarDatos nueva = new MostrarDatos(baseDatos);
+        nueva.setVisible(true);
     }//GEN-LAST:event_jButtonMostrarTablaActionPerformed
 
     /**
