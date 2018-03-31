@@ -23,6 +23,7 @@ public class atributo {
         this.dominio = dominio;
         this.tipoDato = tipoDato;
         this.numeroValoresFaltantes=0;
+        
     }
 
     public void setNombre(String nombre) {

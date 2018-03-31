@@ -25,8 +25,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
      */
     public Cargar_Archivo() {
         initComponents();
-        this.setLocationRelativeTo(null);
-        
+        this.setLocationRelativeTo(null);   
     }
     DataSet baseDatos = new DataSet();
     /**

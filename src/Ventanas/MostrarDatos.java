@@ -355,7 +355,6 @@ public class MostrarDatos extends javax.swing.JFrame {
         if (listaAtributos.getSelectedIndex() >= 0) {
             String respuesta = JOptionPane.showInputDialog(null, "Actualiza la expresion:", listaAtributos.getSelectedValue());
             if (respuesta != null && !respuesta.equals("")) {
-
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");

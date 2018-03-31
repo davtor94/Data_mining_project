@@ -20,10 +20,6 @@ public class DataSet {
 
     ArrayList<atributo> atributos = new ArrayList<>();
 
-    //los datos los podemos manejar como string y que cada dato este separado con una coma,
-    //y los descomponemos en la ventana donde se muestra el grid
-    //esto nadamas para almacenar todo lo del archivo en memoria ram y trabajarlo desde aqui
-    //y nos ayudaria a guardar los datos en un nuevo archivo de texto en caso de ser neceario
     public DataSet() {
     }
 
@@ -31,6 +27,7 @@ public class DataSet {
         this.nombre = nombre;
         this.numInstancias = numInstancias;
         this.numAtributos = numAtributos;
+        
     }
 
     public void setFaltante(String faltante) {
