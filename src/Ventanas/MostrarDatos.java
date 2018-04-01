@@ -471,6 +471,7 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     public void actualizarTextAreaGeneral() {
         datosGenerales.setText("");
+        datosGenerales.append(baseDatos.getComentarios());
         datosGenerales.append("Numero de Instancias: " + baseDatos.getNumInstancias() + "\n");
         datosGenerales.append("Numero de Atributos: " + baseDatos.getNumAtributos() + "\n");
         datosGenerales.append("Numero de Valores Faltantes: " + "\n");
