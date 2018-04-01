@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import clases.*;
 import java.util.ArrayList;
+//import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -27,8 +28,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);   
     }
-    
-    DataSet baseDatos = new DataSet();
+    private DataSet baseDatos = new DataSet();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,7 +57,9 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButtonCargarArchivo.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        jButtonCargarArchivo.setBackground(new java.awt.Color(51, 51, 51));
+        jButtonCargarArchivo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jButtonCargarArchivo.setForeground(new java.awt.Color(255, 255, 255));
         jButtonCargarArchivo.setText("Abrir");
         jButtonCargarArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,53 +77,90 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         });
         getContentPane().add(jButtonSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, -1, -1));
 
+        jButtonGuardar.setBackground(new java.awt.Color(51, 51, 51));
+        jButtonGuardar.setForeground(new java.awt.Color(255, 255, 255));
         jButtonGuardar.setText("Guardar");
         getContentPane().add(jButtonGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 0, 100, 40));
 
+        jButtonGuardarComo.setBackground(new java.awt.Color(51, 51, 51));
+        jButtonGuardarComo.setForeground(new java.awt.Color(255, 255, 255));
         jButtonGuardarComo.setText("Guardar como");
+        jButtonGuardarComo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarComoActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonGuardarComo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 110, 40));
 
-        jLabel1.setText("Valores perdidos ");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Valores perdidos: ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
-        jLabel2.setText("numero de Atributos:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Numero de Atributos:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
 
-        jLabel3.setText("numero de instancias");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Numero de Instancias:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
-        jLabel4.setText("nombre: ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 100, -1, -1));
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Nombre: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
 
+        LabelNombre.setBackground(new java.awt.Color(255, 255, 255));
+        LabelNombre.setFont(new java.awt.Font("Castellar", 2, 16)); // NOI18N
+        LabelNombre.setForeground(new java.awt.Color(255, 255, 255));
         LabelNombre.setText("N/A");
-        getContentPane().add(LabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, -1, -1));
+        getContentPane().add(LabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 500, 30));
 
+        LabelNumInstancias.setBackground(new java.awt.Color(255, 255, 255));
+        LabelNumInstancias.setFont(new java.awt.Font("Arial Rounded MT Bold", 2, 14)); // NOI18N
+        LabelNumInstancias.setForeground(new java.awt.Color(255, 255, 255));
         LabelNumInstancias.setText("N/A");
-        getContentPane().add(LabelNumInstancias, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
+        getContentPane().add(LabelNumInstancias, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, -1, -1));
 
+        LabelNumAtri.setBackground(new java.awt.Color(255, 255, 255));
+        LabelNumAtri.setFont(new java.awt.Font("Arial Rounded MT Bold", 2, 14)); // NOI18N
+        LabelNumAtri.setForeground(new java.awt.Color(255, 255, 255));
         LabelNumAtri.setText("N/A");
-        getContentPane().add(LabelNumAtri, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, -1, -1));
+        getContentPane().add(LabelNumAtri, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, -1, -1));
 
+        LabellValoresPerdidos.setBackground(new java.awt.Color(255, 255, 255));
+        LabellValoresPerdidos.setFont(new java.awt.Font("Arial Rounded MT Bold", 2, 14)); // NOI18N
+        LabellValoresPerdidos.setForeground(new java.awt.Color(255, 255, 255));
         LabellValoresPerdidos.setText("N/A");
-        getContentPane().add(LabellValoresPerdidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, -1, -1));
+        getContentPane().add(LabellValoresPerdidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, -1, -1));
 
+        jButtonMostrarTabla.setBackground(new java.awt.Color(51, 51, 51));
+        jButtonMostrarTabla.setForeground(new java.awt.Color(255, 255, 255));
         jButtonMostrarTabla.setText("Mostrar tabla");
         jButtonMostrarTabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMostrarTablaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonMostrarTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 210, 120, 30));
+        getContentPane().add(jButtonMostrarTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 310, 120, 30));
 
+        Fondo.setBackground(new java.awt.Color(255, 255, 255));
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/5236392-gray-wallpaper.jpg"))); // NOI18N
         getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 421));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private String cargarArchivo() {
+    private DataSet cargarArchivo() {
+  DataSet data = new DataSet();
   String aux;   
-  String texto="";
+  String comentarios="";
   ArrayList<atributo> atributos = new ArrayList<>();
   try
   {
@@ -148,10 +187,10 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         }
         else if(aux.startsWith("%")){
              //es comentario
-             texto +=aux+ "\n";
+             comentarios +=aux+ "\n";
          }
          else if(aux.startsWith("@relation")){
-             baseDatos.setNombre(aux.substring(10));
+             data.setNombre(aux.substring(10));
          }
          else if(aux.startsWith("@attribute")){
              String[] parts = aux.split(" ");
@@ -159,17 +198,24 @@ public class Cargar_Archivo extends javax.swing.JFrame {
              atributos.add(atr);
          }
          else if(aux.startsWith("@missingValue")){
-             baseDatos.setFaltante(aux.substring(14));
+             data.setFaltante(aux.substring(14));
          }
         else if(aux.startsWith("@data")){
             cargaDatos = true;
          }
       }
          lee.close();
-         baseDatos.setAtributos(atributos);
-         baseDatos.updateNumAtributos();
-         baseDatos.updateNumInstancias();
-         baseDatos.calcularErrores();
+         if(data.getNombre() == null){
+          JOptionPane.showMessageDialog(null,
+           "El Archvio no cuenta con las caracteristicas necesarias.",
+                 "ADVERTENCIA!!!",JOptionPane.WARNING_MESSAGE);
+      }else{
+         data.setAtributos(atributos);
+         data.updateNumAtributos();
+         data.updateNumInstancias();
+         data.calcularErrores();
+         data.setComentarios(comentarios);
+      }
     }    
    }
    catch(IOException ex)
@@ -178,7 +224,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
            "\nNo se ha encontrado el archivo",
                  "ADVERTENCIA!!!",JOptionPane.WARNING_MESSAGE);
     }
-  return texto;
+  return data;
 }
     
   private void acutlizarInterfaz(){
@@ -190,11 +236,23 @@ public class Cargar_Archivo extends javax.swing.JFrame {
   
   
     private void jButtonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarArchivoActionPerformed
-      String texto =  cargarArchivo();
-      if(texto == ""){
-          texto = "No se leyeron datos";
-      } 
-       acutlizarInterfaz();
+      baseDatos =  cargarArchivo();
+      if(baseDatos.getNombre() == null){
+          JOptionPane.showMessageDialog(null,
+           "El archivo debe contener: \n"
+              
+                   + "Nombre(@relation)\n"
+                   + "atributos(@attribute)\n"
+                   + "variable representando valores perdidos(@missingValue)\n"
+                   + "y datos(@data)\n"
+                   + "Para mayor informacion consulte el manual tecnico.",
+                 "Recuerda!",JOptionPane.WARNING_MESSAGE);
+      }else{
+          JOptionPane.showMessageDialog(null,
+            baseDatos.getComentarios(),
+                 "Comentarios!",JOptionPane.INFORMATION_MESSAGE);
+          acutlizarInterfaz();
+      }
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
@@ -202,9 +260,24 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarTablaActionPerformed
-        MostrarDatos nueva = new MostrarDatos(baseDatos);
+        if(baseDatos.getNombre() == null){
+             JOptionPane.showMessageDialog(null,
+           "Es necesario abriri un archivo valido.",
+                 "DataSet invalido!",JOptionPane.ERROR_MESSAGE);
+        }else{
+         MostrarDatos nueva = new MostrarDatos(baseDatos);
         nueva.setVisible(true);
+        }
     }//GEN-LAST:event_jButtonMostrarTablaActionPerformed
+
+    private void jButtonGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarComoActionPerformed
+//         BoxAndWhiskerChart demo = new BoxAndWhiskerChart("");
+//         demo.pack();
+  
+//        RefineryUtilities.centerFrameOnScreen(demo);
+
+//        demo.setVisible(true);
+    }//GEN-LAST:event_jButtonGuardarComoActionPerformed
 
     /**
      * @param args the command line arguments
