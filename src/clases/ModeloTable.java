@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author juan_
  */
+
 public class ModeloTable extends DefaultTableModel {
 
     public boolean isCellEditable(int row, int column) {
