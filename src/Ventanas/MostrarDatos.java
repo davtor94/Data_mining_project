@@ -9,7 +9,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import clases.*;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -29,19 +28,22 @@ public class MostrarDatos extends javax.swing.JFrame {
         initComponents();
         this.baseDatos = baseDatos;
         titulo.setText(baseDatos.getNombre());
+        comboBoxAtributo.removeAllItems();
         String[] columnas = new String[baseDatos.getNumAtributos() + 1];
         columnas[0] = "ID";
         for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
             columnas[i + 1] = baseDatos.getAtributos().get(i).getNombre();
         }
-        DefaultTableModel modelo = new DefaultTableModel(0, 0);
+        ModeloTable modelo = new ModeloTable();
         DefaultListModel listaModelo = new DefaultListModel();
         for (int i = 0; i < columnas.length; i++) {
             modelo.addColumn(columnas[i]);
         }
 
+        
         for (int i = 1; i < columnas.length; i++) {
             listaModelo.addElement(columnas[i]);
+            comboBoxAtributo.addItem(columnas[i]);
         }
 
         for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
@@ -55,11 +57,11 @@ public class MostrarDatos extends javax.swing.JFrame {
         listaAtributos.setModel(listaModelo);
         dataGrid.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         dataGrid.setAutoscrolls(true);
-        datosGenerales.append("Numero de Instancias: " + baseDatos.getNumInstancias() + "\n");
-        datosGenerales.append("Numero de Atributos: " + baseDatos.getNumAtributos() + "\n");
-        datosGenerales.append("Numero de Valores Faltantes: " + "\n");
-        datosGenerales.append("Porcentaje de Valores Faltantes: \n");
         dataGrid.setModel(modelo);
+        RenderPro render = new RenderPro();
+        render.pasarDataSet(baseDatos);
+        dataGrid.setDefaultRenderer(Object.class, render);
+        actualizarTextAreaGeneral();
     }
 
     /**
@@ -82,13 +84,16 @@ public class MostrarDatos extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         textAreaAtributo = new javax.swing.JTextArea();
-        botonAgregar = new javax.swing.JButton();
-        botonEliminar = new javax.swing.JButton();
+        botonAgregarInstancia = new javax.swing.JButton();
+        botonEliminarInstancia = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         listaAtributos = new javax.swing.JList<>();
         botonEliminarAtributo = new javax.swing.JButton();
         botonEditarAtributo = new javax.swing.JButton();
         botonExpresion = new javax.swing.JButton();
+        comboBoxAtributo = new javax.swing.JComboBox<>();
+        textFieldValor = new javax.swing.JTextField();
+        botonRemplazar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -119,6 +124,11 @@ public class MostrarDatos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        dataGrid.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                dataGridPropertyChange(evt);
+            }
+        });
         jScrollPane1.setViewportView(dataGrid);
 
         datosGenerales.setEditable(false);
@@ -138,17 +148,17 @@ public class MostrarDatos extends javax.swing.JFrame {
         textAreaAtributo.setRows(5);
         jScrollPane3.setViewportView(textAreaAtributo);
 
-        botonAgregar.setText("Agregar");
-        botonAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+        botonAgregarInstancia.setText("Agregar");
+        botonAgregarInstancia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botonAgregarMouseClicked(evt);
+                botonAgregarInstanciaMouseClicked(evt);
             }
         });
 
-        botonEliminar.setText("Eliminar");
-        botonEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+        botonEliminarInstancia.setText("Eliminar");
+        botonEliminarInstancia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botonEliminarMouseClicked(evt);
+                botonEliminarInstanciaMouseClicked(evt);
             }
         });
 
@@ -190,6 +200,17 @@ public class MostrarDatos extends javax.swing.JFrame {
             }
         });
 
+        comboBoxAtributo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        textFieldValor.setText("jTextField1");
+
+        botonRemplazar.setText("Remplazar");
+        botonRemplazar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonRemplazarMouseClicked(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
 
         jMenuItem4.setText("Cargar ");
@@ -224,15 +245,20 @@ public class MostrarDatos extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addComponent(botonAgregar)
+                        .addGap(10, 10, 10)
+                        .addComponent(botonAgregarInstancia)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonEliminarInstancia)
                         .addGap(38, 38, 38)
-                        .addComponent(botonEliminar)))
+                        .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(botonRemplazar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -247,9 +273,9 @@ public class MostrarDatos extends javax.swing.JFrame {
                                 .addComponent(botonEditarAtributo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(botonExpresion))
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel3))
+                        .addGap(0, 155, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(134, 134, 134)
@@ -286,33 +312,58 @@ public class MostrarDatos extends javax.swing.JFrame {
                             .addComponent(botonExpresion)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(botonAgregar)
-                    .addComponent(botonEliminar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonEliminarInstancia)
+                    .addComponent(botonAgregarInstancia)
+                    .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonRemplazar))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAgregarMouseClicked
+    private void botonAgregarInstanciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAgregarInstanciaMouseClicked
+        //Agregar nueva instancia a la tabla
         DefaultTableModel modelo = new DefaultTableModel(0, 0);
         modelo = (DefaultTableModel) dataGrid.getModel();
-        String[] datos = new String[6];
+        String[] datos = new String[baseDatos.getNumAtributos() + 1];
+        datos[0] = String.valueOf(dataGrid.getRowCount() + 1);
+        for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
+            datos[i + 1] = baseDatos.getFaltante();
+        }
         modelo.addRow(datos);
-        dataGrid.setModel(modelo);
-    }//GEN-LAST:event_botonAgregarMouseClicked
+        //Agregando instancia a la memoria
+        for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
+            baseDatos.getAtributos().get(i).getInstancias().add(datos[i + 1]);
+        }
+        //Recalculando los datos
+        baseDatos.setNumInstancias(baseDatos.getNumInstancias() + 1);
+        baseDatos.calcularErrores();
+        actualizarTextAreaAtributo();
+        actualizarTextAreaGeneral();
+    }//GEN-LAST:event_botonAgregarInstanciaMouseClicked
 
-    private void botonEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarMouseClicked
+    private void botonEliminarInstanciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarInstanciaMouseClicked
         if (dataGrid.getSelectedRow() >= 0) {
-            DefaultTableModel modelo = new DefaultTableModel(0, 0);
-            modelo = (DefaultTableModel) dataGrid.getModel();
+            int indice = dataGrid.getSelectedRow();
+            //Actualizar Tabla
+            DefaultTableModel modelo = (DefaultTableModel) dataGrid.getModel();
             modelo.removeRow(dataGrid.getSelectedRow());
-            dataGrid.setModel(modelo);
+            //Actualizar en Memoria
+            for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
+                baseDatos.getAtributos().get(i).getInstancias().remove(indice);
+            }
+            //Recalculando Datos
+            baseDatos.setNumInstancias(baseDatos.getNumInstancias() - 1);
+            baseDatos.calcularErrores();
+            actualizarTextAreaAtributo();
+            actualizarTextAreaGeneral();
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar una fila primero.");
         }
-    }//GEN-LAST:event_botonEliminarMouseClicked
+    }//GEN-LAST:event_botonEliminarInstanciaMouseClicked
 
     private void botonEditarAtributoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEditarAtributoMouseClicked
         if (listaAtributos.getSelectedIndex() >= 0) {
@@ -323,11 +374,9 @@ public class MostrarDatos extends javax.swing.JFrame {
                 //Actualizacion del header de la tabla
                 TableColumnModel tableColumnModel = dataGrid.getColumnModel();
                 tableColumnModel.getColumn(indice + 1).setHeaderValue(respuesta);
-                dataGrid.setColumnModel(tableColumnModel);
                 //Actualizacion del JList
                 DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
                 listaModelo.set(indice, respuesta);
-                listaAtributos.setModel(listaModelo);
                 //actualizacion del dato en Memoria
                 baseDatos.getAtributos().get(indice).setNombre(respuesta);
             }
@@ -338,14 +387,18 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void botonEliminarAtributoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarAtributoMouseClicked
         if (listaAtributos.getSelectedIndex() >= 0) {
-            //int indice = listaAtributos.getSelectedIndex();
+            int indice = listaAtributos.getSelectedIndex();
             //Eliminado del Jlist
             DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
-            listaModelo.remove(listaAtributos.getSelectedIndex());
-            listaAtributos.setModel(listaModelo);
+            listaModelo.removeElementAt(indice);
             //Eliminacion de la columna
-            //TableColumn tcol = dataGrid.getColumnModel().getColumn(indice + 1);
-            //dataGrid.getColumnModel().removeColumn(tcol);
+            TableColumn tcol = dataGrid.getColumnModel().getColumn(indice + 1);
+            dataGrid.getColumnModel().removeColumn(tcol);
+            //Eliminacion del dato en memoria
+            baseDatos.getAtributos().remove(indice);
+            baseDatos.setNumAtributos(baseDatos.getNumAtributos() - 1);
+            actualizarTextAreaAtributo();
+            actualizarTextAreaGeneral();
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
         }
@@ -353,8 +406,15 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void botonExpresionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonExpresionMouseClicked
         if (listaAtributos.getSelectedIndex() >= 0) {
-            String respuesta = JOptionPane.showInputDialog(null, "Actualiza la expresion:", listaAtributos.getSelectedValue());
+            int indice = listaAtributos.getSelectedIndex();
+            String respuesta = JOptionPane.showInputDialog(null, "Actualiza la expresion:", baseDatos.getAtributos().get(indice).getDominio());
             if (respuesta != null && !respuesta.equals("")) {
+                //Actualizando la Expresion
+                baseDatos.getAtributos().get(indice).setDominio(respuesta);
+                //Recalculando y actualizando
+                actualizarTextAreaAtributo();
+                //Actualizar la Tabla
+                dataGrid.repaint();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
@@ -362,26 +422,69 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_botonExpresionMouseClicked
 
     private void listaAtributosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaAtributosValueChanged
-        textAreaAtributo.setText(null);
-        int indice = listaAtributos.getSelectedIndex();
-        float porcentaje = (baseDatos.getAtributos().get(indice).getValoresFaltantes() * 100) / baseDatos.getNumInstancias();
-        textAreaAtributo.append("Tipo: " + baseDatos.getAtributos().get(indice).getTipoDato() + "\n");
-        textAreaAtributo.append("Expresion Regular: " + baseDatos.getAtributos().get(indice).getDominio() + "\n");
-        textAreaAtributo.append("Valores Faltantes: " + baseDatos.getAtributos().get(indice).getValoresFaltantes() + "\n");
-        textAreaAtributo.append("Porcentaje de Valores Faltantes: " + porcentaje + "% \n");
+        actualizarTextAreaAtributo();
     }//GEN-LAST:event_listaAtributosValueChanged
 
     private void botonEliminarAtributoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarAtributoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonEliminarAtributoActionPerformed
 
+    private void dataGridPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dataGridPropertyChange
+        int indiceColumna = dataGrid.getEditingColumn();
+        int indiceFila = dataGrid.getEditingRow();
+        if (indiceFila >= 0 && indiceColumna >= 0) {
+            String nuevoValor = dataGrid.getValueAt(indiceFila, indiceColumna).toString();
+            //Cargar en Memoria 
+            baseDatos.getAtributos().get(indiceColumna - 1).getInstancias().set(indiceFila, nuevoValor);
+            //recalculando
+            baseDatos.calcularErrores();
+            actualizarTextAreaAtributo();
+            actualizarTextAreaGeneral();
+        }
+    }//GEN-LAST:event_dataGridPropertyChange
+
+    private void botonRemplazarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonRemplazarMouseClicked
+        if(!textFieldValor.getText().equals("")){
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
+        }
+    }//GEN-LAST:event_botonRemplazarMouseClicked
+
+    public void actualizarTextAreaAtributo() {
+        if (listaAtributos.getSelectedIndex() >= 0) {
+            textAreaAtributo.setText(null);
+            int indice = listaAtributos.getSelectedIndex();
+            float porcentajeFaltante = (baseDatos.getAtributos().get(indice).getValoresFaltantes() * 100) / baseDatos.getNumInstancias();
+            float porcentajeErroneo = (baseDatos.getAtributos().get(indice).getNumeroValoresErroneos() * 100) / baseDatos.getNumInstancias();
+            textAreaAtributo.append("Tipo: " + baseDatos.getAtributos().get(indice).getTipoDato() + "\n");
+            textAreaAtributo.append("Expresion Regular: " + baseDatos.getAtributos().get(indice).getDominio() + "\n");
+            textAreaAtributo.append("Valores Faltantes: " + baseDatos.getAtributos().get(indice).getValoresFaltantes() + "\n");
+            textAreaAtributo.append("Porcentaje de Valores Faltantes: " + porcentajeFaltante + "% \n");
+            textAreaAtributo.append("Numero de Valores Erroneos: " + baseDatos.getAtributos().get(indice).getNumeroValoresErroneos() + "\n");
+            textAreaAtributo.append("Porcentaje de Valores Erroneos: "+ porcentajeErroneo +"% \n");
+        } else {
+            textAreaAtributo.setText("");
+        }
+    }
+
+    public void actualizarTextAreaGeneral() {
+        datosGenerales.setText("");
+        datosGenerales.append("Numero de Instancias: " + baseDatos.getNumInstancias() + "\n");
+        datosGenerales.append("Numero de Atributos: " + baseDatos.getNumAtributos() + "\n");
+        datosGenerales.append("Numero de Valores Faltantes: " + "\n");
+        datosGenerales.append("Porcentaje de Valores Faltantes: \n");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonAgregar;
+    private javax.swing.JButton botonAgregarInstancia;
     private javax.swing.JButton botonEditarAtributo;
-    private javax.swing.JButton botonEliminar;
     private javax.swing.JButton botonEliminarAtributo;
+    private javax.swing.JButton botonEliminarInstancia;
     private javax.swing.JButton botonExpresion;
+    private javax.swing.JButton botonRemplazar;
+    private javax.swing.JComboBox<String> comboBoxAtributo;
     private javax.swing.JTable dataGrid;
     private javax.swing.JTextArea datosGenerales;
     private javax.swing.JLabel jLabel2;
@@ -403,6 +506,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JList<String> listaAtributos;
     private javax.swing.JTextArea textAreaAtributo;
+    private javax.swing.JTextField textFieldValor;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

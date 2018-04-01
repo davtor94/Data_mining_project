@@ -138,6 +138,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
       while((aux=lee.readLine())!=null)
       {
         if(cargaDatos){
+            aux = aux.replace(" ","");            
             String[] campos = aux.split(",");
             int numeroAtributos = campos.length;
             for(int i =0;i<numeroAtributos;i++){
@@ -165,14 +166,12 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         else if(aux.startsWith("@data")){
             cargaDatos = true;
          }
-         
-         
       }
          lee.close();
          baseDatos.setAtributos(atributos);
          baseDatos.updateNumAtributos();
          baseDatos.updateNumInstancias();
-         baseDatos.calcularValoresFaltantes();
+         baseDatos.calcularErrores();
     }    
    }
    catch(IOException ex)
