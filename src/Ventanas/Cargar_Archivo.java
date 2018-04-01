@@ -188,6 +188,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         else if(aux.startsWith("%")){
              //es comentario
              comentarios +=aux+ "\n";
+             comentarios = comentarios.replace("%%","");
          }
          else if(aux.startsWith("@relation")){
              data.setNombre(aux.substring(10));
