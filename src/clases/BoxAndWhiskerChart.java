@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
-/*import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
@@ -77,4 +77,3 @@ public class BoxAndWhiskerChart extends ApplicationFrame {
   }
 
 }
-*/
