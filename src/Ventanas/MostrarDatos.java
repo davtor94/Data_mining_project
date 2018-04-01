@@ -26,6 +26,7 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     public MostrarDatos(DataSet baseDatos) {
         initComponents();
+        
         this.baseDatos = baseDatos;
         titulo.setText(baseDatos.getNombre());
         comboBoxAtributo.removeAllItems();
