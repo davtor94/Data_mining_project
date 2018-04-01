@@ -26,7 +26,7 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     public MostrarDatos(DataSet baseDatos) {
         initComponents();
-        
+
         this.baseDatos = baseDatos;
         titulo.setText(baseDatos.getNombre());
         comboBoxAtributo.removeAllItems();
@@ -40,7 +40,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         for (int i = 0; i < columnas.length; i++) {
             modelo.addColumn(columnas[i]);
         }
-        
+
         for (int i = 1; i < columnas.length; i++) {
             listaModelo.addElement(columnas[i]);
             comboBoxAtributo.addItem(columnas[i]);
@@ -379,6 +379,12 @@ public class MostrarDatos extends javax.swing.JFrame {
                 listaModelo.set(indice, respuesta);
                 //actualizacion del dato en Memoria
                 baseDatos.getAtributos().get(indice).setNombre(respuesta);
+                //Actualizando Combobox
+                comboBoxAtributo.removeAllItems();
+                for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
+                    comboBoxAtributo.addItem(baseDatos.getAtributos().get(i).getNombre());
+                }
+                comboBoxAtributo.setSelectedIndex(indice);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
@@ -394,8 +400,7 @@ public class MostrarDatos extends javax.swing.JFrame {
             //Eliminacion de la columna
             TableColumn tcol = dataGrid.getColumnModel().getColumn(indice + 1);
             dataGrid.getColumnModel().removeColumn(tcol);
-            //Eliminacion del listbox
-                        JOptionPane.showMessageDialog(null, indice);
+            //Eliminacion del Combobox
             comboBoxAtributo.removeItemAt(indice);
             //Eliminacion del dato en memoria
             baseDatos.getAtributos().remove(indice);
@@ -447,10 +452,9 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_dataGridPropertyChange
 
     private void botonRemplazarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonRemplazarMouseClicked
-        if(!textFieldValor.getText().equals("")){
-            
-        }
-        else{
+        if (!textFieldValor.getText().equals("")) {
+
+        } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
         }
     }//GEN-LAST:event_botonRemplazarMouseClicked
@@ -466,7 +470,7 @@ public class MostrarDatos extends javax.swing.JFrame {
             textAreaAtributo.append("Valores Faltantes: " + baseDatos.getAtributos().get(indice).getValoresFaltantes() + "\n");
             textAreaAtributo.append("Porcentaje de Valores Faltantes: " + porcentajeFaltante + "% \n");
             textAreaAtributo.append("Numero de Valores Erroneos: " + baseDatos.getAtributos().get(indice).getNumeroValoresErroneos() + "\n");
-            textAreaAtributo.append("Porcentaje de Valores Erroneos: "+ porcentajeErroneo +"% \n");
+            textAreaAtributo.append("Porcentaje de Valores Erroneos: " + porcentajeErroneo + "% \n");
         } else {
             textAreaAtributo.setText("");
         }
