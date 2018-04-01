@@ -7,10 +7,7 @@ package clases;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author David Torres
- */
+
 public class atributo {
 
     private String nombre;

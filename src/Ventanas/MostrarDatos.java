@@ -39,7 +39,6 @@ public class MostrarDatos extends javax.swing.JFrame {
         for (int i = 0; i < columnas.length; i++) {
             modelo.addColumn(columnas[i]);
         }
-
         
         for (int i = 1; i < columnas.length; i++) {
             listaModelo.addElement(columnas[i]);

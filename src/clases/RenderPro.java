@@ -19,6 +19,7 @@ public class RenderPro extends DefaultTableCellRenderer {
 
     DataSet baseDatos = new DataSet();
 
+    
     public void pasarDataSet(DataSet baseDatos) {
         this.baseDatos = baseDatos;
     }

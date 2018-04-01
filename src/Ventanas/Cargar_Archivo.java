@@ -156,9 +156,6 @@ public class Cargar_Archivo extends javax.swing.JFrame {
              String[] parts = aux.split(" ");
              atributo atr = new atributo(parts[1],parts[3],parts[2]);
              atributos.add(atr);
-             /*JOptionPane.showMessageDialog(null,
-                atr.getNombre(),
-             "Datos Leidos",JOptionPane.INFORMATION_MESSAGE);*/
          }
          else if(aux.startsWith("@missingValue")){
              baseDatos.setFaltante(aux.substring(14));
