@@ -17,6 +17,7 @@ public class atributo {
     private int numValoresErroneos;
     protected ArrayList<String> instancias = new ArrayList<>();
 
+    
     public atributo(String nombre, String dominio, String tipoDato) {
         this.nombre = nombre;
         this.dominio = dominio;
