@@ -94,6 +94,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         comboBoxAtributo = new javax.swing.JComboBox<>();
         textFieldValor = new javax.swing.JTextField();
         botonRemplazar = new javax.swing.JButton();
+        textFieldNuevoValor = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -137,6 +138,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         jScrollPane2.setViewportView(datosGenerales);
 
         titulo.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titulo.setText("Nombre de la Base de Datos xD");
 
         jLabel2.setText("Datos Generales de la Base de Datos");
@@ -202,8 +204,6 @@ public class MostrarDatos extends javax.swing.JFrame {
 
         comboBoxAtributo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        textFieldValor.setText("jTextField1");
-
         botonRemplazar.setText("Remplazar");
         botonRemplazar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -252,54 +252,56 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addComponent(botonAgregarInstancia)
                         .addGap(18, 18, 18)
                         .addComponent(botonEliminarInstancia)
-                        .addGap(38, 38, 38)
-                        .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22)
-                        .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(botonRemplazar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane4)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textFieldNuevoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonRemplazar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(botonEliminarAtributo)
+                                .addGap(15, 15, 15)
+                                .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
-                                .addComponent(botonEditarAtributo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botonExpresion))
-                            .addComponent(jLabel3))
-                        .addGap(0, 155, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(134, 134, 134)
-                .addComponent(titulo)
-                .addGap(205, 205, 205)
-                .addComponent(jLabel2)
-                .addContainerGap(240, Short.MAX_VALUE))
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(botonEliminarAtributo)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(botonEditarAtributo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(botonExpresion))
+                                    .addComponent(jLabel3))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(titulo)
-                        .addGap(14, 14, 14))
+                        .addGap(19, 19, 19))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 28, Short.MAX_VALUE)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -317,7 +319,8 @@ public class MostrarDatos extends javax.swing.JFrame {
                     .addComponent(botonAgregarInstancia)
                     .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonRemplazar))
+                    .addComponent(botonRemplazar)
+                    .addComponent(textFieldNuevoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
@@ -452,10 +455,20 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_dataGridPropertyChange
 
     private void botonRemplazarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonRemplazarMouseClicked
-        if (!textFieldValor.getText().equals("")) {
-
+        String cadenaAntigua = textFieldValor.getText();
+        String nuevaCadena = textFieldNuevoValor.getText();
+        if (!nuevaCadena.equals("") && !cadenaAntigua.equals("")) {
+            int indice = comboBoxAtributo.getSelectedIndex();
+            String cadena;
+            for(int i=0; i<baseDatos.getNumInstancias(); i++){
+                cadena = baseDatos.getAtributos().get(indice).getInstancias().get(i);
+                if(cadena.equals(cadenaAntigua)){
+                    baseDatos.getAtributos().get(indice).getInstancias().set(i, nuevaCadena);
+                    dataGrid.setValueAt(nuevaCadena, i, indice+1);
+                }              
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
+            JOptionPane.showMessageDialog(null, "Es necesario rellenar todos los datos.");
         }
     }//GEN-LAST:event_botonRemplazarMouseClicked
 
@@ -514,6 +527,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JList<String> listaAtributos;
     private javax.swing.JTextArea textAreaAtributo;
+    private javax.swing.JTextField textFieldNuevoValor;
     private javax.swing.JTextField textFieldValor;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
