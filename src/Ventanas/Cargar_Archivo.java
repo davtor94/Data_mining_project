@@ -178,6 +178,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
       while((aux=lee.readLine())!=null)
       {
         if(cargaDatos){
+            //Para el caso que tenga espacios la cadena, eliminarmos para compararlos
             aux = aux.replace(" ","");            
             String[] campos = aux.split(",");
             int numeroAtributos = campos.length;
@@ -188,6 +189,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         else if(aux.startsWith("%")){
              //es comentario
              comentarios +=aux+ "\n";
+             //para borrar los %% al inicio de la cadena
              comentarios = comentarios.replace("%%","");
          }
          else if(aux.startsWith("@relation")){
