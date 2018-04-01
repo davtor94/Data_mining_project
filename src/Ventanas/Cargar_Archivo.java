@@ -27,6 +27,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);   
     }
+    
     DataSet baseDatos = new DataSet();
     /**
      * This method is called from within the constructor to initialize the form.
