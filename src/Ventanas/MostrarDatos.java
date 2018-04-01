@@ -394,6 +394,9 @@ public class MostrarDatos extends javax.swing.JFrame {
             //Eliminacion de la columna
             TableColumn tcol = dataGrid.getColumnModel().getColumn(indice + 1);
             dataGrid.getColumnModel().removeColumn(tcol);
+            //Eliminacion del listbox
+                        JOptionPane.showMessageDialog(null, indice);
+            comboBoxAtributo.removeItemAt(indice);
             //Eliminacion del dato en memoria
             baseDatos.getAtributos().remove(indice);
             baseDatos.setNumAtributos(baseDatos.getNumAtributos() - 1);
