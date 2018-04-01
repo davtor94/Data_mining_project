@@ -18,7 +18,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class RenderPro extends DefaultTableCellRenderer {
 
     DataSet baseDatos = new DataSet();
-
     
     public void pasarDataSet(DataSet baseDatos) {
         this.baseDatos = baseDatos;
