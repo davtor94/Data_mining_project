@@ -498,9 +498,6 @@ public class MostrarDatos extends javax.swing.JFrame {
             String tipoAtributo2 = baseDatos.getAtributos().get(indice2).getTipoDato();
             if (tipoAtributo1.equals(tipoAtributo2) && indice1 != indice2) {
                 AnalisisBivariable example = new AnalisisBivariable(indice1, indice2, baseDatos);
-                example.setSize(800, 400);
-                example.setLocationRelativeTo(null);
-                example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 example.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Los atributos no se pueden comparar, es necesario que sean del mismop tipo.");
