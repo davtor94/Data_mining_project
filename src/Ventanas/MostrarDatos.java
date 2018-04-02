@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import clases.*;
+import javax.swing.WindowConstants;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -95,6 +96,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         textFieldValor = new javax.swing.JTextField();
         botonRemplazar = new javax.swing.JButton();
         textFieldNuevoValor = new javax.swing.JTextField();
+        botonAnalisisBivariable = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -211,6 +213,13 @@ public class MostrarDatos extends javax.swing.JFrame {
             }
         });
 
+        botonAnalisisBivariable.setText("Analisis Bivariable");
+        botonAnalisisBivariable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAnalisisBivariableActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
 
         jMenuItem4.setText("Cargar ");
@@ -277,13 +286,15 @@ public class MostrarDatos extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(botonEliminarAtributo)
                                         .addGap(18, 18, 18)
                                         .addComponent(botonEditarAtributo)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(botonExpresion))
-                                    .addComponent(jLabel3))
+                                        .addComponent(botonExpresion)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(botonAnalisisBivariable)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
@@ -311,7 +322,8 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonEliminarAtributo)
                             .addComponent(botonEditarAtributo)
-                            .addComponent(botonExpresion)))
+                            .addComponent(botonExpresion)
+                            .addComponent(botonAnalisisBivariable)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -460,17 +472,43 @@ public class MostrarDatos extends javax.swing.JFrame {
         if (!nuevaCadena.equals("") && !cadenaAntigua.equals("")) {
             int indice = comboBoxAtributo.getSelectedIndex();
             String cadena;
-            for(int i=0; i<baseDatos.getNumInstancias(); i++){
+            for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
                 cadena = baseDatos.getAtributos().get(indice).getInstancias().get(i);
-                if(cadena.equals(cadenaAntigua)){
+                if (cadena.equals(cadenaAntigua)) {
                     baseDatos.getAtributos().get(indice).getInstancias().set(i, nuevaCadena);
-                    dataGrid.setValueAt(nuevaCadena, i, indice+1);
-                }              
+                    dataGrid.setValueAt(nuevaCadena, i, indice + 1);
+                }
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario rellenar todos los datos.");
         }
     }//GEN-LAST:event_botonRemplazarMouseClicked
+
+    private void botonAnalisisBivariableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalisisBivariableActionPerformed
+        int indice1 = listaAtributos.getSelectedIndex();
+        int indice2;
+        if (indice1 >= 0) {
+            String[] atributos = new String[baseDatos.getNumAtributos()];
+            for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
+                atributos[i] = baseDatos.getAtributos().get(i).getNombre();
+            }
+            String resp = (String) JOptionPane.showInputDialog(null, "Seleccione el atributo a comparar", "Atributos", JOptionPane.QUESTION_MESSAGE, null, atributos, atributos[0]);
+            indice2 = baseDatos.getIndexAtributo(resp);
+            String tipoAtributo1 = baseDatos.getAtributos().get(indice1).getTipoDato();
+            String tipoAtributo2 = baseDatos.getAtributos().get(indice2).getTipoDato();
+            if (tipoAtributo1.equals(tipoAtributo2) && indice1 != indice2) {
+                AnalisisBivariable example = new AnalisisBivariable(indice1, indice2, baseDatos);
+                example.setSize(800, 400);
+                example.setLocationRelativeTo(null);
+                example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                example.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Los atributos no se pueden comparar, es necesario que sean del mismop tipo.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a comparar.");
+        }
+    }//GEN-LAST:event_botonAnalisisBivariableActionPerformed
 
     public void actualizarTextAreaAtributo() {
         if (listaAtributos.getSelectedIndex() >= 0) {
@@ -500,6 +538,7 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarInstancia;
+    private javax.swing.JButton botonAnalisisBivariable;
     private javax.swing.JButton botonEditarAtributo;
     private javax.swing.JButton botonEliminarAtributo;
     private javax.swing.JButton botonEliminarInstancia;
