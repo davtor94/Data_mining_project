@@ -90,6 +90,17 @@ public class DataSet {
     public void updateNumInstancias() {
         this.numInstancias = atributos.get(0).getInstancias().size();
     }
+    
+    public int getIndexAtributo(String name){
+        int indice = -1;
+        for(int i=0; i<this.getNumAtributos(); i++){
+            if(name==this.getAtributos().get(i).getNombre()){
+                indice=i;
+                break;
+            }
+        }
+        return indice;
+    }
 
     public void calcularErrores() {
         int contadorErrores = 0;
