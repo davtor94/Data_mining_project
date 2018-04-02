@@ -24,20 +24,21 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     int indiceVariable1;
     int indiceVariable2;
     DataSet baseDatos;
-    
+
     public AnalisisBivariable(int atributo1, int atributo2, DataSet baseDatos) {
         initComponents();
         this.indiceVariable1 = atributo1;
         this.indiceVariable2 = atributo2;
         this.baseDatos = baseDatos;
-        
+
         // Create dataset
         XYDataset dataset = createDataset();
-
+        String nombre1 = baseDatos.getAtributos().get(indiceVariable1).getNombre();
+        String nombre2 = baseDatos.getAtributos().get(indiceVariable2).getNombre();
         // Create chart
         JFreeChart chart = ChartFactory.createScatterPlot(
-                "Boys VS Girls weight comparison chart",
-                "X-Axis", "Y-Axis", dataset);
+                "Diagrama de Dispersion "+nombre1+" vs "+nombre2,
+                "X-"+nombre1, "Y-"+nombre2, dataset);
 
         //Changes background color
         XYPlot plot = (XYPlot) chart.getPlot();
@@ -47,40 +48,20 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         ChartPanel panel = new ChartPanel(chart);
         setContentPane(panel);
     }
-    
-        private XYDataset createDataset() {
+
+    private XYDataset createDataset() {
         XYSeriesCollection dataset = new XYSeriesCollection();
 
         //Boys (Age,weight) series
-        XYSeries series1 = new XYSeries("Boys");
-        series1.add(1, 72.9);
-        series1.add(2, 81.6);
-        series1.add(3, 88.9);
-        series1.add(4, 96);
-        series1.add(5, 102.1);
-        series1.add(6, 108.5);
-        series1.add(7, 113.9);
-        series1.add(8, 119.3);
-        series1.add(9, 123.8);
-        series1.add(10, 124.4);
-
+        XYSeries series1 = new XYSeries("Relacion");
+        int valorX;
+        int valorY;
+        for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
+            valorX = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
+            valorY = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
+            series1.add(valorX, valorY);
+        }
         dataset.addSeries(series1);
-
-        //Girls (Age,weight) series
-        XYSeries series2 = new XYSeries("Girls");
-        series2.add(1, 72.5);
-        series2.add(2, 80.1);
-        series2.add(3, 87.2);
-        series2.add(4, 94.5);
-        series2.add(5, 101.4);
-        series2.add(6, 107.4);
-        series2.add(7, 112.8);
-        series2.add(8, 118.2);
-        series2.add(9, 122.9);
-        series2.add(10, 123.4);
-
-        dataset.addSeries(series2);
-
         return dataset;
     }
 
@@ -108,7 +89,6 @@ public class AnalisisBivariable extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
