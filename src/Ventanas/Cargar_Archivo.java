@@ -212,6 +212,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                             "El Archvio no cuenta con las caracteristicas necesarias.",
                             "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
                 } else {
+                    //Calculamos algunos valores generales del DataSet
                     data.setAtributos(atributos);
                     data.updateNumAtributos();
                     data.updateNumInstancias();
