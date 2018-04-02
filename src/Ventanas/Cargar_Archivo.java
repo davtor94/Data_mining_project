@@ -13,7 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import clases.*;
 import java.util.ArrayList;
-//import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -26,9 +26,10 @@ public class Cargar_Archivo extends javax.swing.JFrame {
      */
     public Cargar_Archivo() {
         initComponents();
-        this.setLocationRelativeTo(null);   
+        this.setLocationRelativeTo(null);
     }
     private DataSet baseDatos = new DataSet();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -158,104 +159,99 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private DataSet cargarArchivo() {
-  DataSet data = new DataSet();
-  String aux;   
-  String comentarios="";
-  ArrayList<atributo> atributos = new ArrayList<>();
-  try
-  {
-   /**llamamos el metodo que permite cargar la ventana*/
-   JFileChooser file=new JFileChooser();
-   file.showOpenDialog(this);
-   /**abrimos el archivo seleccionado*/
-   File abre=file.getSelectedFile();
-   boolean cargaDatos = false;
-   /**recorremos el archivo*/
-   if(abre!=null)
-   {     
-      FileReader archivos=new FileReader(abre);
-      BufferedReader lee=new BufferedReader(archivos);
-      while((aux=lee.readLine())!=null)
-      {
-        if(cargaDatos){
-            //Para el caso que tenga espacios la cadena, eliminarmos para compararlos
-            aux = aux.replace(" ","");            
-            String[] campos = aux.split(",");
-            int numeroAtributos = campos.length;
-            for(int i =0;i<numeroAtributos;i++){
-               atributos.get(i).getInstancias().add(campos[i]);
+        DataSet data = new DataSet();
+        String aux;
+        String comentarios = "";
+        ArrayList<atributo> atributos = new ArrayList<>();
+        try {
+            /**
+             * llamamos el metodo que permite cargar la ventana
+             */
+            JFileChooser file = new JFileChooser();
+            file.showOpenDialog(this);
+            /**
+             * abrimos el archivo seleccionado
+             */
+            File abre = file.getSelectedFile();
+            boolean cargaDatos = false;
+            /**
+             * recorremos el archivo
+             */
+            if (abre != null) {
+                FileReader archivos = new FileReader(abre);
+                BufferedReader lee = new BufferedReader(archivos);
+                while ((aux = lee.readLine()) != null) {
+                    if (cargaDatos) {
+                        //Para el caso que tenga espacios la cadena, eliminarmos para compararlos
+                        aux = aux.replace(" ", "");
+                        String[] campos = aux.split(",");
+                        int numeroAtributos = campos.length;
+                        for (int i = 0; i < numeroAtributos; i++) {
+                            atributos.get(i).getInstancias().add(campos[i]);
+                        }
+                    } else if (aux.startsWith("%")) {
+                        //es comentario
+                        comentarios += aux + "\n";
+                        //para borrar los %% al inicio de la cadena
+                        comentarios = comentarios.replace("%%", "");
+                    } else if (aux.startsWith("@relation")) {
+                        data.setNombre(aux.substring(10));
+                    } else if (aux.startsWith("@attribute")) {
+                        String[] parts = aux.split(" ");
+                        atributo atr = new atributo(parts[1], parts[3], parts[2]);
+                        atributos.add(atr);
+                    } else if (aux.startsWith("@missingValue")) {
+                        data.setFaltante(aux.substring(14));
+                    } else if (aux.startsWith("@data")) {
+                        cargaDatos = true;
+                    }
+                }
+                lee.close();
+                if (data.getNombre() == null) {
+                    JOptionPane.showMessageDialog(null,
+                            "El Archvio no cuenta con las caracteristicas necesarias.",
+                            "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    data.setAtributos(atributos);
+                    data.updateNumAtributos();
+                    data.updateNumInstancias();
+                    data.calcularErrores();
+                    data.setComentarios(comentarios);
+                }
             }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex + ""
+                    + "\nNo se ha encontrado el archivo",
+                    "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
         }
-        else if(aux.startsWith("%")){
-             //es comentario
-             comentarios +=aux+ "\n";
-             //para borrar los %% al inicio de la cadena
-             comentarios = comentarios.replace("%%","");
-         }
-         else if(aux.startsWith("@relation")){
-             data.setNombre(aux.substring(10));
-         }
-         else if(aux.startsWith("@attribute")){
-             String[] parts = aux.split(" ");
-             atributo atr = new atributo(parts[1],parts[3],parts[2]);
-             atributos.add(atr);
-         }
-         else if(aux.startsWith("@missingValue")){
-             data.setFaltante(aux.substring(14));
-         }
-        else if(aux.startsWith("@data")){
-            cargaDatos = true;
-         }
-      }
-         lee.close();
-         if(data.getNombre() == null){
-          JOptionPane.showMessageDialog(null,
-           "El Archvio no cuenta con las caracteristicas necesarias.",
-                 "ADVERTENCIA!!!",JOptionPane.WARNING_MESSAGE);
-      }else{
-         data.setAtributos(atributos);
-         data.updateNumAtributos();
-         data.updateNumInstancias();
-         data.calcularErrores();
-         data.setComentarios(comentarios);
-      }
-    }    
-   }
-   catch(IOException ex)
-   {
-     JOptionPane.showMessageDialog(null,ex+"" +
-           "\nNo se ha encontrado el archivo",
-                 "ADVERTENCIA!!!",JOptionPane.WARNING_MESSAGE);
+        return data;
     }
-  return data;
-}
-    
-  private void acutlizarInterfaz(){
-     LabelNombre.setText(baseDatos.getNombre());
-    LabelNumAtri.setText( String.valueOf(baseDatos.getNumInstancias()));
-    LabelNumInstancias.setText(" "+baseDatos.getNumAtributos());
-    LabellValoresPerdidos.setText(baseDatos.getFaltante());
-  }
-  
-  
+
+    private void acutlizarInterfaz() {
+        LabelNombre.setText(baseDatos.getNombre());
+        LabelNumAtri.setText(String.valueOf(baseDatos.getNumInstancias()));
+        LabelNumInstancias.setText(" " + baseDatos.getNumAtributos());
+        LabellValoresPerdidos.setText(baseDatos.getFaltante());
+    }
+
+
     private void jButtonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarArchivoActionPerformed
-      baseDatos =  cargarArchivo();
-      if(baseDatos.getNombre() == null){
-          JOptionPane.showMessageDialog(null,
-           "El archivo debe contener: \n"
-              
-                   + "Nombre(@relation)\n"
-                   + "atributos(@attribute)\n"
-                   + "variable representando valores perdidos(@missingValue)\n"
-                   + "y datos(@data)\n"
-                   + "Para mayor informacion consulte el manual tecnico.",
-                 "Recuerda!",JOptionPane.WARNING_MESSAGE);
-      }else{
-          JOptionPane.showMessageDialog(null,
-            baseDatos.getComentarios(),
-                 "Comentarios!",JOptionPane.INFORMATION_MESSAGE);
-          acutlizarInterfaz();
-      }
+        baseDatos = cargarArchivo();
+        if (baseDatos.getNombre() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "El archivo debe contener: \n"
+                    + "Nombre(@relation)\n"
+                    + "atributos(@attribute)\n"
+                    + "variable representando valores perdidos(@missingValue)\n"
+                    + "y datos(@data)\n"
+                    + "Para mayor informacion consulte el manual tecnico.",
+                    "Recuerda!", JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    baseDatos.getComentarios(),
+                    "Comentarios!", JOptionPane.INFORMATION_MESSAGE);
+            acutlizarInterfaz();
+        }
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
@@ -263,23 +259,22 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarTablaActionPerformed
-        if(baseDatos.getNombre() == null){
-             JOptionPane.showMessageDialog(null,
-           "Es necesario abriri un archivo valido.",
-                 "DataSet invalido!",JOptionPane.ERROR_MESSAGE);
-        }else{
-         MostrarDatos nueva = new MostrarDatos(baseDatos);
-        nueva.setVisible(true);
+        if (baseDatos.getNombre() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Es necesario abriri un archivo valido.",
+                    "DataSet invalido!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            MostrarDatos nueva = new MostrarDatos(baseDatos);
+            nueva.setVisible(true);
         }
     }//GEN-LAST:event_jButtonMostrarTablaActionPerformed
 
     private void jButtonGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarComoActionPerformed
-//         BoxAndWhiskerChart demo = new BoxAndWhiskerChart("");
-//         demo.pack();
-  
-//        RefineryUtilities.centerFrameOnScreen(demo);
+         BoxAndWhiskerChart demo = new BoxAndWhiskerChart("");
+         demo.pack();
 
-//        demo.setVisible(true);
+        RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setVisible(true);
     }//GEN-LAST:event_jButtonGuardarComoActionPerformed
 
     /**
@@ -312,7 +307,6 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
                 new Cargar_Archivo().setVisible(true);
             }
         });
