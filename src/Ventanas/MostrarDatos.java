@@ -111,7 +111,7 @@ public class MostrarDatos extends javax.swing.JFrame {
 
         jMenuItem2.setText("jMenuItem2");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jScrollPane1.setVerifyInputWhenFocusTarget(false);
 
@@ -493,14 +493,16 @@ public class MostrarDatos extends javax.swing.JFrame {
                 atributos[i] = baseDatos.getAtributos().get(i).getNombre();
             }
             String resp = (String) JOptionPane.showInputDialog(null, "Seleccione el atributo a comparar", "Atributos", JOptionPane.QUESTION_MESSAGE, null, atributos, atributos[0]);
-            indice2 = baseDatos.getIndexAtributo(resp);
-            String tipoAtributo1 = baseDatos.getAtributos().get(indice1).getTipoDato();
-            String tipoAtributo2 = baseDatos.getAtributos().get(indice2).getTipoDato();
-            if (tipoAtributo1.equals(tipoAtributo2) && indice1 != indice2) {
-                AnalisisBivariable example = new AnalisisBivariable(indice1, indice2, baseDatos);
-                example.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Los atributos no se pueden comparar, es necesario que sean del mismop tipo.");
+            if (resp!=null) {
+                indice2 = baseDatos.getIndexAtributo(resp);
+                String tipoAtributo1 = baseDatos.getAtributos().get(indice1).getTipoDato();
+                String tipoAtributo2 = baseDatos.getAtributos().get(indice2).getTipoDato();
+                if (tipoAtributo1.equals(tipoAtributo2) && indice1 != indice2) {
+                    AnalisisBivariable example = new AnalisisBivariable(indice1, indice2, baseDatos);
+                    example.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Los atributos no se pueden comparar, es necesario que sean del mismop tipo.");
+                }
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a comparar.");
