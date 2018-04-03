@@ -71,6 +71,27 @@ public class analisisUnivariable extends javax.swing.JFrame {
         moda =Integer.parseInt(mod);
         return moda;
     }
+    public double calcularesv(){
+        double moda=0;
+        String mod = new String();
+        int repeticiones;
+        int repeticionesMax=0;
+        for(int i =0; i<atr.getInstancias().size();i++){
+            repeticiones =0;
+            
+             for(int j =0; j<atr.getInstancias().size();j++){
+                 if(atr.getInstancias().get(i).equals(atr.getInstancias().get(j))){
+                     repeticiones++;
+                 }
+             }
+             if(repeticiones>repeticionesMax){
+                 mod = atr.getInstancias().get(i);
+                 repeticionesMax = repeticiones;
+             }
+        }
+        moda =Integer.parseInt(mod);
+        return moda;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -150,7 +171,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
                     .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelMinimo)
                     .addComponent(jLabelMaximo))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +205,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabelMaximo))
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 32, Short.MAX_VALUE))
         );
 
         pack();
