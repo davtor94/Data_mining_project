@@ -102,7 +102,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-<<<<<<< HEAD
+
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -147,9 +147,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
         jLabelMinimo.setText("jLabel8");
 
         jLabelMaximo.setText("jLabel9");
-=======
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
->>>>>>> origin/master
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

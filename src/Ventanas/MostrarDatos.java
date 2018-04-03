@@ -452,15 +452,17 @@ public class MostrarDatos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botonEliminarAtributoActionPerformed
 
-<<<<<<< HEAD
-    private void botonAnalisisUnivariableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAnalisisUnivariableMouseClicked
+
+    private void botonAnalisisUnivariableMouseClicked(java.awt.event.MouseEvent evt) {                                                      
      
         int indice = listaAtributos.getSelectedIndex();
         if(indice>-1){
            atributo atr = baseDatos.getAtributos().get(indice);
            analisisUnivariable window = new analisisUnivariable(atr);
            window.setVisible(true);
-=======
+           }
+    }  
+
     private void dataGridPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dataGridPropertyChange
         int indiceColumna = dataGrid.getEditingColumn();
         int indiceFila = dataGrid.getEditingRow();
@@ -472,7 +474,7 @@ public class MostrarDatos extends javax.swing.JFrame {
             baseDatos.calcularErrores();
             actualizarTextAreaAtributo();
             actualizarTextAreaGeneral();
->>>>>>> origin/master
+
         }
     }//GEN-LAST:event_dataGridPropertyChange
 
