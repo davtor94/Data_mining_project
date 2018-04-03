@@ -487,6 +487,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     private void botonAnalisisBivariableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalisisBivariableActionPerformed
         int indice1 = listaAtributos.getSelectedIndex();
         int indice2;
+        //Comprobar que se selecciono un atributo
         if (indice1 >= 0) {
             String[] atributos = new String[baseDatos.getNumAtributos()];
             for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
