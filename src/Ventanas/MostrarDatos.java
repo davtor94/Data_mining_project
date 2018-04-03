@@ -391,7 +391,8 @@ public class MostrarDatos extends javax.swing.JFrame {
         int indice = listaAtributos.getSelectedIndex();
         if(indice>-1){
            atributo atr = baseDatos.getAtributos().get(indice);
-           
+           analisisUnivariable window = new analisisUnivariable(atr);
+           window.setVisible(true);
         }
         else{
              JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");

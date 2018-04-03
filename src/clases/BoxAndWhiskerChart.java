@@ -30,9 +30,9 @@ public class BoxAndWhiskerChart extends ApplicationFrame {
   }
  
    private BoxAndWhiskerCategoryDataset createSampleDataset() {
-         final int seriesCount = 3;
-        final int categoryCount = 6;
-        final int entityCount = 1;
+         final int seriesCount = 1;
+        final int categoryCount = 1;
+        final int entityCount = 22;
         
         final DefaultBoxAndWhiskerCategoryDataset dataset 
             = new DefaultBoxAndWhiskerCategoryDataset();
