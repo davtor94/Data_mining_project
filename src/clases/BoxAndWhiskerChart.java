@@ -1,6 +1,6 @@
 package clases;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+//import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import java.awt.*;
 
 import java.util.List;
@@ -30,9 +30,9 @@ public class BoxAndWhiskerChart extends ApplicationFrame {
   }
  
    private BoxAndWhiskerCategoryDataset createSampleDataset() {
-         final int seriesCount = 1;
-        final int categoryCount = 1;
-        final int entityCount = 22;
+         final int seriesCount = 3;
+        final int categoryCount = 6;
+        final int entityCount = 1;
         
         final DefaultBoxAndWhiskerCategoryDataset dataset 
             = new DefaultBoxAndWhiskerCategoryDataset();
@@ -75,4 +75,5 @@ public class BoxAndWhiskerChart extends ApplicationFrame {
   
   demo.setVisible(true);
   }
+
 }

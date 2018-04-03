@@ -7,23 +7,23 @@ package clases;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author David Torres
- */
+
 public class atributo {
+
     private String nombre;
     private String dominio;
     private String tipoDato;
     private int numeroValoresFaltantes;
+    private int numValoresErroneos;
     protected ArrayList<String> instancias = new ArrayList<>();
 
+    
     public atributo(String nombre, String dominio, String tipoDato) {
         this.nombre = nombre;
         this.dominio = dominio;
         this.tipoDato = tipoDato;
-        this.numeroValoresFaltantes=0;
-        
+        this.numeroValoresFaltantes = 0;
+        this.numValoresErroneos = 0;
     }
 
     public void setNombre(String nombre) {
@@ -41,9 +41,13 @@ public class atributo {
     public void setInstancias(ArrayList<String> instancias) {
         this.instancias = instancias;
     }
-    
-        public void setValoresFaltantes(int numeroValoresFaltantes) {
+
+    public void setValoresFaltantes(int numeroValoresFaltantes) {
         this.numeroValoresFaltantes = numeroValoresFaltantes;
+    }
+
+    public void setValoresErroneos(int numeroValores) {
+        this.numValoresErroneos = numeroValores;
     }
 
     public String getNombre() {
@@ -61,9 +65,13 @@ public class atributo {
     public ArrayList<String> getInstancias() {
         return instancias;
     }
-    
+
     public int getValoresFaltantes() {
         return numeroValoresFaltantes;
     }
-    
+
+    public int getNumeroValoresErroneos() {
+        return numValoresErroneos;
+    }
+
 }

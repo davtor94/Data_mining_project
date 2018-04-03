@@ -6,13 +6,13 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author David Torres
  */
 public class DataSet {
-    
 
     private String nombre;
     private int numInstancias;
@@ -55,7 +55,6 @@ public class DataSet {
         this.numAtributos = numAtributos;
     }
 
-
     public void setAtributos(ArrayList<atributo> atributos) {
         this.atributos = atributos;
     }
@@ -83,25 +82,46 @@ public class DataSet {
     public ArrayList<atributo> getAtributos() {
         return atributos;
     }
-    
+
     public void updateNumAtributos() {
-        this.numAtributos = atributos.get(0).getInstancias().size();
+        this.numAtributos = atributos.size();
     }
-    
+
     public void updateNumInstancias() {
         this.numInstancias = atributos.get(0).getInstancias().size();
     }
     
-    public void calcularValoresFaltantes() {
-        int contador = 0;
+    public int getIndexAtributo(String name){
+        int indice = -1;
+        for(int i=0; i<this.getNumAtributos(); i++){
+            if(name==this.getAtributos().get(i).getNombre()){
+                indice=i;
+                break;
+            }
+        }
+        return indice;
+    }
+
+    public void calcularErrores() {
+        int contadorErrores = 0;
+        int contadorFaltantes = 0;
         for (int i = 0; i < atributos.size(); i++) {
-            contador = 0;
+            contadorErrores = 0;
+            contadorFaltantes = 0;
+            String regexp = this.getAtributos().get(i).getDominio();
             for (int j = 0; j < this.getNumInstancias(); j++) {
                 if (atributos.get(i).getInstancias().get(j).equals(this.getFaltante())) {
-                    contador++;
+                    contadorFaltantes++;
+                }
+
+                String cadena = this.getAtributos().get(i).getInstancias().get(j);
+                if (!Pattern.matches(regexp, cadena)) {
+                    contadorErrores++;
                 }
             }
-            this.getAtributos().get(i).setValoresFaltantes(contador);
+            this.getAtributos().get(i).setValoresFaltantes(contadorFaltantes);
+            this.getAtributos().get(i).setValoresErroneos(contadorErrores);
         }
     }
+    
 }
