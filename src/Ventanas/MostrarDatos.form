@@ -90,21 +90,6 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Component id="botonAgregarInstancia" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="botonEliminarInstancia" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="comboBoxAtributo" min="-2" pref="132" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="textFieldValor" min="-2" pref="123" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="textFieldNuevoValor" min="-2" pref="116" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="botonRemplazar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" pref="644" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
@@ -126,18 +111,36 @@
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="botonEliminarAtributo" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                                       <Component id="botonEditarAtributo" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="botonExpresion" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="botonAnalisisBivariable" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                      <Component id="botonAgregarInstancia" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="botonEliminarInstancia" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="comboBoxAtributo" min="-2" pref="132" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="textFieldValor" min="-2" pref="123" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="textFieldNuevoValor" min="-2" pref="116" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="botonRemplazar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="botonAnalisisBivariable" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="botonExpresion" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonAnalisisUnivariable" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -172,7 +175,6 @@
                           <Component id="botonEliminarAtributo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="botonEditarAtributo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="botonExpresion" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="botonAnalisisBivariable" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="329" max="-2" attributes="0"/>
@@ -185,6 +187,8 @@
                   <Component id="textFieldValor" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botonRemplazar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="textFieldNuevoValor" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAnalisisUnivariable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="botonAnalisisBivariable" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="47" max="32767" attributes="0"/>
           </Group>
@@ -400,6 +404,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonAnalisisBivariableActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAnalisisUnivariable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Analisis Univariable"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAnalisisUnivariableActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

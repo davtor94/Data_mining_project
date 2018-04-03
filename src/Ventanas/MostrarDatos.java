@@ -97,6 +97,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         botonRemplazar = new javax.swing.JButton();
         textFieldNuevoValor = new javax.swing.JTextField();
         botonAnalisisBivariable = new javax.swing.JButton();
+        jButtonAnalisisUnivariable = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -220,6 +221,13 @@ public class MostrarDatos extends javax.swing.JFrame {
             }
         });
 
+        jButtonAnalisisUnivariable.setText("Analisis Univariable");
+        jButtonAnalisisUnivariable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAnalisisUnivariableActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
 
         jMenuItem4.setText("Cargar ");
@@ -257,20 +265,6 @@ public class MostrarDatos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(botonAgregarInstancia)
-                        .addGap(18, 18, 18)
-                        .addComponent(botonEliminarInstancia)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(textFieldNuevoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(botonRemplazar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
@@ -289,14 +283,30 @@ public class MostrarDatos extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(botonEliminarAtributo)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(botonEditarAtributo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(botonExpresion)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(botonAnalisisBivariable)))
+                                        .addGap(64, 64, 64)
+                                        .addComponent(botonEditarAtributo)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(botonAgregarInstancia)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonEliminarInstancia)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textFieldNuevoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonRemplazar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonAnalisisBivariable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botonExpresion)
+                            .addComponent(jButtonAnalisisUnivariable))
+                        .addGap(78, 78, 78))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -322,8 +332,7 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonEliminarAtributo)
                             .addComponent(botonEditarAtributo)
-                            .addComponent(botonExpresion)
-                            .addComponent(botonAnalisisBivariable)))
+                            .addComponent(botonExpresion)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -332,7 +341,9 @@ public class MostrarDatos extends javax.swing.JFrame {
                     .addComponent(comboBoxAtributo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonRemplazar)
-                    .addComponent(textFieldNuevoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textFieldNuevoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAnalisisUnivariable)
+                    .addComponent(botonAnalisisBivariable))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
@@ -455,12 +466,7 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void botonAnalisisUnivariableMouseClicked(java.awt.event.MouseEvent evt) {                                                      
      
-        int indice = listaAtributos.getSelectedIndex();
-        if(indice>-1){
-           atributo atr = baseDatos.getAtributos().get(indice);
-           analisisUnivariable window = new analisisUnivariable(atr);
-           window.setVisible(true);
-           }
+        
     }  
 
     private void dataGridPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dataGridPropertyChange
@@ -522,6 +528,18 @@ public class MostrarDatos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonAnalisisBivariableActionPerformed
 
+    private void jButtonAnalisisUnivariableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalisisUnivariableActionPerformed
+        int indice = listaAtributos.getSelectedIndex();
+        if(indice>-1){
+           atributo atr = baseDatos.getAtributos().get(indice);
+           analisisUnivariable window = new analisisUnivariable(atr);
+           window.setVisible(true);
+           }
+        else{
+             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a comparar.");
+        }
+    }//GEN-LAST:event_jButtonAnalisisUnivariableActionPerformed
+
     public void actualizarTextAreaAtributo() {
         if (listaAtributos.getSelectedIndex() >= 0) {
             textAreaAtributo.setText(null);
@@ -559,6 +577,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboBoxAtributo;
     private javax.swing.JTable dataGrid;
     private javax.swing.JTextArea datosGenerales;
+    private javax.swing.JButton jButtonAnalisisUnivariable;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
