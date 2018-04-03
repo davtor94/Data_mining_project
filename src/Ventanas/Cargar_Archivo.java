@@ -248,9 +248,9 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                     + "Para mayor informacion consulte el manual tecnico.",
                     "Recuerda!", JOptionPane.WARNING_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null,
-                    baseDatos.getComentarios(),
-                    "Comentarios!", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null,
+            //        baseDatos.getComentarios(),
+            //        "Comentarios!", JOptionPane.INFORMATION_MESSAGE);
             acutlizarInterfaz();
         }
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
