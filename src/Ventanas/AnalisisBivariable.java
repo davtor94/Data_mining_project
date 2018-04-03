@@ -7,6 +7,7 @@ package Ventanas;
 
 import clases.*;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -52,6 +53,19 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         panelGrafica.repaint();
         
         //setContentPane(panel);
+        
+        //Calculo del Coeficiente de Correlacion
+        CoeficienteCorrelacion calculos = new CoeficienteCorrelacion();
+        int valorX;
+        int valorY;
+        for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
+            valorX = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
+            valorY = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
+            calculos.getListaX().add(valorX);
+            calculos.getListaY().add(valorY);
+        }
+        calculos.calcularVariables();
+        
     }
 
     private XYDataset createDataset() {
@@ -98,6 +112,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
