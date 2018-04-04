@@ -18,6 +18,8 @@ import java.util.Collections;
 public class analisisUnivariable extends javax.swing.JFrame {
 
     private atributo atr;
+    private double media;
+   
     /**
      * Creates new form analisisUnivariable
      * @param a
@@ -25,11 +27,14 @@ public class analisisUnivariable extends javax.swing.JFrame {
     public analisisUnivariable(atributo a) {
         initComponents();
         atr = a;
+         media = calcularMedia();
         labelNombre.setText(atr.getNombre()); 
-        jLabelMedia.setText(String.valueOf(calcularMedia()));
+        jLabelMedia.setText(String.valueOf(media));
         jLabelMediana.setText(String.valueOf(calcularMediana()));
         jLabelModa.setText(String.valueOf(calcularModa()));
+        jLabelDesvE.setText(String.valueOf(calcularDesv()));
     }
+    
     public double calcularMedia(){
         double sumatoria =0;
         for(int i =0;i<atr.getInstancias().size();i++){
@@ -71,26 +76,16 @@ public class analisisUnivariable extends javax.swing.JFrame {
         moda =Integer.parseInt(mod);
         return moda;
     }
-    public double calcularesv(){
-        double moda=0;
-        String mod = new String();
-        int repeticiones;
-        int repeticionesMax=0;
+    public double calcularDesv(){
+        double desv;
+        int sumatoria;
+        sumatoria =0;
         for(int i =0; i<atr.getInstancias().size();i++){
-            repeticiones =0;
-            
-             for(int j =0; j<atr.getInstancias().size();j++){
-                 if(atr.getInstancias().get(i).equals(atr.getInstancias().get(j))){
-                     repeticiones++;
-                 }
-             }
-             if(repeticiones>repeticionesMax){
-                 mod = atr.getInstancias().get(i);
-                 repeticionesMax = repeticiones;
-             }
+            sumatoria +=Math.pow(Integer.parseInt(atr.getInstancias().get(i))-media,2);
         }
-        moda =Integer.parseInt(mod);
-        return moda;
+        sumatoria = sumatoria / atr.getInstancias().size();
+        desv = Math.sqrt(sumatoria);
+        return desv;
     }
 
     /**
