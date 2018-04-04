@@ -92,11 +92,11 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         textAreaDatos.append("Desviacion Estandar de X: " + calculos.getDesviacionEstandarX() + "\n");
         textAreaDatos.append("Desviacion Estandar de Y: " + calculos.getDesviacionEstandarY() + "\n");
         textAreaDatos.append("Desviacion Estandar de XY: " + calculos.getDesviacionEstandarXY() + "\n");
-        textAreaDatos.append("Total de X: " + calculos.getTotalX() + "\n");
-        textAreaDatos.append("Total de Y: " + calculos.getTotalY() + "\n");
-        textAreaDatos.append("Total de XY: " + calculos.getTotalXY() + "\n");
-        textAreaDatos.append("Total de X2: " + calculos.getTotalX2() + "\n");
-        textAreaDatos.append("Total de Y2: " + calculos.getTotalY2() + "\n");
+        textAreaDatos.append("Total de X: " + calculos.getTotalX().toString() + "\n");
+        textAreaDatos.append("Total de Y: " + calculos.getTotalY().toString() + "\n");
+        textAreaDatos.append("Total de XY: " + calculos.getTotalXY().toString() + "\n");
+        textAreaDatos.append("Total de X2: " + calculos.getTotalX2().toString() + "\n");
+        textAreaDatos.append("Total de Y2: " + calculos.getTotalY2().toString() + "\n");
         textAreaDatos.append("Media de X: " + calculos.getMediaX() + "\n");
         textAreaDatos.append("Media de Y: " + calculos.getMediaY() + "\n");
 
