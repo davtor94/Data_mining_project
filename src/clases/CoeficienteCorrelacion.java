@@ -5,6 +5,8 @@
  */
 package clases;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,17 +19,17 @@ public class CoeficienteCorrelacion {
 
     ArrayList<Integer> listaX;
     ArrayList<Integer> listaY;
-    ArrayList<Integer> listaXY;
-    ArrayList<Integer> listaX2;
-    ArrayList<Integer> listaY2;
+    ArrayList<BigDecimal> listaXY;
+    ArrayList<BigDecimal> listaX2;
+    ArrayList<BigDecimal> listaY2;
     private double coeficiente;
     private double mediaX;
     private double mediaY;
-    private double totalX;
-    private double totalY;
-    private double totalXY;
-    private double totalX2;
-    private double totalY2;
+    BigDecimal totalX;
+    BigDecimal totalY;
+    BigDecimal totalXY;
+    BigDecimal totalX2;
+    BigDecimal totalY2;
     private double desviacionEstandarX;
     private double desviacionEstandarY;
     private double desviacionEstandarXY;
@@ -35,17 +37,17 @@ public class CoeficienteCorrelacion {
     public CoeficienteCorrelacion() {
         listaX = new ArrayList<Integer>();
         listaY = new ArrayList<Integer>();
-        listaXY = new ArrayList<Integer>();
-        listaX2 = new ArrayList<Integer>();
-        listaY2 = new ArrayList<Integer>();
+        listaXY = new ArrayList<BigDecimal>();
+        listaX2 = new ArrayList<BigDecimal>();
+        listaY2 = new ArrayList<BigDecimal>();
         coeficiente = 0;
         mediaX = 0;
         mediaY = 0;
-        totalX = 0;
-        totalY = 0;
-        totalXY = 0;
-        totalX2 = 0;
-        totalY2 = 0;
+        totalX = new BigDecimal("0");
+        totalY = new BigDecimal("0");
+        totalXY = new BigDecimal("0");
+        totalX2 = new BigDecimal("0");
+        totalY2 = new BigDecimal("0");
         desviacionEstandarX = 0;
         desviacionEstandarY = 0;
         desviacionEstandarXY = 0;
@@ -75,35 +77,35 @@ public class CoeficienteCorrelacion {
         this.listaY = listaY;
     }
 
-    public void setListaXY(ArrayList<Integer> listaXY) {
+    public void setListaXY(ArrayList<BigDecimal> listaXY) {
         this.listaXY = listaXY;
     }
 
-    public void setListaX2(ArrayList<Integer> listaX2) {
+    public void setListaX2(ArrayList<BigDecimal> listaX2) {
         this.listaX2 = listaX2;
     }
 
-    public void setListaY2(ArrayList<Integer> listaY2) {
+    public void setListaY2(ArrayList<BigDecimal> listaY2) {
         this.listaY2 = listaY2;
     }
 
-    public void setTotalX(double totalX) {
+    public void setTotalX(BigDecimal totalX) {
         this.totalX = totalX;
     }
 
-    public void setTotalY(double totalY) {
+    public void setTotalY(BigDecimal totalY) {
         this.totalY = totalY;
     }
 
-    public void setTotalXY(double totalXY) {
+    public void setTotalXY(BigDecimal totalXY) {
         this.totalXY = totalXY;
     }
 
-    public void setTotalX2(double totalX2) {
+    public void setTotalX2(BigDecimal totalX2) {
         this.totalX2 = totalX2;
     }
 
-    public void setTotalY2(double totalY2) {
+    public void setTotalY2(BigDecimal totalY2) {
         this.totalY2 = totalY2;
     }
 
@@ -123,35 +125,35 @@ public class CoeficienteCorrelacion {
         return listaY;
     }
 
-    public ArrayList<Integer> getListaXY() {
+    public ArrayList<BigDecimal> getListaXY() {
         return listaXY;
     }
 
-    public ArrayList<Integer> getListaX2() {
+    public ArrayList<BigDecimal> getListaX2() {
         return listaX2;
     }
 
-    public ArrayList<Integer> getListaY2() {
+    public ArrayList<BigDecimal> getListaY2() {
         return listaY2;
     }
 
-    public double getTotalX() {
+    public BigDecimal getTotalX() {
         return totalX;
     }
 
-    public double getTotalY() {
+    public BigDecimal getTotalY() {
         return totalY;
     }
 
-    public double getTotalXY() {
+    public BigDecimal getTotalXY() {
         return totalXY;
     }
 
-    public double getTotalX2() {
+    public BigDecimal getTotalX2() {
         return totalX2;
     }
 
-    public double getTotalY2() {
+    public BigDecimal getTotalY2() {
         return totalY2;
     }
 
@@ -183,15 +185,18 @@ public class CoeficienteCorrelacion {
         int cantidadInstancias = listaX.size();
         int valorX = 0;
         int valorY = 0;
-        int valorXY = 0;
-        int valorX2 = 0;
-        int valorY2 = 0;
+        BigDecimal valorXY;
+        BigDecimal valorX2;
+        BigDecimal valorY2;
         for (int i = 0; i < cantidadInstancias; i++) {
             valorX = listaX.get(i);
             valorY = listaY.get(i);
-            valorX2 = valorX * valorX;
-            valorY2 = valorY * valorY;
-            valorXY = valorX * valorY;
+            valorX2 = new BigDecimal(valorX);
+            valorX2 = valorX2.multiply(valorX2);
+            valorY2 = new BigDecimal(valorY);
+            valorY2 = valorY2.multiply(valorY2);
+            valorXY = new BigDecimal(valorX);
+            valorXY = valorXY.multiply(new BigDecimal(valorY));
             listaXY.add(valorXY);
             listaX2.add(valorX2);
             listaY2.add(valorY2);
@@ -200,27 +205,27 @@ public class CoeficienteCorrelacion {
 
     public void calcularTotal() {
         int numeroInstancias = listaX.size();
-        double totalX = 0;
-        double totalY = 0;
-        double totalXY = 0;
-        double totalX2 = 0;
-        double totalY2 = 0;
+        BigDecimal totalX = new BigDecimal("0");
+        BigDecimal totalY = new BigDecimal("0");
+        BigDecimal totalXY = new BigDecimal("0");
+        BigDecimal totalX2 = new BigDecimal("0");
+        BigDecimal totalY2 = new BigDecimal("0");
         for (int i = 0; i < numeroInstancias; i++) {
-            totalX += listaX.get(i);
-            totalY += listaY.get(i);
-            totalXY += listaXY.get(i);
-            totalX2 += listaX2.get(i);
-            totalY2 += listaY2.get(i);
+            totalX = totalX.add(new BigDecimal(listaX.get(i)));
+            totalY = totalY.add(new BigDecimal(listaY.get(i)));
+            totalXY = totalXY.add(listaXY.get(i));
+            totalX2 = totalX2.add(listaX2.get(i));
+            totalY2 = totalY2.add(listaY2.get(i));
         }
         this.setTotalX(totalX);
         this.setTotalY(totalY);
         this.setTotalXY(totalXY);
         this.setTotalX2(totalX2);
         this.setTotalY2(totalY2);
-        double promedioX = totalX / numeroInstancias;
-        double promedioY = totalY / numeroInstancias;
-        this.setMediaX(promedioX);
-        this.setMediaY(promedioY);
+        BigDecimal promedioX = totalX.divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
+        BigDecimal promedioY = totalY.divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
+        this.setMediaX(promedioX.doubleValue());
+        this.setMediaY(promedioY.doubleValue());
     }
 
     public void calcularDesviacion() {
@@ -228,11 +233,14 @@ public class CoeficienteCorrelacion {
         double desviacionEstandarX = 0;
         double desviacionEstandarY = 0;
         double desviacionEstandarXY = 0;
-        desviacionEstandarX = (this.getTotalX2() / numeroInstancias) - Math.pow(this.getMediaX(), 2);
+        BigDecimal totalX = this.getTotalX2().divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
+        desviacionEstandarX = (totalX.doubleValue() - Math.pow(this.getMediaX(), 2));
         desviacionEstandarX = Math.sqrt(desviacionEstandarX);
-        desviacionEstandarY = (this.getTotalY2() / numeroInstancias) - Math.pow(this.getMediaY(), 2);
+        BigDecimal totalY = this.getTotalY2().divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
+        desviacionEstandarY = (totalY.doubleValue() - Math.pow(this.getMediaY(), 2));
         desviacionEstandarY = Math.sqrt(desviacionEstandarY);
-        desviacionEstandarXY = (this.getTotalXY() / numeroInstancias) - (this.getMediaY() * this.getMediaX());
+        BigDecimal totalXY = this.getTotalXY().divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
+        desviacionEstandarXY = totalXY.doubleValue() - (this.getMediaY() * this.getMediaX());
         this.setDesviacionEstandarX(desviacionEstandarX);
         this.setDesviacionEstandarY(desviacionEstandarY);
         this.setDesviacionEstandarXY(desviacionEstandarXY);
