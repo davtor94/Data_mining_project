@@ -32,7 +32,7 @@ public class CoeficienteCorrelacion {
     BigDecimal totalY2;
     private double desviacionEstandarX;
     private double desviacionEstandarY;
-    private double desviacionEstandarXY;
+    BigDecimal covarianzaXY;
 
     public CoeficienteCorrelacion() {
         listaX = new ArrayList<Integer>();
@@ -50,7 +50,7 @@ public class CoeficienteCorrelacion {
         totalY2 = new BigDecimal("0");
         desviacionEstandarX = 0;
         desviacionEstandarY = 0;
-        desviacionEstandarXY = 0;
+        covarianzaXY = new BigDecimal("0");
     }
 
     public void setCoeficienteCorrelacion(double coeficiente) {
@@ -65,8 +65,8 @@ public class CoeficienteCorrelacion {
         this.desviacionEstandarY = desviacionEstandarY;
     }
 
-    public void setDesviacionEstandarXY(double desviacionEstandarXY) {
-        this.desviacionEstandarXY = desviacionEstandarXY;
+    public void setCovarianzaXY(BigDecimal covarianzaXY) {
+        this.covarianzaXY = covarianzaXY;
     }
 
     public void setListaX(ArrayList<Integer> listaX) {
@@ -173,8 +173,8 @@ public class CoeficienteCorrelacion {
         return desviacionEstandarX;
     }
 
-    public double getDesviacionEstandarXY() {
-        return desviacionEstandarXY;
+    public BigDecimal getCovarianzaXY() {
+        return covarianzaXY;
     }
 
     public double getCoeficienteCorrelacion() {
@@ -232,7 +232,7 @@ public class CoeficienteCorrelacion {
         int numeroInstancias = listaX.size();
         double desviacionEstandarX = 0;
         double desviacionEstandarY = 0;
-        double desviacionEstandarXY = 0;
+        BigDecimal desviacionEstandarXY;
         BigDecimal totalX = this.getTotalX2().divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
         desviacionEstandarX = (totalX.doubleValue() - Math.pow(this.getMediaX(), 2));
         desviacionEstandarX = Math.sqrt(desviacionEstandarX);
@@ -240,15 +240,15 @@ public class CoeficienteCorrelacion {
         desviacionEstandarY = (totalY.doubleValue() - Math.pow(this.getMediaY(), 2));
         desviacionEstandarY = Math.sqrt(desviacionEstandarY);
         BigDecimal totalXY = this.getTotalXY().divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
-        desviacionEstandarXY = totalXY.doubleValue() - (this.getMediaY() * this.getMediaX());
+        desviacionEstandarXY = totalXY.subtract(new BigDecimal(this.getMediaY() * this.getMediaX()));
         this.setDesviacionEstandarX(desviacionEstandarX);
         this.setDesviacionEstandarY(desviacionEstandarY);
-        this.setDesviacionEstandarXY(desviacionEstandarXY);
+        this.setCovarianzaXY(desviacionEstandarXY);
     }
 
     public void calcularCoeficienteCorrelacion() {
         double coeficiente = 0;
-        coeficiente = this.getDesviacionEstandarXY() / (this.getDesviacionEstandarX() * this.getDesviacionEstandarY());
+        coeficiente = this.getCovarianzaXY().doubleValue() / (this.getDesviacionEstandarX() * this.getDesviacionEstandarY());
         this.setCoeficienteCorrelacion(coeficiente);
     }
 
