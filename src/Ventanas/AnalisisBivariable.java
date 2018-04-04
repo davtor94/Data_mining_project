@@ -25,6 +25,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     int indiceVariable1;
     int indiceVariable2;
     DataSet baseDatos;
+    CoeficienteCorrelacion calculos = new CoeficienteCorrelacion();
 
     public AnalisisBivariable(int atributo1, int atributo2, DataSet baseDatos) {
         initComponents();
@@ -38,8 +39,8 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         String nombre2 = baseDatos.getAtributos().get(indiceVariable2).getNombre();
         // Create chart
         JFreeChart chart = ChartFactory.createScatterPlot(
-                "Diagrama de Dispersion "+nombre1+" vs "+nombre2,
-                "X-"+nombre1, "Y-"+nombre2, dataset);
+                "Diagrama de Dispersion " + nombre1 + " vs " + nombre2,
+                "X-" + nombre1, "Y-" + nombre2, dataset);
 
         //Changes background color
         XYPlot plot = (XYPlot) chart.getPlot();
@@ -51,11 +52,9 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         panel.setVisible(true);
         panelGrafica.add(panel);
         panelGrafica.repaint();
-        
+
         //setContentPane(panel);
-        
         //Calculo del Coeficiente de Correlacion
-        CoeficienteCorrelacion calculos = new CoeficienteCorrelacion();
         int valorX;
         int valorY;
         for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
@@ -65,7 +64,10 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             calculos.getListaY().add(valorY);
         }
         calculos.calcularVariables();
-        
+        calculos.calcularTotal();
+        calculos.calcularDesviacion();
+        calculos.calcularCoeficienteCorrelacion();
+        this.actualizarTextArea();
     }
 
     private XYDataset createDataset() {
@@ -84,6 +86,22 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         return dataset;
     }
 
+    public void actualizarTextArea() {
+        textAreaDatos.setText("");
+        textAreaDatos.append("Coeficiente de Correlacion: " + calculos.getCoeficienteCorrelacion() + "\n");
+        textAreaDatos.append("Desviacion Estandar de X: " + calculos.getDesviacionEstandarX() + "\n");
+        textAreaDatos.append("Desviacion Estandar de Y: " + calculos.getDesviacionEstandarY() + "\n");
+        textAreaDatos.append("Desviacion Estandar de XY: " + calculos.getDesviacionEstandarXY() + "\n");
+        textAreaDatos.append("Total de X: " + calculos.getTotalX() + "\n");
+        textAreaDatos.append("Total de Y: " + calculos.getTotalY() + "\n");
+        textAreaDatos.append("Total de XY: " + calculos.getTotalXY() + "\n");
+        textAreaDatos.append("Total de X2: " + calculos.getTotalX2() + "\n");
+        textAreaDatos.append("Total de Y2: " + calculos.getTotalY2() + "\n");
+        textAreaDatos.append("Media de X: " + calculos.getMediaX() + "\n");
+        textAreaDatos.append("Media de Y: " + calculos.getMediaY() + "\n");
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,7 +113,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
 
         panelGrafica = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textAreaDatos = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -112,10 +130,10 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        textAreaDatos.setEditable(false);
+        textAreaDatos.setColumns(20);
+        textAreaDatos.setRows(5);
+        jScrollPane1.setViewportView(textAreaDatos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -146,7 +164,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel panelGrafica;
+    private javax.swing.JTextArea textAreaDatos;
     // End of variables declaration//GEN-END:variables
 }
