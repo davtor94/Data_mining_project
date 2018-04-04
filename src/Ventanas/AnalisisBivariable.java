@@ -91,7 +91,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         textAreaDatos.append("Coeficiente de Correlacion: " + calculos.getCoeficienteCorrelacion() + "\n");
         textAreaDatos.append("Desviacion Estandar de X: " + calculos.getDesviacionEstandarX() + "\n");
         textAreaDatos.append("Desviacion Estandar de Y: " + calculos.getDesviacionEstandarY() + "\n");
-        textAreaDatos.append("Desviacion Estandar de XY: " + calculos.getDesviacionEstandarXY() + "\n");
+        textAreaDatos.append("Desviacion Estandar de XY: " + calculos.getCovarianzaXY().toString() + "\n");
         textAreaDatos.append("Total de X: " + calculos.getTotalX().toString() + "\n");
         textAreaDatos.append("Total de Y: " + calculos.getTotalY().toString() + "\n");
         textAreaDatos.append("Total de XY: " + calculos.getTotalXY().toString() + "\n");
