@@ -13,18 +13,28 @@ import java.util.List;
  * @author juan_
  */
 public class BiFrecuencias {
+
     private String name;
     private ArrayList<Long> listaFrecuencias;
-    
-    BiFrecuencias(){
+
+    BiFrecuencias() {
         listaFrecuencias = new ArrayList<Long>();
+        name = "";
     }
-    
-    public void setListaValores(ArrayList<Long> lista){
+
+    public void setListaValores(ArrayList<Long> lista) {
         listaFrecuencias = lista;
     }
-    
-    public ArrayList<Long> getListaValores(){
+
+    public void setNombre(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<Long> getListaValores() {
         return listaFrecuencias;
+    }
+
+    public String getName() {
+        return name;
     }
 }
