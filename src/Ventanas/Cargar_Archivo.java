@@ -230,8 +230,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
 
     private void acutlizarInterfaz() {
         LabelNombre.setText(baseDatos.getNombre());
-        LabelNumAtri.setText(String.valueOf(baseDatos.getNumInstancias()));
-        LabelNumInstancias.setText(" " + baseDatos.getNumAtributos());
+        LabelNumAtri.setText(String.valueOf(baseDatos.getNumAtributos()));
+        LabelNumInstancias.setText(" " + baseDatos.getNumInstancias());
         LabellValoresPerdidos.setText(baseDatos.getFaltante());
     }
 

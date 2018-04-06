@@ -10,9 +10,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import clases.*;
-import javax.swing.WindowConstants;
+import java.util.Collections;
+import java.util.HashSet;
+import javax.swing.JFrame;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -532,9 +538,48 @@ public class MostrarDatos extends javax.swing.JFrame {
         int indice = listaAtributos.getSelectedIndex();
         if(indice>-1){
            atributo atr = baseDatos.getAtributos().get(indice);
-           analisisUnivariable window = new analisisUnivariable(atr);
-           window.setVisible(true);
+           if("numeric".equals(atr.getTipoDato())){
+               analisisUnivariable window = new analisisUnivariable(atr);
+                window.setVisible(true);
            }
+           else if("binary".equals(atr.getTipoDato())){
+             JFreeChart Grafica_frecuencia;
+             DefaultCategoryDataset Datos = new DefaultCategoryDataset();
+             HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
+             for(String valor : valoresUnicos ){
+                 int frecuencia = Collections.frequency(atr.getInstancias(),valor);
+                 Datos.addValue(frecuencia, atr.getNombre(),valor);
+             }
+             Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ "+ atr.getNombre()+" ' ", "Valor", "Repeticiones", Datos);
+            ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
+            JFrame Ventana = new JFrame("Grafica de Frecuencia '"+  atr.getNombre() +" '");
+            Ventana.getContentPane().add(Panel);
+            Ventana.pack();
+            Ventana.setVisible(true);
+            Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+ 
+           }
+           else if("nominal".equals(atr.getTipoDato())){
+            JFreeChart Grafica_frecuencia;
+             DefaultCategoryDataset Datos = new DefaultCategoryDataset();
+             HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
+             for(String valor : valoresUnicos ){
+                 int frecuencia = Collections.frequency(atr.getInstancias(),valor);
+                 Datos.addValue(frecuencia, atr.getNombre(),valor);
+             }
+             Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ "+ atr.getNombre()+" ' ", "Valor", "Repeticiones", Datos);
+            ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
+            JFrame Ventana = new JFrame("Grafica de Frecuencia '"+  atr.getNombre() +" '");
+            Ventana.getContentPane().add(Panel);
+            Ventana.pack();
+            Ventana.setVisible(true);
+            Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);            
+           }
+           else{
+               JOptionPane.showMessageDialog(null, "Tipo de dato no concido ' "+atr.getTipoDato()+" '");
+           }
+           
+         }  
         else{
              JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a comparar.");
         }
