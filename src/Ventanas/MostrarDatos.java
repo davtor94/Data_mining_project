@@ -19,6 +19,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -541,6 +542,11 @@ public class MostrarDatos extends javax.swing.JFrame {
            if("numeric".equals(atr.getTipoDato())){
                analisisUnivariable window = new analisisUnivariable(atr);
                 window.setVisible(true);
+                BoxAndWhiskerChart boxplot = new BoxAndWhiskerChart(atr.getNombre(),atr);
+                boxplot.pack();
+               RefineryUtilities.centerFrameOnScreen(boxplot);
+               boxplot.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+               boxplot.setVisible(true);
            }
            else if("binary".equals(atr.getTipoDato())){
              JFreeChart Grafica_frecuencia;

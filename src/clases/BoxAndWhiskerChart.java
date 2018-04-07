@@ -5,75 +5,72 @@ import java.awt.*;
 
 import java.util.List;
 import java.util.ArrayList;
-
-import org.jfree.chart.ChartFactory;
+import javax.swing.JFrame;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
-import org.jfree.data.statistics.BoxAndWhiskerXYDataset;
-import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYBoxAndWhiskerRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.statistics.BoxAndWhiskerCalculator;
+import org.jfree.data.statistics.DefaultBoxAndWhiskerXYDataset;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.RegularTimePeriod;
 
-public class BoxAndWhiskerChart extends ApplicationFrame {
-
-  public BoxAndWhiskerChart(String titel) {
+public class BoxAndWhiskerChart extends JFrame {
+    atributo atribut;
+  public BoxAndWhiskerChart(String titel, atributo atr) {
   super(titel);
-
-  final BoxAndWhiskerCategoryDataset dataset = createSampleDataset();
+  atribut = atr;
+  final DefaultBoxAndWhiskerXYDataset dataset = createDataset();
   final JFreeChart chart = createChart(dataset);
 
   final ChartPanel chartPanel = new ChartPanel(chart);
-  //chartPanel.setPreferredSize(new java.awt.Dimension(1500, 1300));
+  chartPanel.setPreferredSize(new java.awt.Dimension(800, 500));
   setContentPane(chartPanel);
+
 
   }
  
-   private BoxAndWhiskerCategoryDataset createSampleDataset() {
-         final int seriesCount = 3;
-        final int categoryCount = 6;
-        final int entityCount = 1;
-        
-        final DefaultBoxAndWhiskerCategoryDataset dataset 
-            = new DefaultBoxAndWhiskerCategoryDataset();
-        for (int i = 0; i < seriesCount; i++) {
-            for (int j = 0; j < categoryCount; j++) {
-                final List list = new ArrayList();
-                // add some values...
-                for (int k = 0; k < entityCount; k++) {
-                    final double value1 = 10.0 + Math.random() * 3;
-                    list.add(new Double(value1));
-                    final double value2 = 11.25 + Math.random(); // concentrate values in the middle
-                    list.add(new Double(value2));
-                    list.add(new Double(12));
+   private DefaultBoxAndWhiskerXYDataset createDataset() {
+
+        final List list = new ArrayList();
+        RegularTimePeriod t = new Day();
+        final DefaultBoxAndWhiskerXYDataset dataset 
+            = new DefaultBoxAndWhiskerXYDataset("atributo");
+         for(int i =0;i<atribut.getInstancias().size();i++){
+                    list.add(new Double(atribut.getInstancias().get(i)));
                 }
-
-                dataset.add(list, "Series "+j, " Type "+i);
-            }
-            
-        }
-
+         dataset.add(t.getStart(),
+                    BoxAndWhiskerCalculator.calculateBoxAndWhiskerStatistics(
+                    list)); 
         return dataset;
     }
 
   private JFreeChart createChart(
-   final BoxAndWhiskerCategoryDataset dataset) {
-  JFreeChart chart = ChartFactory.createBoxAndWhiskerChart(
-  "UniVariable", " ", " ", dataset, false);
-  chart.setBackgroundPaint(new Color(249, 231, 236));
-  
+   final DefaultBoxAndWhiskerXYDataset dataset) {
+  DateAxis domainAxis = new DateAxis(atribut.getNombre());
+        NumberAxis rangeAxis = new NumberAxis("Valor");
+        XYItemRenderer renderer = new XYBoxAndWhiskerRenderer();
+        XYPlot plot = new XYPlot(dataset, domainAxis, rangeAxis, renderer);
+        JFreeChart chart = new JFreeChart("Box-Plot "+atribut.getNombre(), plot);
 
-  return chart;
+        chart.setBackgroundPaint(Color.BLACK);
+        plot.setBackgroundPaint(Color.CYAN);
+        plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
+        plot.setDomainGridlinesVisible(true);
+        plot.setRangeGridlinePaint(Color.white);
+        plot.setDomainPannable(true);
+        plot.setRangePannable(true);
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        ChartUtilities.applyCurrentTheme(chart);
+        return chart;
+
   }
 
   public static void main(final String[] args) {
-
-   BoxAndWhiskerChart demo = new BoxAndWhiskerChart("");
-  demo.pack();
-  
-  RefineryUtilities.centerFrameOnScreen(demo);
-  
-  demo.setVisible(true);
   }
 
 }

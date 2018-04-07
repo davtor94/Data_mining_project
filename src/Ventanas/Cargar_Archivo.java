@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import clases.*;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -271,11 +272,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonMostrarTablaActionPerformed
 
     private void jButtonGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarComoActionPerformed
-         BoxAndWhiskerChart demo = new BoxAndWhiskerChart("");
-         demo.pack();
-
-        RefineryUtilities.centerFrameOnScreen(demo);
-        demo.setVisible(true);
+         
     }//GEN-LAST:event_jButtonGuardarComoActionPerformed
 
     /**
