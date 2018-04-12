@@ -100,18 +100,22 @@ public class CoeficienteContingencia {
         for (int i = 0; i < atributo1.getInstancias().size(); i++) {
             auxiliar1 = atributo1.getInstancias().get(i);
             auxiliar2 = atributo2.getInstancias().get(i);
+            //Validacion para comprobar que todos son validos de esa manera eliminamos
+            //valores faltantes y los que no concuerden con la expresion regular
             if (!auxiliar1.equals(baseDatos.getFaltante()) && !auxiliar2.equals(baseDatos.getFaltante())
                     && Pattern.matches(dominio1, auxiliar1) && Pattern.matches(dominio2, auxiliar2)) {
+                //Verificamos que el valor no este ya registrado en la lista de valores
                 if (!listaNombres1.contains(auxiliar1)) {
                     listaNombres1.add(auxiliar1);
                     JOptionPane.showMessageDialog(null, auxiliar1);
                 }
-
+                //Verificamos que el valor no este ya registrado en la lista de valores
                 if (!listaNombres2.contains(auxiliar2)) {
                     listaNombres2.add(auxiliar2);
                     JOptionPane.showMessageDialog(null, auxiliar2);
                 }
             } else {
+                //reducir el numero de instancias para cuando hagamos los calculos
                 this.numeroInstancias--;
             }
         }
@@ -122,18 +126,21 @@ public class CoeficienteContingencia {
         //Calculamos las tabla  
         String variable1 = "";
         String variable2 = "";
+        //iteramos todas las instancias
         for (int i = 0; i < atributo1.getInstancias().size(); i++) {
+            //iteramos la tabla para obtener los dos valores que buscamos que se repitan en cada iteracion
             for (int j = 0; j < listaNombres1.size(); j++) {
                 variable1 = atributo1.getInstancias().get(i);
                 for (int k = 0; k < listaNombres2.size(); k++) {
                     variable2 = atributo2.getInstancias().get(i);
+                    //si los dos valores coinciden, llamamos un metodo para que aumente el contador de la variable frecuencia
                     if (listaNombres1.get(j).equals(variable1) && listaNombres2.get(k).equals(variable2)) {
                         tablaFrecuencias.get(j).aumentarContador(k);
                     }
                 }
             }
         }
-
+        //tras obtener todas las frecuencias calculamos el total de cada columna
         totalesVertical = new long[tablaFrecuencias.get(0).getListaValores().size()];
         long total = 0;
         for (int i = 0; i < tablaFrecuencias.get(0).getListaValores().size(); i++) {
@@ -143,6 +150,7 @@ public class CoeficienteContingencia {
             }
             totalesVertical[i] = total;
         }
+        //calculando el total de cada fila
         for (int i = 0; i < tablaFrecuencias.size(); i++) {
             tablaFrecuencias.get(i).calcularTotal();
         }
@@ -163,16 +171,20 @@ public class CoeficienteContingencia {
     }
 
     public void calcularFrecuenciaEsperada() {
+        //se calcula la frecuencia esperada
         double frecuenciaEsperada = 0;
         double total1 = 0;
         double total2 = 0;
+        //se itera la tabla de frecuencias
         for (int i = 0; i < tablaFrecuencias.size(); i++) {
             for (int j = 0; j < tablaFrecuencias.get(i).getListaValores().size(); j++) {
                 total1 = tablaFrecuencias.get(i).getTotal();
                 total2 = totalesVertical[j];
                 JOptionPane.showMessageDialog(null, "(" + total1 + "+" + total2 + ")/" + numeroInstancias);
+                //usamos la formula la cual es frecuencia de b por frecuencia de a sobre el numero de instancias
                 frecuenciaEsperada = (total1 * total2) / numeroInstancias;
                 JOptionPane.showMessageDialog(null, frecuenciaEsperada);
+                //añadimos la frencuencia a la tabla
                 tablaFrecuencias.get(i).getListaFrecuenciasEsperadas().add(frecuenciaEsperada);
             }
         }
@@ -190,6 +202,7 @@ public class CoeficienteContingencia {
     }
 
     public void calcularEquisCuadrada() {
+        //Empezamos a calcular chi cuadrada en esta parte solo sacamos los valores de las sumatorias para posteriormente sumarlos
         double equisCuadrada = 0;
         double total1 = 0;
         double total2 = 0;
@@ -218,6 +231,7 @@ public class CoeficienteContingencia {
     }
 
     public void calcularCoeficiente() {
+        //calculamos ahora si chi cuadrada haciendo la suma de todos los valores
         double equisCuadrada = 0;
         for (int i = 0; i < tablaFrecuencias.size(); i++) {
             for (int j = 0; j < tablaFrecuencias.get(i).getListaEquisCuadrada().size(); j++) {
@@ -226,6 +240,7 @@ public class CoeficienteContingencia {
         }
         this.setEquisCuadrada(equisCuadrada);
         JOptionPane.showMessageDialog(null, equisCuadrada);
+        //ahora siguiendo la formula lo que hacemos es sacar la raiz cuadrada de chi cuadrada sobre el numero de isntancias por la raiz de r-1 y c-1
         double coeficienteTschuprow = 0;
         coeficienteTschuprow = Math.sqrt(equisCuadrada / (numeroInstancias * Math.sqrt((listaNombres1.size() - 1) * (listaNombres2.size() - 1))));
         this.setCoeficienteTschuprow(coeficienteTschuprow);
