@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,14 +30,17 @@ public class CoeficienteCorrelacion {
     BigDecimal totalXY;
     BigDecimal totalX2;
     BigDecimal totalY2;
+    //coeficiente de correlacion
     private double coeficiente;
+    //media
     private double mediaX;
     private double mediaY;
+    //desviacion
     private double desviacionEstandarX;
     private double desviacionEstandarY;
     BigDecimal covarianzaXY;
 
-    public CoeficienteCorrelacion() {
+    public CoeficienteCorrelacion(int indice1, int indice2, DataSet baseDatos) {
         //inicializacion de los datos
         listaX = new ArrayList<Integer>();
         listaY = new ArrayList<Integer>();
@@ -54,6 +58,23 @@ public class CoeficienteCorrelacion {
         desviacionEstandarX = 0;
         desviacionEstandarY = 0;
         covarianzaXY = new BigDecimal("0");
+        int valorX = 0;
+        int valorY = 0;
+        String auxiliar1="";
+        String auxiliar2="";
+        String dominio1=baseDatos.getAtributos().get(indice1).getDominio();
+        String dominio2=baseDatos.getAtributos().get(indice2).getDominio();
+        for (int i = 0; i < baseDatos.getAtributos().get(indice1).getInstancias().size(); i++) {
+            auxiliar1=baseDatos.getAtributos().get(indice1).getInstancias().get(i);
+            auxiliar2=baseDatos.getAtributos().get(indice2).getInstancias().get(i);
+            if (!auxiliar1.equals(baseDatos.getFaltante()) && !auxiliar2.equals(baseDatos.getFaltante())
+                    && Pattern.matches(dominio1, auxiliar1) && Pattern.matches(dominio2, auxiliar2)) {
+                valorX = Integer.parseInt(auxiliar1);
+                valorY = Integer.parseInt(auxiliar2);
+                listaX.add(valorX);
+                listaY.add(valorY);
+            }
+        }
     }
 
     public void setCoeficienteCorrelacion(double coeficiente) {
