@@ -19,8 +19,8 @@ import javax.swing.JOptionPane;
 public class CoeficienteCorrelacion {
 
     //Representa la tabla de X, y, x^2, y^2, x*y
-    ArrayList<Integer> listaX;
-    ArrayList<Integer> listaY;
+    ArrayList<Double> listaX;
+    ArrayList<Double> listaY;
     ArrayList<BigDecimal> listaXY;
     ArrayList<BigDecimal> listaX2;
     ArrayList<BigDecimal> listaY2;
@@ -42,8 +42,8 @@ public class CoeficienteCorrelacion {
 
     public CoeficienteCorrelacion(int indice1, int indice2, DataSet baseDatos) {
         //inicializacion de los datos
-        listaX = new ArrayList<Integer>();
-        listaY = new ArrayList<Integer>();
+        listaX = new ArrayList<Double>();
+        listaY = new ArrayList<Double>();
         listaXY = new ArrayList<BigDecimal>();
         listaX2 = new ArrayList<BigDecimal>();
         listaY2 = new ArrayList<BigDecimal>();
@@ -58,8 +58,8 @@ public class CoeficienteCorrelacion {
         desviacionEstandarX = 0;
         desviacionEstandarY = 0;
         covarianzaXY = new BigDecimal("0");
-        int valorX = 0;
-        int valorY = 0;
+        double valorX = 0;
+        double valorY = 0;
         String auxiliar1="";
         String auxiliar2="";
         String dominio1=baseDatos.getAtributos().get(indice1).getDominio();
@@ -69,8 +69,8 @@ public class CoeficienteCorrelacion {
             auxiliar2=baseDatos.getAtributos().get(indice2).getInstancias().get(i);
             if (!auxiliar1.equals(baseDatos.getFaltante()) && !auxiliar2.equals(baseDatos.getFaltante())
                     && Pattern.matches(dominio1, auxiliar1) && Pattern.matches(dominio2, auxiliar2)) {
-                valorX = Integer.parseInt(auxiliar1);
-                valorY = Integer.parseInt(auxiliar2);
+                valorX = Double.parseDouble(auxiliar1);
+                valorY = Double.parseDouble(auxiliar2);
                 listaX.add(valorX);
                 listaY.add(valorY);
             }
@@ -93,11 +93,11 @@ public class CoeficienteCorrelacion {
         this.covarianzaXY = covarianzaXY;
     }
 
-    public void setListaX(ArrayList<Integer> listaX) {
+    public void setListaX(ArrayList<Double> listaX) {
         this.listaX = listaX;
     }
 
-    public void setListaY(ArrayList<Integer> listaY) {
+    public void setListaY(ArrayList<Double> listaY) {
         this.listaY = listaY;
     }
 
@@ -141,11 +141,11 @@ public class CoeficienteCorrelacion {
         this.mediaY = promedioY;
     }
 
-    public ArrayList<Integer> getListaX() {
+    public ArrayList<Double> getListaX() {
         return listaX;
     }
 
-    public ArrayList<Integer> getListaY() {
+    public ArrayList<Double> getListaY() {
         return listaY;
     }
 
@@ -208,8 +208,8 @@ public class CoeficienteCorrelacion {
     public void calcularVariables() {
         //rellenamos los arreglos que representan nuestra tabla
         int cantidadInstancias = listaX.size();
-        int valorX = 0;
-        int valorY = 0;
+        double valorX = 0;
+        double valorY = 0;
         BigDecimal valorXY;
         BigDecimal valorX2;
         BigDecimal valorY2;
