@@ -67,6 +67,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             calculosCategoricos.calcularCoeficiente();
             this.actualizarTextAreaCategorico();
         }
+        
     }
 
     public void representarCategoricos() {
