@@ -12,9 +12,8 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import clases.*;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -30,7 +29,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
     private DataSet baseDatos = new DataSet();
-
+    private File origenOriginal;
+    private boolean guardado;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,6 +82,11 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         jButtonGuardar.setBackground(new java.awt.Color(51, 51, 51));
         jButtonGuardar.setForeground(new java.awt.Color(255, 255, 255));
         jButtonGuardar.setText("Guardar");
+        jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 0, 100, 40));
 
         jButtonGuardarComo.setBackground(new java.awt.Color(51, 51, 51));
@@ -174,6 +179,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
              * abrimos el archivo seleccionado
              */
             File abre = file.getSelectedFile();
+            origenOriginal = abre;
             boolean cargaDatos = false;
             /**
              * recorremos el archivo
@@ -195,6 +201,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                         comentarios += aux + "\n";
                         //para borrar los %% al inicio de la cadena
                         comentarios = comentarios.replace("%%", "");
+                        
                     } else if (aux.startsWith("@relation")) {
                         data.setNombre(aux.substring(10));
                     } else if (aux.startsWith("@attribute")) {
@@ -226,6 +233,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                     + "\nNo se ha encontrado el archivo",
                     "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
         }
+        guardado = true;
         return data;
     }
 
@@ -257,23 +265,96 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        System.exit(0);
+        if(!guardado){
+            int confirmacion = JOptionPane.showConfirmDialog(null, "Se han detectado cambios sin guardar\n"
+                    + "Desea salir descartando los cambios?");
+            if(confirmacion == 0){
+            System.exit(0);
+        }
+        }
+        else{
+            System.exit(0);
+        }
+        
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarTablaActionPerformed
-        if (baseDatos.getNombre() == null) {
+        if (baseDatos == null) {
             JOptionPane.showMessageDialog(null,
                     "Es necesario abriri un archivo valido.",
                     "DataSet invalido!", JOptionPane.ERROR_MESSAGE);
         } else {
             MostrarDatos nueva = new MostrarDatos(baseDatos);
             nueva.setVisible(true);
+            guardado = false;
         }
     }//GEN-LAST:event_jButtonMostrarTablaActionPerformed
-
+    public void guardar_archivo(File archivo, String datos){
+        try{
+            
+            FileOutputStream salida = new FileOutputStream(archivo);
+            byte[] datosAguardar = datos.getBytes();
+           
+            salida.write(datosAguardar);
+        }catch (Exception e){
+            
+        }
+    }
+    public String datasetToText(DataSet datos){
+        //GUardamos los comentarios en la cadena
+        String text ="", aux;
+        aux = "%%";
+        aux += datos.getComentarios();
+        //aqui solo borro el ultimo salto de linea, entendido?
+        aux = aux.substring(0, aux.length()-1);
+        //aqui remplazo los saltos de liena con salyo de linea +"%%" para que sea comentario
+        aux = aux.replace("\n", "\r\n%%");
+        text +=aux +  "\r\n";
+        //Guardamos el nombre del data set
+        aux = "@relation " + datos.getNombre() +"\r\n";
+        text +=aux;
+        //Guardamos los atributos del data set
+        for (int i =0; i<datos.getNumAtributos();i++){
+            aux = "@attribute "+ datos.getAtributos().get(i).getNombre() + " ";
+            aux += datos.getAtributos().get(i).getTipoDato() +" ";
+            aux += datos.getAtributos().get(i).getDominio()+  "\r\n";
+            text +=aux ;
+        }
+        //Guardamops el missin value
+        aux = "@missingValue " + datos.getFaltante() + "\r\n";
+        text +=aux;
+        //Guardamops todos los datukis
+        aux = "@data" + "\r\n";
+        text +=aux;
+        for(int i = 0; i<datos.getNumInstancias();i++){
+            aux ="";
+            for(int j = 0; j<datos.getNumAtributos();j++){
+                aux += datos.getAtributos().get(j).getInstancias().get(i)+",";
+            }
+            aux = aux.substring(0, aux.length()-1);
+            aux += "\r\n";
+            text +=aux;
+        }
+        JOptionPane.showMessageDialog(null,
+                    "Guardado con exito",
+                    "Cambios Guardados con exito", JOptionPane.INFORMATION_MESSAGE);
+        return text;
+    }
     private void jButtonGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarComoActionPerformed
-         
+         JFileChooser seleccionar = new  JFileChooser();
+         File archivo;
+         if(seleccionar.showDialog(null, "Guardar")== JFileChooser.APPROVE_OPTION){
+             archivo = seleccionar.getSelectedFile();
+             guardar_archivo(archivo,datasetToText(baseDatos));
+         }
+         guardado = true;
     }//GEN-LAST:event_jButtonGuardarComoActionPerformed
+
+    private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
+        
+         guardar_archivo(origenOriginal,datasetToText(baseDatos));        
+         guardado = true;
+    }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     /**
      * @param args the command line arguments
