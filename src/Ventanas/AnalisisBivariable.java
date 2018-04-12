@@ -60,7 +60,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             representarNumericos();
         } else {
             representarCategoricos();
-            calculosCategoricos = new CoeficienteContingencia(baseDatos.getAtributos().get(indiceVariable1), baseDatos.getAtributos().get(indiceVariable2));
+            calculosCategoricos = new CoeficienteContingencia(indiceVariable1, indiceVariable2, baseDatos);
             calculosCategoricos.createTable();
             calculosCategoricos.calcularFrecuenciaEsperada();
             calculosCategoricos.calcularEquisCuadrada();
