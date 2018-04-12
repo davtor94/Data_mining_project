@@ -420,8 +420,15 @@ public class MostrarDatos extends javax.swing.JFrame {
             String respuesta = "";
             //Metodo que le pregunta al usuario que nombre desea introducir
             respuesta = JOptionPane.showInputDialog(null, "Introduce el nuevo Nombre:", listaAtributos.getSelectedValue());
+            boolean valido = true;
+            for (int i = 0; i < baseDatos.getAtributos().size(); i++) {
+                if (baseDatos.getAtributos().get(i).getNombre().equals(respuesta)) {
+                    valido = false;
+                    break;
+                }
+            }
             //Validacion en caso de que el usuario no introduzca nada o un valor nulo
-            if (respuesta != null && !respuesta.equals("")) {
+            if (respuesta != null && !respuesta.equals("") && valido) {
                 int indice = listaAtributos.getSelectedIndex();
                 //Actualizacion del header de la tabla
                 TableColumnModel tableColumnModel = dataGrid.getColumnModel();
@@ -437,6 +444,8 @@ public class MostrarDatos extends javax.swing.JFrame {
                     comboBoxAtributo.addItem(baseDatos.getAtributos().get(i).getNombre());
                 }
                 comboBoxAtributo.setSelectedIndex(indice);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error, El atributo no puede tener un nombre repetido o vacio.");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un Atributo.");
@@ -617,20 +626,36 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAnalisisUnivariableActionPerformed
 
     private void botonAgregarAtributoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAgregarAtributoMouseClicked
-            //Eliminado del Jlist
+        //Creamos varios mensajes para pedir los datos
+        String nombre = JOptionPane.showInputDialog("Escriba el nombre del nuevo Atributo: ");
+        //Lo comparamos con los demas para que el usuario no meta un nombre ya usado
+        boolean valido = true;
+        for (int i = 0; i < baseDatos.getAtributos().size(); i++) {
+            if (baseDatos.getAtributos().get(i).getNombre().equals(nombre)) {
+                valido = false;
+                break;
+            }
+        }
+        if (nombre != null && !nombre.equals("") && valido) {
+            //Ahora preguntamos por el tipo
+            String[] tipos = {"Categorico", "Numerico", "Binario"};
+            String tipo = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo", "Tipo", JOptionPane.QUESTION_MESSAGE, null, tipos, tipos[0]);
+            //Añadido al JLits
             DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
-            listaModelo.addElement("Nuevo Atributo");
+            listaModelo.addElement(nombre);
             //Agregacion en memoria
-            
+
             //Agregarlo en el modelo
 //            DefaultTableModel modelo = (DefaultTableModel) dataGrid.getModel();
 //            modelo.addColumn("Nuevo Atributo");
-
             //Añadido al Combobox
-            comboBoxAtributo.addItem("Nuevo Atributo");
+            comboBoxAtributo.addItem(nombre);
             //Actualizacion de la informacion en pantalla
             actualizarTextAreaAtributo();
             actualizarTextAreaGeneral();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error no se puede crear un atributo vacio o con un nombre ya usado.");
+        }
     }//GEN-LAST:event_botonAgregarAtributoMouseClicked
 
     public void actualizarTextAreaAtributo() {
