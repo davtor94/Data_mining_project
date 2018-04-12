@@ -100,7 +100,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="jScrollPane4" pref="125" max="32767" attributes="0"/>
+                              <Component id="jScrollPane4" max="32767" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jScrollPane3" min="-2" pref="281" max="-2" attributes="0"/>
                           </Group>
@@ -114,11 +114,13 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="botonAgregarAtributo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="botonEliminarAtributo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="botonEditarAtributo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="botonEditarTipo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="botonExpresion" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -177,6 +179,7 @@
                           <Component id="botonEditarAtributo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="botonExpresion" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="botonAgregarAtributo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="botonEditarTipo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="329" max="-2" attributes="0"/>
@@ -421,6 +424,14 @@
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonAgregarAtributoMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="botonEditarTipo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Editar Tipo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonEditarTipoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -13,6 +13,7 @@ import clases.*;
 import java.util.Collections;
 import java.util.HashSet;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import org.jfree.chart.ChartFactory;
@@ -46,18 +47,19 @@ public class MostrarDatos extends javax.swing.JFrame {
             columnas[i + 1] = baseDatos.getAtributos().get(i).getNombre();
         }
 
-        //Creacion y carga de un JTable
+        //Creacion del modelo de un JTable y agregacion de columnas
         ModeloTable modelo = new ModeloTable();
         for (int i = 0; i < columnas.length; i++) {
             modelo.addColumn(columnas[i]);
         }
+        //Creacion y carga del Jlist y Combobox
         DefaultListModel listaModelo = new DefaultListModel();
         for (int i = 1; i < columnas.length; i++) {
             listaModelo.addElement(columnas[i]);
             comboBoxAtributo.addItem(columnas[i]);
         }
 
-        //Creacion y llenado de datos de un modelo para el Jlits
+        //Creacion y llenado de datos de un modelo para el JTable
         for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
             columnas[0] = String.valueOf((i + 1));
             for (int j = 0; j < baseDatos.getNumAtributos(); j++) {
@@ -113,6 +115,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         botonAnalisisBivariable = new javax.swing.JButton();
         jButtonAnalisisUnivariable = new javax.swing.JButton();
         botonAgregarAtributo = new javax.swing.JButton();
+        botonEditarTipo = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -245,6 +248,13 @@ public class MostrarDatos extends javax.swing.JFrame {
             }
         });
 
+        botonEditarTipo.setText("Editar Tipo");
+        botonEditarTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEditarTipoActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
 
         jMenuItem4.setText("Cargar ");
@@ -290,7 +300,7 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                                .addComponent(jScrollPane4)
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2)
@@ -301,11 +311,13 @@ public class MostrarDatos extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(botonAgregarAtributo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(botonEliminarAtributo)
                                 .addGap(18, 18, 18)
                                 .addComponent(botonEditarAtributo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botonEditarTipo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(botonExpresion)))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -352,7 +364,8 @@ public class MostrarDatos extends javax.swing.JFrame {
                             .addComponent(botonEliminarAtributo)
                             .addComponent(botonEditarAtributo)
                             .addComponent(botonExpresion)
-                            .addComponent(botonAgregarAtributo)))
+                            .addComponent(botonAgregarAtributo)
+                            .addComponent(botonEditarTipo)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -640,23 +653,54 @@ public class MostrarDatos extends javax.swing.JFrame {
             //Ahora preguntamos por el tipo
             String[] tipos = {"Categorico", "Numerico", "Binario"};
             String tipo = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo", "Tipo", JOptionPane.QUESTION_MESSAGE, null, tipos, tipos[0]);
-            //Añadido al JLits
-            DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
-            listaModelo.addElement(nombre);
-            //Agregacion en memoria
-
-            //Agregarlo en el modelo
-//            DefaultTableModel modelo = (DefaultTableModel) dataGrid.getModel();
-//            modelo.addColumn("Nuevo Atributo");
-            //Añadido al Combobox
-            comboBoxAtributo.addItem(nombre);
-            //Actualizacion de la informacion en pantalla
-            actualizarTextAreaAtributo();
-            actualizarTextAreaGeneral();
+            //Ahora por la expresion regular
+            String expresion = JOptionPane.showInputDialog("Escriba su expresion Regular");
+            //Validar que la expresion no sea nula
+            if (expresion != null && !expresion.equals("")) {
+                //Añadido al JLits
+                DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
+                listaModelo.addElement(nombre);
+                //Agregacion en memoria
+                atributo nuevo = new atributo(nombre, expresion, tipo);
+                for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
+                    nuevo.getInstancias().add(baseDatos.getFaltante());
+                }
+                baseDatos.getAtributos().add(nuevo);
+                int numeroAtributos = baseDatos.getNumAtributos() + 1;
+                baseDatos.setNumAtributos(numeroAtributos);
+                baseDatos.calcularErrores();
+                //Agregarlo en el modelo las nuevas columnas
+                DefaultTableModel modelo = (DefaultTableModel) dataGrid.getModel();
+                modelo.addColumn(nombre);
+                //Nos encargamos ahora de rellenar con valores nulos
+                for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
+                    dataGrid.setValueAt(baseDatos.getFaltante(), i, numeroAtributos);
+                }
+                //Añadido al Combobox
+                comboBoxAtributo.addItem(nombre);
+                //Actualizacion de la informacion en pantalla
+                actualizarTextAreaAtributo();
+                actualizarTextAreaGeneral();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error la expresion regular no puede ser nula.");
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Error no se puede crear un atributo vacio o con un nombre ya usado.");
         }
     }//GEN-LAST:event_botonAgregarAtributoMouseClicked
+
+    private void botonEditarTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEditarTipoActionPerformed
+        //Validando que el usuario haya seleccionado una fila
+        if (listaAtributos.getSelectedIndex() >= 0) {
+            int indice = listaAtributos.getSelectedIndex();
+            String[] tipos = {"Categorico", "Numerico", "Binario"};
+            String tipo = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo", "Tipo", JOptionPane.QUESTION_MESSAGE, null, tipos, tipos[0]);
+            //Actualizando el tipo de dato
+            baseDatos.getAtributos().get(indice).setTipoDato(tipo);
+            //Recalculando y actualizando
+            actualizarTextAreaAtributo();
+        }
+    }//GEN-LAST:event_botonEditarTipoActionPerformed
 
     public void actualizarTextAreaAtributo() {
         //validamos que el indice del atributo seleccionado sea valido.
@@ -692,6 +736,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     private javax.swing.JButton botonAgregarInstancia;
     private javax.swing.JButton botonAnalisisBivariable;
     private javax.swing.JButton botonEditarAtributo;
+    private javax.swing.JButton botonEditarTipo;
     private javax.swing.JButton botonEliminarAtributo;
     private javax.swing.JButton botonEliminarInstancia;
     private javax.swing.JButton botonExpresion;
