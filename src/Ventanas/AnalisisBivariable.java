@@ -196,8 +196,8 @@ public class AnalisisBivariable extends javax.swing.JFrame {
 
         //Boys (Age,weight) series
         XYSeries series1 = new XYSeries("Relacion");
-        int valorX;
-        int valorY;
+        double valorX;
+        double valorY;
         String auxiliar1 = "";
         String auxiliar2 = "";
         String dominio1 = baseDatos.getAtributos().get(indiceVariable1).getDominio();
@@ -207,8 +207,8 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             auxiliar2 = baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i);
             if (!auxiliar1.equals(baseDatos.getFaltante()) && !auxiliar2.equals(baseDatos.getFaltante())
                     && Pattern.matches(dominio1, auxiliar1) && Pattern.matches(dominio2, auxiliar2)) {
-                valorX = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
-                valorY = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
+                valorX = Double.parseDouble(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
+                valorY = Double.parseDouble(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
                 series1.add(valorX, valorY);
             }
         }
