@@ -17,7 +17,7 @@ public class CoeficienteContingencia {
     //Variable global que guardara el numero de instancias
     int numeroInstancias;
     DataSet baseDatos;
-    //lista para saber los nombres de cada variable horizontal y vertican
+    //lista para saber los nombres de cada variable horizontal y vertical
     ArrayList<String> listaNombres1;
     ArrayList<String> listaNombres2;
     //Es la tabla de frecuencias que nos da las frecuencias observadas
