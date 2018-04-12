@@ -6,6 +6,7 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,24 +15,35 @@ import javax.swing.JOptionPane;
  */
 public class CoeficienteContingencia {
 
+    int numeroInstancias;
+    DataSet baseDatos;
+    //lista para saber los nombres de cada variable horizontal y vertican
     ArrayList<String> listaNombres1;
     ArrayList<String> listaNombres2;
+    //Es la tabla de frecuencias que nos da las frecuencias observadas
     ArrayList<BiFrecuencias> tablaFrecuencias;
+    //un arreglo de la suma de la tabla en vertical
     long[] totalesVertical;
     atributo atributo1;
     atributo atributo2;
+    //chi cuadrada
     double equisCuadrada;
     double coeficienteTschuprow;
 
-    public CoeficienteContingencia(atributo atributo1, atributo atributo2) {
-        this.atributo1 = atributo1;
-        this.atributo2 = atributo2;
+    public CoeficienteContingencia(int indice1, int indice2, DataSet baseDatos) {
+        //inicializando valores
+        this.baseDatos = baseDatos;
+        this.atributo1 = baseDatos.getAtributos().get(indice1);
+        this.atributo2 = baseDatos.getAtributos().get(indice2);
         listaNombres1 = new ArrayList<String>();
         listaNombres2 = new ArrayList<String>();
         tablaFrecuencias = new ArrayList<BiFrecuencias>();
         coeficienteTschuprow = 0;
         equisCuadrada = 0;
+        numeroInstancias = atributo1.getInstancias().size();
+        //Inicializamos la lista de nombres para saber los posibles valores a tomar
         cargarListaNombres();
+        //Cargamos la tabla de frecuencias por defecto con valores de 0
         long variable = 0;
         for (int i = 0; i < listaNombres1.size(); i++) {
             tablaFrecuencias.add(new BiFrecuencias());
@@ -39,6 +51,7 @@ public class CoeficienteContingencia {
                 tablaFrecuencias.get(i).getListaValores().add(variable);
             }
         }
+
         String tabla = "";
         for (int i = 0; i < listaNombres1.size(); i++) {
             tabla += "|";
@@ -79,29 +92,37 @@ public class CoeficienteContingencia {
     }
 
     public void cargarListaNombres() {
-        int numeroInstancias = atributo1.getInstancias().size();
-        String auxiliar = "";
-        for (int i = 0; i < numeroInstancias; i++) {
-            auxiliar = atributo1.getInstancias().get(i);
-            if (!listaNombres1.contains(auxiliar)) {
-                listaNombres1.add(auxiliar);
-                JOptionPane.showMessageDialog(null, auxiliar);
-            }
+        //iteramos el arreglo para encontrar todos los valores posibles
+        String auxiliar1 = "";
+        String auxiliar2 = "";
+        String dominio1 = atributo1.getDominio();
+        String dominio2 = atributo2.getDominio();
+        for (int i = 0; i < atributo1.getInstancias().size(); i++) {
+            auxiliar1 = atributo1.getInstancias().get(i);
+            auxiliar2 = atributo2.getInstancias().get(i);
+            if (!auxiliar1.equals(baseDatos.getFaltante()) && !auxiliar2.equals(baseDatos.getFaltante())
+                    && Pattern.matches(dominio1, auxiliar1) && Pattern.matches(dominio2, auxiliar2)) {
+                if (!listaNombres1.contains(auxiliar1)) {
+                    listaNombres1.add(auxiliar1);
+                    JOptionPane.showMessageDialog(null, auxiliar1);
+                }
 
-            auxiliar = atributo2.getInstancias().get(i);
-            if (!listaNombres2.contains(auxiliar)) {
-                listaNombres2.add(auxiliar);
-                JOptionPane.showMessageDialog(null, auxiliar);
+                if (!listaNombres2.contains(auxiliar2)) {
+                    listaNombres2.add(auxiliar2);
+                    JOptionPane.showMessageDialog(null, auxiliar2);
+                }
+            } else {
+                this.numeroInstancias--;
             }
         }
+        JOptionPane.showMessageDialog(null, this.numeroInstancias);
     }
 
     public void createTable() {
-        //Calculamos las tabla y 
-        int numeroInstancias = atributo1.getInstancias().size();
+        //Calculamos las tabla  
         String variable1 = "";
         String variable2 = "";
-        for (int i = 0; i < numeroInstancias; i++) {
+        for (int i = 0; i < atributo1.getInstancias().size(); i++) {
             for (int j = 0; j < listaNombres1.size(); j++) {
                 variable1 = atributo1.getInstancias().get(i);
                 for (int k = 0; k < listaNombres2.size(); k++) {
@@ -142,7 +163,6 @@ public class CoeficienteContingencia {
     }
 
     public void calcularFrecuenciaEsperada() {
-        int numeroInstancias = atributo1.getInstancias().size();
         double frecuenciaEsperada = 0;
         double total1 = 0;
         double total2 = 0;
@@ -170,7 +190,6 @@ public class CoeficienteContingencia {
     }
 
     public void calcularEquisCuadrada() {
-        int numeroInstancias = atributo1.getInstancias().size();
         double equisCuadrada = 0;
         double total1 = 0;
         double total2 = 0;
@@ -199,7 +218,6 @@ public class CoeficienteContingencia {
     }
 
     public void calcularCoeficiente() {
-        int numeroInstancias = atributo1.getInstancias().size();
         double equisCuadrada = 0;
         for (int i = 0; i < tablaFrecuencias.size(); i++) {
             for (int j = 0; j < tablaFrecuencias.get(i).getListaEquisCuadrada().size(); j++) {
