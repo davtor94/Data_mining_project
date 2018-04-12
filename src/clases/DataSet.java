@@ -108,13 +108,13 @@ public class DataSet {
         for (int i = 0; i < atributos.size(); i++) {
             contadorErrores = 0;
             contadorFaltantes = 0;
-            String regexp = this.getAtributos().get(i).getDominio();
+            String regexp = atributos.get(i).getDominio();
             for (int j = 0; j < this.getNumInstancias(); j++) {
                 if (atributos.get(i).getInstancias().get(j).equals(this.getFaltante())) {
                     contadorFaltantes++;
                 }
 
-                String cadena = this.getAtributos().get(i).getInstancias().get(j);
+                String cadena = atributos.get(i).getInstancias().get(j);
                 if (!Pattern.matches(regexp, cadena)) {
                     contadorErrores++;
                 }
