@@ -43,10 +43,12 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     int indiceVariable1;
     int indiceVariable2;
     DataSet baseDatos;
-    CoeficienteCorrelacion calculos = new CoeficienteCorrelacion();
+    CoeficienteContingencia calculosCategoricos;
+    CoeficienteCorrelacion calculosNumericos;
 
     public AnalisisBivariable(int atributo1, int atributo2, DataSet baseDatos) {
         initComponents();
+        //carga global de las variables recibidas
         this.indiceVariable1 = atributo1;
         this.indiceVariable2 = atributo2;
         this.baseDatos = baseDatos;
@@ -54,11 +56,17 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         String tipo = baseDatos.getAtributos().get(indiceVariable1).getTipoDato();
         if (tipo.equals("Numerico") || tipo.equals("numerico") || tipo.equals("Numeric")
                 || tipo.equals("numeric")) {
+            calculosNumericos = new CoeficienteCorrelacion();
             representarNumericos();
         } else {
             representarCategoricos();
+            calculosCategoricos = new CoeficienteContingencia(baseDatos.getAtributos().get(indiceVariable1), baseDatos.getAtributos().get(indiceVariable2));
+            calculosCategoricos.createTable();
+            calculosCategoricos.calcularFrecuenciaEsperada();
+            calculosCategoricos.calcularEquisCuadrada();
+            calculosCategoricos.calcularCoeficiente();
+            this.actualizarTextAreaCategorico();
         }
-
     }
 
     public void representarCategoricos() {
@@ -73,7 +81,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         panelGrafica.repaint();
     }
 
-    private CategoryDataset createDatasetCategorico() {
+    /*    private CategoryDataset createDatasetCategorico() {
         DefaultCategoryDataset result = new DefaultCategoryDataset();
         result.addValue(20, "Product 1 (US)", "Jan 04");
         result.addValue(20, "Product 1 (US)", "Feb 04");
@@ -114,11 +122,28 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         result.addValue(15.5, "Product 3 (Middle East)", "Feb 04");
         result.addValue(10.1, "Product 3 (Middle East)", "Mar 04");
         return result;
+    }*/
+    private CategoryDataset createDatasetCategorico() {
+        DefaultCategoryDataset result = new DefaultCategoryDataset();
+        DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
+        defaultcategorydataset.addValue(10D, "Series 1", "Jan");
+        defaultcategorydataset.addValue(12D, "Series 1", "Feb");
+        defaultcategorydataset.addValue(13D, "Series 1", "Mar");
+        defaultcategorydataset.addValue(4D, "Series 2", "Jan");
+        defaultcategorydataset.addValue(3D, "Series 2", "Feb");
+        defaultcategorydataset.addValue(2D, "Series 2", "Mar");
+        defaultcategorydataset.addValue(2D, "Series 3", "Jan");
+        defaultcategorydataset.addValue(3D, "Series 3", "Feb");
+        defaultcategorydataset.addValue(2D, "Series 3", "Mar");
+        defaultcategorydataset.addValue(2D, "Series 4", "Jan");
+        defaultcategorydataset.addValue(3D, "Series 4", "Feb");
+        defaultcategorydataset.addValue(4D, "Series 4", "Mar");
+        return defaultcategorydataset;
     }
 
     private JFreeChart createChartStacked(CategoryDataset dataset) {
-        JFreeChart chart = ChartFactory.createStackedBarChart(
-                "Stacked Bar Chart Demo 4", // chart title
+        final JFreeChart chart = ChartFactory.createStackedBarChart(
+                "Stacked Bar Chart Demo 1", // chart title
                 "Category", // domain axis label
                 "Value", // range axis label
                 dataset, // data
@@ -127,71 +152,10 @@ public class AnalisisBivariable extends javax.swing.JFrame {
                 true, // tooltips
                 false // urls
         );
-
-        GroupedStackedBarRenderer renderer = new GroupedStackedBarRenderer();
-        KeyToGroupMap map = new KeyToGroupMap("G1");
-        map.mapKeyToGroup("Product 1 (US)", "G1");
-        map.mapKeyToGroup("Product 1 (Europe)", "G1");
-        map.mapKeyToGroup("Product 1 (Asia)", "G1");
-        map.mapKeyToGroup("Product 1 (Middle East)", "G1");
-        map.mapKeyToGroup("Product 2 (US)", "G2");
-        map.mapKeyToGroup("Product 2 (Europe)", "G2");
-        map.mapKeyToGroup("Product 2 (Asia)", "G2");
-        map.mapKeyToGroup("Product 2 (Middle East)", "G2");
-        map.mapKeyToGroup("Product 3 (US)", "G3");
-        map.mapKeyToGroup("Product 3 (Europe)", "G3");
-        map.mapKeyToGroup("Product 3 (Asia)", "G3");
-        map.mapKeyToGroup("Product 3 (Middle East)", "G3");
-        renderer.setSeriesToGroupMap(map);
-
-        renderer.setItemMargin(0.0);
-        Paint p1 = new GradientPaint(
-                0.0f, 0.0f, new Color(0x22, 0x22, 0xFF), 0.0f, 0.0f, new Color(0x88, 0x88, 0xFF)
-        );
-        renderer.setSeriesPaint(0, p1);
-        renderer.setSeriesPaint(4, p1);
-        renderer.setSeriesPaint(8, p1);
-
-        Paint p2 = new GradientPaint(
-                0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88)
-        );
-        renderer.setSeriesPaint(1, p2);
-        renderer.setSeriesPaint(5, p2);
-        renderer.setSeriesPaint(9, p2);
-
-        Paint p3 = new GradientPaint(
-                0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88)
-        );
-        renderer.setSeriesPaint(2, p3);
-        renderer.setSeriesPaint(6, p3);
-        renderer.setSeriesPaint(10, p3);
-
-        Paint p4 = new GradientPaint(
-                0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x88)
-        );
-        renderer.setSeriesPaint(3, p4);
-        renderer.setSeriesPaint(7, p4);
-        renderer.setSeriesPaint(11, p4);
-        renderer.setGradientPaintTransformer(
-                new StandardGradientPaintTransformer(GradientPaintTransformType.HORIZONTAL)
-        );
-
-        SubCategoryAxis domainAxis = new SubCategoryAxis("Product / Month");
-        domainAxis.setCategoryMargin(0.05);
-        domainAxis.addSubCategory("Product 1");
-        domainAxis.addSubCategory("Product 2");
-        domainAxis.addSubCategory("Product 3");
-
-        CategoryPlot plot = (CategoryPlot) chart.getPlot();
-        plot.setDomainAxis(domainAxis);
-        plot.setDomainAxisLocation(AxisLocation.TOP_OR_RIGHT);
-        plot.setRenderer(renderer);
-        plot.setFixedLegendItems(createLegendItems());
         return chart;
-
     }
-    
-        private LegendItemCollection createLegendItems() {
+
+    private LegendItemCollection createLegendItems() {
         LegendItemCollection result = new LegendItemCollection();
         return result;
     }
@@ -224,14 +188,14 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
             valorX = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
             valorY = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
-            calculos.getListaX().add(valorX);
-            calculos.getListaY().add(valorY);
+            calculosNumericos.getListaX().add(valorX);
+            calculosNumericos.getListaY().add(valorY);
         }
-        calculos.calcularVariables();
-        calculos.calcularTotal();
-        calculos.calcularDesviacion();
-        calculos.calcularCoeficienteCorrelacion();
-        this.actualizarTextArea();
+        calculosNumericos.calcularVariables();
+        calculosNumericos.calcularTotal();
+        calculosNumericos.calcularDesviacion();
+        calculosNumericos.calcularCoeficienteCorrelacion();
+        this.actualizarTextAreaNumerico();
     }
 
     private XYDataset createDatasetNumerico() {
@@ -250,19 +214,25 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         return dataset;
     }
 
-    public void actualizarTextArea() {
+    public void actualizarTextAreaNumerico() {
         textAreaDatos.setText("");
-        textAreaDatos.append("Coeficiente de Correlacion: " + calculos.getCoeficienteCorrelacion() + "\n");
-        textAreaDatos.append("Desviacion Estandar de X: " + calculos.getDesviacionEstandarX() + "\n");
-        textAreaDatos.append("Desviacion Estandar de Y: " + calculos.getDesviacionEstandarY() + "\n");
-        textAreaDatos.append("Desviacion Estandar de XY: " + calculos.getCovarianzaXY().toString() + "\n");
-        textAreaDatos.append("Total de X: " + calculos.getTotalX().toString() + "\n");
-        textAreaDatos.append("Total de Y: " + calculos.getTotalY().toString() + "\n");
-        textAreaDatos.append("Total de XY: " + calculos.getTotalXY().toString() + "\n");
-        textAreaDatos.append("Total de X2: " + calculos.getTotalX2().toString() + "\n");
-        textAreaDatos.append("Total de Y2: " + calculos.getTotalY2().toString() + "\n");
-        textAreaDatos.append("Media de X: " + calculos.getMediaX() + "\n");
-        textAreaDatos.append("Media de Y: " + calculos.getMediaY() + "\n");
+        textAreaDatos.append("Coeficiente de Correlacion: " + calculosNumericos.getCoeficienteCorrelacion() + "\n");
+        textAreaDatos.append("Desviacion Estandar de X: " + calculosNumericos.getDesviacionEstandarX() + "\n");
+        textAreaDatos.append("Desviacion Estandar de Y: " + calculosNumericos.getDesviacionEstandarY() + "\n");
+        textAreaDatos.append("Desviacion Estandar de XY: " + calculosNumericos.getCovarianzaXY().toString() + "\n");
+        textAreaDatos.append("Total de X: " + calculosNumericos.getTotalX().toString() + "\n");
+        textAreaDatos.append("Total de Y: " + calculosNumericos.getTotalY().toString() + "\n");
+        textAreaDatos.append("Total de XY: " + calculosNumericos.getTotalXY().toString() + "\n");
+        textAreaDatos.append("Total de X2: " + calculosNumericos.getTotalX2().toString() + "\n");
+        textAreaDatos.append("Total de Y2: " + calculosNumericos.getTotalY2().toString() + "\n");
+        textAreaDatos.append("Media de X: " + calculosNumericos.getMediaX() + "\n");
+        textAreaDatos.append("Media de Y: " + calculosNumericos.getMediaY() + "\n");
+    }
+
+    public void actualizarTextAreaCategorico() {
+        textAreaDatos.setText("");
+        textAreaDatos.append("Coeficiente de Tschuprow: " + calculosCategoricos.getCoeficienteTschuprow() + "\n");
+        textAreaDatos.append("Equis Cuadrada: " + calculosCategoricos.getEquisCuadrada() + "\n");
 
     }
 
