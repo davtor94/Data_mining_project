@@ -34,26 +34,30 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     public MostrarDatos(DataSet baseDatos) {
         initComponents();
-
+        //Inicializando variables globales y algunos componentes
         this.baseDatos = baseDatos;
         titulo.setText(baseDatos.getNombre());
         comboBoxAtributo.removeAllItems();
+
+        //Creacion de un arreglo para el header de la Jtable
         String[] columnas = new String[baseDatos.getNumAtributos() + 1];
         columnas[0] = "ID";
         for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
             columnas[i + 1] = baseDatos.getAtributos().get(i).getNombre();
         }
+
+        //Creacion y carga de un JTable
         ModeloTable modelo = new ModeloTable();
-        DefaultListModel listaModelo = new DefaultListModel();
         for (int i = 0; i < columnas.length; i++) {
             modelo.addColumn(columnas[i]);
         }
-
+        DefaultListModel listaModelo = new DefaultListModel();
         for (int i = 1; i < columnas.length; i++) {
             listaModelo.addElement(columnas[i]);
             comboBoxAtributo.addItem(columnas[i]);
         }
 
+        //Creacion y llenado de datos de un modelo para el Jlits
         for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
             columnas[0] = String.valueOf((i + 1));
             for (int j = 0; j < baseDatos.getNumAtributos(); j++) {
@@ -62,13 +66,16 @@ public class MostrarDatos extends javax.swing.JFrame {
             modelo.addRow(columnas);
         }
 
+        //Fijando los modelos
         listaAtributos.setModel(listaModelo);
         dataGrid.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         dataGrid.setAutoscrolls(true);
         dataGrid.setModel(modelo);
+        //Clase Render que se encarga de pintar las celdas del JTable
         RenderPro render = new RenderPro();
         render.pasarDataSet(baseDatos);
         dataGrid.setDefaultRenderer(Object.class, render);
+        //Cargando la informacion general
         actualizarTextAreaGeneral();
     }
 
@@ -190,11 +197,6 @@ public class MostrarDatos extends javax.swing.JFrame {
         botonEliminarAtributo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 botonEliminarAtributoMouseClicked(evt);
-            }
-        });
-        botonEliminarAtributo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonEliminarAtributoActionPerformed(evt);
             }
         });
 
@@ -374,11 +376,13 @@ public class MostrarDatos extends javax.swing.JFrame {
         //Recalculando los datos
         baseDatos.setNumInstancias(baseDatos.getNumInstancias() + 1);
         baseDatos.calcularErrores();
+        //Actualizando la informacion en pantalla
         actualizarTextAreaAtributo();
         actualizarTextAreaGeneral();
     }//GEN-LAST:event_botonAgregarInstanciaMouseClicked
 
     private void botonEliminarInstanciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarInstanciaMouseClicked
+        //Validando que el usuario haya seleccionado una fila
         if (dataGrid.getSelectedRow() >= 0) {
             int indice = dataGrid.getSelectedRow();
             //Actualizar Tabla
@@ -391,6 +395,7 @@ public class MostrarDatos extends javax.swing.JFrame {
             //Recalculando Datos
             baseDatos.setNumInstancias(baseDatos.getNumInstancias() - 1);
             baseDatos.calcularErrores();
+            //Actualizando la informacion en la pantalla
             actualizarTextAreaAtributo();
             actualizarTextAreaGeneral();
         } else {
@@ -399,9 +404,12 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEliminarInstanciaMouseClicked
 
     private void botonEditarAtributoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEditarAtributoMouseClicked
+        //Validando que el usuario haya seleccionado una fila
         if (listaAtributos.getSelectedIndex() >= 0) {
             String respuesta = "";
+            //Metodo que le pregunta al usuario que nombre desea introducir
             respuesta = JOptionPane.showInputDialog(null, "Introduce el nuevo Nombre:", listaAtributos.getSelectedValue());
+            //Validacion en caso de que el usuario no introduzca nada o un valor nulo
             if (respuesta != null && !respuesta.equals("")) {
                 int indice = listaAtributos.getSelectedIndex();
                 //Actualizacion del header de la tabla
@@ -425,6 +433,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEditarAtributoMouseClicked
 
     private void botonEliminarAtributoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEliminarAtributoMouseClicked
+        //Validando que el usuario haya seleccionado una fila
         if (listaAtributos.getSelectedIndex() >= 0) {
             int indice = listaAtributos.getSelectedIndex();
             //Eliminado del Jlist
@@ -438,6 +447,7 @@ public class MostrarDatos extends javax.swing.JFrame {
             //Eliminacion del dato en memoria
             baseDatos.getAtributos().remove(indice);
             baseDatos.setNumAtributos(baseDatos.getNumAtributos() - 1);
+            //Actualizacion de la informacion en pantalla
             actualizarTextAreaAtributo();
             actualizarTextAreaGeneral();
         } else {
@@ -446,9 +456,11 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_botonEliminarAtributoMouseClicked
 
     private void botonExpresionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonExpresionMouseClicked
+        //Validando que el usuario haya seleccionado una fila
         if (listaAtributos.getSelectedIndex() >= 0) {
             int indice = listaAtributos.getSelectedIndex();
             String respuesta = JOptionPane.showInputDialog(null, "Actualiza la expresion:", baseDatos.getAtributos().get(indice).getDominio());
+            //Validacion para evitar que introduzca una expresion vacia
             if (respuesta != null && !respuesta.equals("")) {
                 //Actualizando la Expresion
                 baseDatos.getAtributos().get(indice).setDominio(respuesta);
@@ -463,46 +475,48 @@ public class MostrarDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_botonExpresionMouseClicked
 
     private void listaAtributosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaAtributosValueChanged
+        //Cada que se selecciona un atributo se carga la informacion sobre este
         actualizarTextAreaAtributo();
     }//GEN-LAST:event_listaAtributosValueChanged
 
-    private void botonEliminarAtributoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarAtributoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonEliminarAtributoActionPerformed
-
-
-    private void botonAnalisisUnivariableMouseClicked(java.awt.event.MouseEvent evt) {                                                      
-     
-        
-    }  
-
     private void dataGridPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dataGridPropertyChange
+        //Cada vez que la informacion del JTable cambia, se deben actualizar los valores 
         int indiceColumna = dataGrid.getEditingColumn();
         int indiceFila = dataGrid.getEditingRow();
+        //Validando que se haya modificado una fila y columna en especifico
         if (indiceFila >= 0 && indiceColumna >= 0) {
             String nuevoValor = dataGrid.getValueAt(indiceFila, indiceColumna).toString();
             //Cargar en Memoria 
             baseDatos.getAtributos().get(indiceColumna - 1).getInstancias().set(indiceFila, nuevoValor);
             //recalculando
             baseDatos.calcularErrores();
+            //Actualizando los datos en pantalla
             actualizarTextAreaAtributo();
             actualizarTextAreaGeneral();
-
         }
     }//GEN-LAST:event_dataGridPropertyChange
 
     private void botonRemplazarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonRemplazarMouseClicked
         String cadenaAntigua = textFieldValor.getText();
         String nuevaCadena = textFieldNuevoValor.getText();
+        //Validamos que ambas cadenas no esten vacias para hacer un remplazo correcto
         if (!nuevaCadena.equals("") && !cadenaAntigua.equals("")) {
-            int indice = comboBoxAtributo.getSelectedIndex();
-            String cadena;
-            for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
-                cadena = baseDatos.getAtributos().get(indice).getInstancias().get(i);
-                if (cadena.equals(cadenaAntigua)) {
-                    baseDatos.getAtributos().get(indice).getInstancias().set(i, nuevaCadena);
-                    dataGrid.setValueAt(nuevaCadena, i, indice + 1);
+            //Validamos que sean diferentes las cadenas
+            if (!nuevaCadena.equals(cadenaAntigua)) {
+                int indice = comboBoxAtributo.getSelectedIndex();
+                String cadena;
+                //Ciclo que itera todas las instancias y remplaza valores viejos por nuevos
+                for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
+                    cadena = baseDatos.getAtributos().get(indice).getInstancias().get(i);
+                    if (cadena.equals(cadenaAntigua)) {
+                        //actualizacion en memoria
+                        baseDatos.getAtributos().get(indice).getInstancias().set(i, nuevaCadena);
+                        //Actualizacion del componente
+                        dataGrid.setValueAt(nuevaCadena, i, indice + 1);
+                    }
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Es necesario que la cadena de entrada sea diferente a la de salida.");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Es necesario rellenar todos los datos.");
@@ -514,16 +528,20 @@ public class MostrarDatos extends javax.swing.JFrame {
         int indice2;
         //Comprobar que se selecciono un atributo
         if (indice1 >= 0) {
+            //Creamos un componente para preguntar por el segundo atributo
             String[] atributos = new String[baseDatos.getNumAtributos()];
             for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
                 atributos[i] = baseDatos.getAtributos().get(i).getNombre();
             }
             String resp = (String) JOptionPane.showInputDialog(null, "Seleccione el atributo a comparar", "Atributos", JOptionPane.QUESTION_MESSAGE, null, atributos, atributos[0]);
-            if (resp!=null) {
+            //Validamos que el usuario haya seleccionado el segundo atributo
+            if (resp != null) {
                 indice2 = baseDatos.getIndexAtributo(resp);
                 String tipoAtributo1 = baseDatos.getAtributos().get(indice1).getTipoDato();
                 String tipoAtributo2 = baseDatos.getAtributos().get(indice2).getTipoDato();
+                //validamos que el atributo sea diferente de si mismo y que los dos atributos sean del mismo tipo
                 if (tipoAtributo1.equals(tipoAtributo2) && indice1 != indice2) {
+                    //Creamos la nueva ventana y le pasamos los datos que ocupa
                     AnalisisBivariable example = new AnalisisBivariable(indice1, indice2, baseDatos);
                     example.setVisible(true);
                 } else {
@@ -537,62 +555,60 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void jButtonAnalisisUnivariableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalisisUnivariableActionPerformed
         int indice = listaAtributos.getSelectedIndex();
-        if(indice>-1){
-           atributo atr = baseDatos.getAtributos().get(indice);
-           if("numeric".equals(atr.getTipoDato())){
-               analisisUnivariable window = new analisisUnivariable(atr);
+        if (indice > -1) {
+            atributo atr = baseDatos.getAtributos().get(indice);
+            if ("numeric".equals(atr.getTipoDato())) {
+                analisisUnivariable window = new analisisUnivariable(atr);
                 window.setVisible(true);
-                BoxAndWhiskerChart boxplot = new BoxAndWhiskerChart(atr.getNombre(),atr);
+                BoxAndWhiskerChart boxplot = new BoxAndWhiskerChart(atr.getNombre(), atr);
                 boxplot.pack();
-               RefineryUtilities.centerFrameOnScreen(boxplot);
-               boxplot.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-               boxplot.setVisible(true);
-           }
-           else if("binary".equals(atr.getTipoDato())){
-             JFreeChart Grafica_frecuencia;
-             DefaultCategoryDataset Datos = new DefaultCategoryDataset();
-             HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
-             for(String valor : valoresUnicos ){
-                 int frecuencia = Collections.frequency(atr.getInstancias(),valor);
-                 Datos.addValue(frecuencia, atr.getNombre(),valor);
-             }
-             Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ "+ atr.getNombre()+" ' ", "Valor", "Repeticiones", Datos);
-            ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
-            JFrame Ventana = new JFrame("Grafica de Frecuencia '"+  atr.getNombre() +" '");
-            Ventana.getContentPane().add(Panel);
-            Ventana.pack();
-            Ventana.setVisible(true);
-            Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
- 
-           }
-           else if("nominal".equals(atr.getTipoDato())){
-            JFreeChart Grafica_frecuencia;
-             DefaultCategoryDataset Datos = new DefaultCategoryDataset();
-             HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
-             for(String valor : valoresUnicos ){
-                 int frecuencia = Collections.frequency(atr.getInstancias(),valor);
-                 Datos.addValue(frecuencia, atr.getNombre(),valor);
-             }
-             Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ "+ atr.getNombre()+" ' ", "Valor", "Repeticiones", Datos);
-            ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
-            JFrame Ventana = new JFrame("Grafica de Frecuencia '"+  atr.getNombre() +" '");
-            Ventana.getContentPane().add(Panel);
-            Ventana.pack();
-            Ventana.setVisible(true);
-            Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);            
-           }
-           else{
-               JOptionPane.showMessageDialog(null, "Tipo de dato no concido ' "+atr.getTipoDato()+" '");
-           }
-           
-         }  
-        else{
-             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a comparar.");
+                RefineryUtilities.centerFrameOnScreen(boxplot);
+                boxplot.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                boxplot.setVisible(true);
+            } else if ("binary".equals(atr.getTipoDato())) {
+                JFreeChart Grafica_frecuencia;
+                DefaultCategoryDataset Datos = new DefaultCategoryDataset();
+                HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
+                for (String valor : valoresUnicos) {
+                    int frecuencia = Collections.frequency(atr.getInstancias(), valor);
+                    Datos.addValue(frecuencia, atr.getNombre(), valor);
+                }
+                Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ " + atr.getNombre() + " ' ", "Valor", "Repeticiones", Datos);
+                ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
+                JFrame Ventana = new JFrame("Grafica de Frecuencia '" + atr.getNombre() + " '");
+                Ventana.getContentPane().add(Panel);
+                Ventana.pack();
+                Ventana.setVisible(true);
+                Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            } else if ("nominal".equals(atr.getTipoDato())) {
+                JFreeChart Grafica_frecuencia;
+                DefaultCategoryDataset Datos = new DefaultCategoryDataset();
+                HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
+                for (String valor : valoresUnicos) {
+                    int frecuencia = Collections.frequency(atr.getInstancias(), valor);
+                    Datos.addValue(frecuencia, atr.getNombre(), valor);
+                }
+                Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ " + atr.getNombre() + " ' ", "Valor", "Repeticiones", Datos);
+                ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
+                JFrame Ventana = new JFrame("Grafica de Frecuencia '" + atr.getNombre() + " '");
+                Ventana.getContentPane().add(Panel);
+                Ventana.pack();
+                Ventana.setVisible(true);
+                Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Tipo de dato no concido ' " + atr.getTipoDato() + " '");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a comparar.");
         }
     }//GEN-LAST:event_jButtonAnalisisUnivariableActionPerformed
 
     public void actualizarTextAreaAtributo() {
+        //validamos que el indice del atributo seleccionado sea valido.
         if (listaAtributos.getSelectedIndex() >= 0) {
+            //vaciamos el TextArea y lo cargamos con nueva informacion.
             textAreaAtributo.setText(null);
             int indice = listaAtributos.getSelectedIndex();
             float porcentajeFaltante = (baseDatos.getAtributos().get(indice).getValoresFaltantes() * 100) / baseDatos.getNumInstancias();
@@ -609,6 +625,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     }
 
     public void actualizarTextAreaGeneral() {
+        //Cargamos los datos generales sobre la Base.
         datosGenerales.setText("");
         datosGenerales.append(baseDatos.getComentarios());
         datosGenerales.append("Numero de Instancias: " + baseDatos.getNumInstancias() + "\n");
