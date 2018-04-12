@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Paint;
 import java.text.DecimalFormat;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -56,8 +57,13 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         String tipo = baseDatos.getAtributos().get(indiceVariable1).getTipoDato();
         if (tipo.equals("Numerico") || tipo.equals("numerico") || tipo.equals("Numeric")
                 || tipo.equals("numeric")) {
-            calculosNumericos = new CoeficienteCorrelacion();
+            calculosNumericos = new CoeficienteCorrelacion(indiceVariable1, indiceVariable2, baseDatos);
             representarNumericos();
+            calculosNumericos.calcularVariables();
+            calculosNumericos.calcularTotal();
+            calculosNumericos.calcularDesviacion();
+            calculosNumericos.calcularCoeficienteCorrelacion();
+            this.actualizarTextAreaNumerico();
         } else {
             representarCategoricos();
             calculosCategoricos = new CoeficienteContingencia(indiceVariable1, indiceVariable2, baseDatos);
@@ -67,7 +73,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             calculosCategoricos.calcularCoeficiente();
             this.actualizarTextAreaCategorico();
         }
-        
+
     }
 
     public void representarCategoricos() {
@@ -183,20 +189,6 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         panelGrafica.repaint();
 
         //setContentPane(panel);
-        //Calculo del Coeficiente de Correlacion
-        int valorX;
-        int valorY;
-        for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
-            valorX = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
-            valorY = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
-            calculosNumericos.getListaX().add(valorX);
-            calculosNumericos.getListaY().add(valorY);
-        }
-        calculosNumericos.calcularVariables();
-        calculosNumericos.calcularTotal();
-        calculosNumericos.calcularDesviacion();
-        calculosNumericos.calcularCoeficienteCorrelacion();
-        this.actualizarTextAreaNumerico();
     }
 
     private XYDataset createDatasetNumerico() {
@@ -206,10 +198,19 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         XYSeries series1 = new XYSeries("Relacion");
         int valorX;
         int valorY;
+        String auxiliar1 = "";
+        String auxiliar2 = "";
+        String dominio1 = baseDatos.getAtributos().get(indiceVariable1).getDominio();
+        String dominio2 = baseDatos.getAtributos().get(indiceVariable1).getDominio();
         for (int i = 0; i < baseDatos.getNumInstancias(); i++) {
-            valorX = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
-            valorY = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
-            series1.add(valorX, valorY);
+            auxiliar1 = baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i);
+            auxiliar2 = baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i);
+            if (!auxiliar1.equals(baseDatos.getFaltante()) && !auxiliar2.equals(baseDatos.getFaltante())
+                    && Pattern.matches(dominio1, auxiliar1) && Pattern.matches(dominio2, auxiliar2)) {
+                valorX = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable1).getInstancias().get(i));
+                valorY = Integer.parseInt(baseDatos.getAtributos().get(indiceVariable2).getInstancias().get(i));
+                series1.add(valorX, valorY);
+            }
         }
         dataset.addSeries(series1);
         return dataset;
