@@ -15,12 +15,11 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author juan_
  */
-
 //Clase que se encarga de realizar el renderizado de cada celda
 public class RenderPro extends DefaultTableCellRenderer {
 
     DataSet baseDatos = new DataSet();
-    
+
     public void pasarDataSet(DataSet baseDatos) {
         this.baseDatos = baseDatos;
     }
@@ -31,7 +30,12 @@ public class RenderPro extends DefaultTableCellRenderer {
         //validamos que la columna sea mayor a cero, ya que la primera es una columnna extra para identificar cada instancia
         if (column > 0) {
             String regexp = baseDatos.getAtributos().get(column - 1).getDominio();
-            String cadena = value.toString();
+            String cadena;
+            if (value == null) {
+                cadena = baseDatos.getFaltante();
+            } else {
+                cadena = value.toString();
+            }
             //Validamos que el valor que esta en la celda sea correspondiente al dominio
             if (Pattern.matches(regexp, cadena)) {
                 //si es correcto pintamos normal
