@@ -65,13 +65,13 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             calculosNumericos.calcularCoeficienteCorrelacion();
             this.actualizarTextAreaNumerico();
         } else {
-            representarCategoricos();
             calculosCategoricos = new CoeficienteContingencia(indiceVariable1, indiceVariable2, baseDatos);
             calculosCategoricos.createTable();
             calculosCategoricos.calcularFrecuenciaEsperada();
             calculosCategoricos.calcularEquisCuadrada();
             calculosCategoricos.calcularCoeficiente();
             this.actualizarTextAreaCategorico();
+            representarCategoricos();
         }
 
     }
@@ -131,20 +131,18 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         return result;
     }*/
     private CategoryDataset createDatasetCategorico() {
-        DefaultCategoryDataset result = new DefaultCategoryDataset();
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
-        defaultcategorydataset.addValue(10D, "Series 1", "Jan");
-        defaultcategorydataset.addValue(12D, "Series 1", "Feb");
-        defaultcategorydataset.addValue(13D, "Series 1", "Mar");
-        defaultcategorydataset.addValue(4D, "Series 2", "Jan");
-        defaultcategorydataset.addValue(3D, "Series 2", "Feb");
-        defaultcategorydataset.addValue(2D, "Series 2", "Mar");
-        defaultcategorydataset.addValue(2D, "Series 3", "Jan");
-        defaultcategorydataset.addValue(3D, "Series 3", "Feb");
-        defaultcategorydataset.addValue(2D, "Series 3", "Mar");
-        defaultcategorydataset.addValue(2D, "Series 4", "Jan");
-        defaultcategorydataset.addValue(3D, "Series 4", "Feb");
-        defaultcategorydataset.addValue(4D, "Series 4", "Mar");
+        String nombreVertical = "";
+        String nombreHorizontal = "";
+        long frecuencia = 0;
+        for (int i = 0; i < calculosCategoricos.getListaNombresHorizontal().size(); i++) {
+            nombreHorizontal = calculosCategoricos.getListaNombresHorizontal().get(i);
+            for (int j = 0; j < calculosCategoricos.getListaNombresVertical().size(); j++) {
+                nombreVertical = calculosCategoricos.getListaNombresVertical().get(j);
+                frecuencia = calculosCategoricos.getTablaFrecuencias().get(i).getListaValores().get(j);
+                defaultcategorydataset.addValue(frecuencia, nombreVertical, nombreHorizontal);
+            }
+        }
         return defaultcategorydataset;
     }
 
