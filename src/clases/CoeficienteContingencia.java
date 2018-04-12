@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author juan_
  */
 public class CoeficienteContingencia {
-
+    //Variable global que guardara el numero de instancias
     int numeroInstancias;
     DataSet baseDatos;
     //lista para saber los nombres de cada variable horizontal y vertican
