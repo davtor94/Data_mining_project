@@ -112,6 +112,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         textFieldNuevoValor = new javax.swing.JTextField();
         botonAnalisisBivariable = new javax.swing.JButton();
         jButtonAnalisisUnivariable = new javax.swing.JButton();
+        botonAgregarAtributo = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -237,6 +238,13 @@ public class MostrarDatos extends javax.swing.JFrame {
             }
         });
 
+        botonAgregarAtributo.setText("Agregar");
+        botonAgregarAtributo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonAgregarAtributoMouseClicked(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
 
         jMenuItem4.setText("Cargar ");
@@ -289,12 +297,16 @@ public class MostrarDatos extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(botonEliminarAtributo)
-                                        .addGap(64, 64, 64)
-                                        .addComponent(botonEditarAtributo)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(jLabel3))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(botonAgregarAtributo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botonEliminarAtributo)
+                                .addGap(18, 18, 18)
+                                .addComponent(botonEditarAtributo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botonExpresion)))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -312,9 +324,7 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(botonAnalisisBivariable)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonExpresion)
-                            .addComponent(jButtonAnalisisUnivariable))
+                        .addComponent(jButtonAnalisisUnivariable)
                         .addGap(78, 78, 78))))
         );
         layout.setVerticalGroup(
@@ -341,7 +351,8 @@ public class MostrarDatos extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonEliminarAtributo)
                             .addComponent(botonEditarAtributo)
-                            .addComponent(botonExpresion)))
+                            .addComponent(botonExpresion)
+                            .addComponent(botonAgregarAtributo)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -605,6 +616,23 @@ public class MostrarDatos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonAnalisisUnivariableActionPerformed
 
+    private void botonAgregarAtributoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonAgregarAtributoMouseClicked
+            //Eliminado del Jlist
+            DefaultListModel listaModelo = (DefaultListModel) listaAtributos.getModel();
+            listaModelo.addElement("Nuevo Atributo");
+            //Agregacion en memoria
+            
+            //Agregarlo en el modelo
+//            DefaultTableModel modelo = (DefaultTableModel) dataGrid.getModel();
+//            modelo.addColumn("Nuevo Atributo");
+
+            //Añadido al Combobox
+            comboBoxAtributo.addItem("Nuevo Atributo");
+            //Actualizacion de la informacion en pantalla
+            actualizarTextAreaAtributo();
+            actualizarTextAreaGeneral();
+    }//GEN-LAST:event_botonAgregarAtributoMouseClicked
+
     public void actualizarTextAreaAtributo() {
         //validamos que el indice del atributo seleccionado sea valido.
         if (listaAtributos.getSelectedIndex() >= 0) {
@@ -635,6 +663,7 @@ public class MostrarDatos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonAgregarAtributo;
     private javax.swing.JButton botonAgregarInstancia;
     private javax.swing.JButton botonAnalisisBivariable;
     private javax.swing.JButton botonEditarAtributo;
