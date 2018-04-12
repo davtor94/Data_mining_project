@@ -7,14 +7,14 @@ package clases;
 
 import java.util.ArrayList;
 
-
 public class atributo {
+
     private String nombre;
     private String dominio;
     private String tipoDato;
     private int numeroValoresFaltantes;
     private int numValoresErroneos;
-    protected ArrayList<String> instancias = new ArrayList<>();
+    protected ArrayList<String> instancias;
 
     public atributo(String nombre, String dominio, String tipoDato) {
         this.nombre = nombre;
@@ -22,6 +22,7 @@ public class atributo {
         this.tipoDato = tipoDato;
         this.numeroValoresFaltantes = 0;
         this.numValoresErroneos = 0;
+        instancias = new ArrayList<String>();
     }
 
     public void setNombre(String nombre) {
