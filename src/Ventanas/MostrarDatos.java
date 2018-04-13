@@ -594,7 +594,8 @@ public class MostrarDatos extends javax.swing.JFrame {
         int indice = listaAtributos.getSelectedIndex();
         if (indice > -1) {
             atributo atr = baseDatos.getAtributos().get(indice);
-            if ("numeric".equals(atr.getTipoDato())) {
+            if ("numeric".equals(atr.getTipoDato()) || "numerico".equals(atr.getTipoDato())
+                    || "Numeric".equals(atr.getTipoDato()) || "Numerico".equals(atr.getTipoDato())) {
                 analisisUnivariable window = new analisisUnivariable(atr);
                 window.setVisible(true);
                 BoxAndWhiskerChart boxplot = new BoxAndWhiskerChart(atr.getNombre(), atr);
@@ -602,23 +603,11 @@ public class MostrarDatos extends javax.swing.JFrame {
                 RefineryUtilities.centerFrameOnScreen(boxplot);
                 boxplot.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 boxplot.setVisible(true);
-            } else if ("binary".equals(atr.getTipoDato())) {
-                JFreeChart Grafica_frecuencia;
-                DefaultCategoryDataset Datos = new DefaultCategoryDataset();
-                HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
-                for (String valor : valoresUnicos) {
-                    int frecuencia = Collections.frequency(atr.getInstancias(), valor);
-                    Datos.addValue(frecuencia, atr.getNombre(), valor);
-                }
-                Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ " + atr.getNombre() + " ' ", "Valor", "Repeticiones", Datos);
-                ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
-                JFrame Ventana = new JFrame("Grafica de Frecuencia '" + atr.getNombre() + " '");
-                Ventana.getContentPane().add(Panel);
-                Ventana.pack();
-                Ventana.setVisible(true);
-                Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            } else if ("nominal".equals(atr.getTipoDato())) {
+            } else if ("nominal".equals(atr.getTipoDato()) || "Nominal".equals(atr.getTipoDato())
+                    || "categoric".equals(atr.getTipoDato()) || "Categoric".equals(atr.getTipoDato())
+                    || "Categorico".equals(atr.getTipoDato()) || "categorico".equals(atr.getTipoDato())
+                    || "binary".equals(atr.getTipoDato()) || "Binary".equals(atr.getTipoDato())
+                    || "Binario".equals(atr.getTipoDato()) || "binario".equals(atr.getTipoDato())) {
                 JFreeChart Grafica_frecuencia;
                 DefaultCategoryDataset Datos = new DefaultCategoryDataset();
                 HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
@@ -634,11 +623,11 @@ public class MostrarDatos extends javax.swing.JFrame {
                 Ventana.setVisible(true);
                 Ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             } else {
-                JOptionPane.showMessageDialog(null, "Tipo de dato no concido ' " + atr.getTipoDato() + " '");
+                JOptionPane.showMessageDialog(null, "Tipo de dato no concido '" + atr.getTipoDato() + "' , No coincide con los tipos Validos.");
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a comparar.");
+            JOptionPane.showMessageDialog(null, "Es necesario seleccionar un atributo a Analizar.");
         }
     }//GEN-LAST:event_jButtonAnalisisUnivariableActionPerformed
 
