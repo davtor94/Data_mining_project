@@ -30,7 +30,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }
     private DataSet baseDatos = new DataSet();
     private File origenOriginal;
-    private boolean guardado;
+    private boolean guardado = true;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -165,6 +165,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private DataSet cargarArchivo() {
+        
         DataSet data = new DataSet();
         String aux;
         String comentarios = "";
@@ -192,9 +193,33 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                         //Para el caso que tenga espacios la cadena, eliminarmos para compararlos
                         aux = aux.replace(" ", "");
                         String[] campos = aux.split(",");
+                        String dato;
                         int numeroAtributos = campos.length;
-                        for (int i = 0; i < numeroAtributos; i++) {
-                            atributos.get(i).getInstancias().add(campos[i]);
+                        if(numeroAtributos != atributos.size()){
+                            int confirmacion = JOptionPane.showConfirmDialog(null, "Una instancia bo contiene el numero de atributos necesarios\n"
+                            + "Desea agregarla de todos modos?");
+                            if(confirmacion == 0){
+                                    int i;
+                                 for ( i = 0; i < numeroAtributos; i++) {
+                                     
+                                     dato = campos[i];
+                                     if(dato.isEmpty()){
+                                         dato = data.getFaltante();
+                                     }
+                                    atributos.get(i).getInstancias().add(dato);
+                                }
+                                 for(;i<atributos.size();i++){
+                                     atributos.get(i).getInstancias().add(data.getFaltante());
+                                 }
+        }
+                        }else{
+                            for ( int i = 0; i < numeroAtributos; i++) {
+                                dato = campos[i];
+                                     if(dato.isEmpty()){
+                                         dato = data.getFaltante();
+                                     }
+                                    atributos.get(i).getInstancias().add(dato);
+                                }
                         }
                     } else if (aux.startsWith("%")) {
                         //es comentario
@@ -212,6 +237,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                         data.setFaltante(aux.substring(14));
                     } else if (aux.startsWith("@data")) {
                         cargaDatos = true;
+                        
                     }
                 }
                 lee.close();
@@ -233,7 +259,6 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                     + "\nNo se ha encontrado el archivo",
                     "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
         }
-        guardado = true;
         return data;
     }
 
@@ -283,7 +308,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,
                     "Es necesario abriri un archivo valido.",
                     "DataSet invalido!", JOptionPane.ERROR_MESSAGE);
-        } else {
+        }
+        else {
             MostrarDatos nueva = new MostrarDatos(baseDatos);
             nueva.setVisible(true);
             guardado = false;

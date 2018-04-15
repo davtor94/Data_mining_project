@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -40,8 +41,16 @@ public class BoxAndWhiskerChart extends JFrame {
         RegularTimePeriod t = new Day();
         final DefaultBoxAndWhiskerXYDataset dataset 
             = new DefaultBoxAndWhiskerXYDataset("atributo");
-         for(int i =0;i<atribut.getInstancias().size();i++){
-                    list.add(new Double(atribut.getInstancias().get(i)));
+        ArrayList<Double> lista = new  ArrayList<>();
+         for (int i = 0; i < atribut.getInstancias().size();i++){
+            try{
+                lista.add(Double.parseDouble(atribut.getInstancias().get(i)));
+            }
+            catch(NumberFormatException e){
+            }
+           }
+         for(int i =0;i<lista.size();i++){
+                    list.add(lista.get(i));
                 }
          dataset.add(t.getStart(),
                     BoxAndWhiskerCalculator.calculateBoxAndWhiskerStatistics(

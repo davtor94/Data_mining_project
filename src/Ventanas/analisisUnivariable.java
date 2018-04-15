@@ -9,6 +9,7 @@ package Ventanas;
 import clases.atributo;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +20,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
 
     private atributo atr;
     private double media;
+    ArrayList<Double> lista = new  ArrayList<>();
    
     /**
      * Creates new form analisisUnivariable
@@ -27,6 +29,17 @@ public class analisisUnivariable extends javax.swing.JFrame {
     public analisisUnivariable(atributo a) {
         initComponents();
         atr = a;
+        for (int i = 0; i < atr.getInstancias().size();i++){
+            try{
+                lista.add(Double.parseDouble(atr.getInstancias().get(i)));
+            }
+            catch(NumberFormatException e){
+                 JOptionPane.showMessageDialog(null,
+                            "Se ha omitido la instancia # "+i+" devido a que es un valor no numerico.",
+                            "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
+            }
+            
+        }
          media = calcularMedia();
         labelNombre.setText(atr.getNombre()); 
         jLabelMedia.setText(String.valueOf(media));
@@ -37,53 +50,64 @@ public class analisisUnivariable extends javax.swing.JFrame {
     
     public double calcularMedia(){
         double sumatoria =0;
-        for(int i =0;i<atr.getInstancias().size();i++){
-            sumatoria+=Integer.parseInt(atr.getInstancias().get(i));
+        for(int i =0;i<lista.size();i++){
+            
+            sumatoria+=lista.get(i);
         }
-        sumatoria = sumatoria/atr.getInstancias().size();
+        sumatoria = sumatoria/lista.size();
         return sumatoria;
     }
     public double calcularMediana(){
         double mediana=0;
-        ArrayList<String> listaAuxiliar;
-        listaAuxiliar = atr.getInstancias();
+        ArrayList<Double> listaAuxiliar;
+        listaAuxiliar = lista;
         Collections.sort(listaAuxiliar);
         int mitad = listaAuxiliar.size()/2;
-        mediana = Integer.parseInt(listaAuxiliar.get(mitad));
-        jLabelMinimo.setText(listaAuxiliar.get(0));
-        jLabelMaximo.setText(listaAuxiliar.get(listaAuxiliar.size()-1));
+        if(listaAuxiliar.size()%2==0){
+            double aux;
+            aux =  lista.get(mitad);
+            aux +=  lista.get(mitad+1);
+            mediana = aux/2;
+         jLabelMinimo.setText(String.valueOf(listaAuxiliar.get(0)));
+        jLabelMaximo.setText(String.valueOf(listaAuxiliar.get(listaAuxiliar.size()-1)));
+        }else{
+        mediana = lista.get(mitad);
+         jLabelMinimo.setText(String.valueOf(listaAuxiliar.get(0)));
+        jLabelMaximo.setText(String.valueOf(listaAuxiliar.get(listaAuxiliar.size()-1)));
+        }
         return mediana;
+        
     }
     
     public double calcularModa(){
         double moda=0;
-        String mod = new String();
+        double mod=0;
         int repeticiones;
         int repeticionesMax=0;
-        for(int i =0; i<atr.getInstancias().size();i++){
+        for(int i =0; i<lista.size();i++){
             repeticiones =0;
             
-             for(int j =0; j<atr.getInstancias().size();j++){
-                 if(atr.getInstancias().get(i).equals(atr.getInstancias().get(j))){
+             for(int j =0; j<lista.size();j++){
+                 if(lista.get(i).equals(lista.get(j))){
                      repeticiones++;
                  }
              }
              if(repeticiones>repeticionesMax){
-                 mod = atr.getInstancias().get(i);
+                 mod = lista.get(i);
                  repeticionesMax = repeticiones;
              }
         }
-        moda =Integer.parseInt(mod);
+        moda =mod;
         return moda;
     }
     public double calcularDesv(){
         double desv;
         int sumatoria;
         sumatoria =0;
-        for(int i =0; i<atr.getInstancias().size();i++){
-            sumatoria +=Math.pow(Integer.parseInt(atr.getInstancias().get(i))-media,2);
+        for(int i =0; i<lista.size();i++){
+            sumatoria +=Math.pow(lista.get(i)-media,2);
         }
-        sumatoria = sumatoria / atr.getInstancias().size();
+        sumatoria = sumatoria / lista.size();
         desv = Math.sqrt(sumatoria);
         return desv;
     }
