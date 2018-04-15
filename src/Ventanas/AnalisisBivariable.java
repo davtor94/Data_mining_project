@@ -46,6 +46,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     DataSet baseDatos;
     CoeficienteContingencia calculosCategoricos;
     CoeficienteCorrelacion calculosNumericos;
+    ChartPanel panel;
 
     public AnalisisBivariable(int atributo1, int atributo2, DataSet baseDatos) {
         initComponents();
@@ -81,55 +82,13 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         JFreeChart chart = createChartStacked(dataset);
 
         // Create Panel
-        ChartPanel panel = new ChartPanel(chart);
+        panel = new ChartPanel(chart);
         panel.setSize(panelGrafica.getWidth(), panelGrafica.getHeight());
         panel.setVisible(true);
         panelGrafica.add(panel);
         panelGrafica.repaint();
     }
 
-    /*    private CategoryDataset createDatasetCategorico() {
-        DefaultCategoryDataset result = new DefaultCategoryDataset();
-        result.addValue(20, "Product 1 (US)", "Jan 04");
-        result.addValue(20, "Product 1 (US)", "Feb 04");
-        result.addValue(20, "Product 1 (US)", "Mar 04");
-        result.addValue(20, "Product 1 (Europe)", "Jan 04");
-        result.addValue(10.9, "Product 1 (Europe)", "Feb 04");
-        result.addValue(18.4, "Product 1 (Europe)", "Mar 04");
-        result.addValue(20, "Product 1 (Asia)", "Jan 04");
-        result.addValue(15.9, "Product 1 (Asia)", "Feb 04");
-        result.addValue(16.1, "Product 1 (Asia)", "Mar 04");
-        result.addValue(20, "Product 1 (Middle East)", "Jan 04");
-        result.addValue(14.4, "Product 1 (Middle East)", "Feb 04");
-        result.addValue(13.7, "Product 1 (Middle East)", "Mar 04");
-
-        result.addValue(23.3, "Product 2 (US)", "Jan 04");
-        result.addValue(16.2, "Product 2 (US)", "Feb 04");
-        result.addValue(28.7, "Product 2 (US)", "Mar 04");
-        result.addValue(12.7, "Product 2 (Europe)", "Jan 04");
-        result.addValue(17.9, "Product 2 (Europe)", "Feb 04");
-        result.addValue(12.6, "Product 2 (Europe)", "Mar 04");
-        result.addValue(15.4, "Product 2 (Asia)", "Jan 04");
-        result.addValue(21.0, "Product 2 (Asia)", "Feb 04");
-        result.addValue(11.1, "Product 2 (Asia)", "Mar 04");
-        result.addValue(23.8, "Product 2 (Middle East)", "Jan 04");
-        result.addValue(23.4, "Product 2 (Middle East)", "Feb 04");
-        result.addValue(19.3, "Product 2 (Middle East)", "Mar 04");
-
-        result.addValue(11.9, "Product 3 (US)", "Jan 04");
-        result.addValue(31.0, "Product 3 (US)", "Feb 04");
-        result.addValue(22.7, "Product 3 (US)", "Mar 04");
-        result.addValue(15.3, "Product 3 (Europe)", "Jan 04");
-        result.addValue(14.4, "Product 3 (Europe)", "Feb 04");
-        result.addValue(25.3, "Product 3 (Europe)", "Mar 04");
-        result.addValue(23.9, "Product 3 (Asia)", "Jan 04");
-        result.addValue(19.0, "Product 3 (Asia)", "Feb 04");
-        result.addValue(10.1, "Product 3 (Asia)", "Mar 04");
-        result.addValue(13.2, "Product 3 (Middle East)", "Jan 04");
-        result.addValue(15.5, "Product 3 (Middle East)", "Feb 04");
-        result.addValue(10.1, "Product 3 (Middle East)", "Mar 04");
-        return result;
-    }*/
     private CategoryDataset createDatasetCategorico() {
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
         String nombreVertical = "";
@@ -147,10 +106,12 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     }
 
     private JFreeChart createChartStacked(CategoryDataset dataset) {
+        String nombre1 = baseDatos.getAtributos().get(indiceVariable1).getNombre();
+        String nombre2 = baseDatos.getAtributos().get(indiceVariable2).getNombre();
         final JFreeChart chart = ChartFactory.createStackedBarChart(
-                "Stacked Bar Chart Demo 1", // chart title
-                "Category", // domain axis label
-                "Value", // range axis label
+                "Diagrama de Columnas Apilada " + nombre1 + " vs " + nombre2, // chart title
+                "Categoria", // domain axis label
+                "Frecuencia", // range axis label
                 dataset, // data
                 PlotOrientation.VERTICAL, // the plot orientation
                 true, // legend
@@ -180,7 +141,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         plot.setBackgroundPaint(new Color(255, 228, 196));
 
         // Create Panel
-        ChartPanel panel = new ChartPanel(chart);
+        panel = new ChartPanel(chart);
         panel.setSize(panelGrafica.getWidth(), panelGrafica.getHeight());
         panel.setVisible(true);
         panelGrafica.add(panel);
@@ -217,7 +178,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     public void actualizarTextAreaNumerico() {
         textAreaDatos.setText("");
         textAreaDatos.append("Coeficiente de Correlacion: " + calculosNumericos.getCoeficienteCorrelacion() + "\n");
-        textAreaDatos.append("Desviacion Estandar de X: " + calculosNumericos.getDesviacionEstandarX() + "\n");
+        /*        textAreaDatos.append("Desviacion Estandar de X: " + calculosNumericos.getDesviacionEstandarX() + "\n");
         textAreaDatos.append("Desviacion Estandar de Y: " + calculosNumericos.getDesviacionEstandarY() + "\n");
         textAreaDatos.append("Desviacion Estandar de XY: " + calculosNumericos.getCovarianzaXY().toString() + "\n");
         textAreaDatos.append("Total de X: " + calculosNumericos.getTotalX().toString() + "\n");
@@ -226,14 +187,13 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         textAreaDatos.append("Total de X2: " + calculosNumericos.getTotalX2().toString() + "\n");
         textAreaDatos.append("Total de Y2: " + calculosNumericos.getTotalY2().toString() + "\n");
         textAreaDatos.append("Media de X: " + calculosNumericos.getMediaX() + "\n");
-        textAreaDatos.append("Media de Y: " + calculosNumericos.getMediaY() + "\n");
+        textAreaDatos.append("Media de Y: " + calculosNumericos.getMediaY() + "\n");*/
     }
 
     public void actualizarTextAreaCategorico() {
         textAreaDatos.setText("");
         textAreaDatos.append("Coeficiente de Tschuprow: " + calculosCategoricos.getCoeficienteTschuprow() + "\n");
-        textAreaDatos.append("Equis Cuadrada: " + calculosCategoricos.getEquisCuadrada() + "\n");
-
+//        textAreaDatos.append("Equis Cuadrada: " + calculosCategoricos.getEquisCuadrada() + "\n");
     }
 
     /**
@@ -252,12 +212,17 @@ public class AnalisisBivariable extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         panelGrafica.setBackground(new java.awt.Color(204, 204, 255));
+        panelGrafica.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                panelGraficaComponentResized(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelGraficaLayout = new javax.swing.GroupLayout(panelGrafica);
         panelGrafica.setLayout(panelGraficaLayout);
         panelGraficaLayout.setHorizontalGroup(
             panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGap(0, 588, Short.MAX_VALUE)
         );
         panelGraficaLayout.setVerticalGroup(
             panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,10 +240,10 @@ public class AnalisisBivariable extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,6 +259,10 @@ public class AnalisisBivariable extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void panelGraficaComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelGraficaComponentResized
+        panel.setSize(panelGrafica.getWidth(), panelGrafica.getHeight());
+    }//GEN-LAST:event_panelGraficaComponentResized
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
