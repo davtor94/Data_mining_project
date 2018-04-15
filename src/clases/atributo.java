@@ -6,6 +6,7 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class atributo {
 
@@ -71,6 +72,18 @@ public class atributo {
 
     public int getNumeroValoresErroneos() {
         return numValoresErroneos;
+    }
+
+    public boolean sonInstanciasNoValidas() {
+        boolean esValida = false;
+        int numeroInstancias = this.getInstancias().size();
+        for (int i = 0; i < numeroInstancias; i++) {
+            if (Pattern.matches(this.dominio, this.getInstancias().get(i))) {
+                esValida = true;
+                break;
+            }
+        }
+        return esValida;
     }
 
 }
