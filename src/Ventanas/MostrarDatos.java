@@ -134,7 +134,6 @@ public class MostrarDatos extends javax.swing.JFrame {
 
         jScrollPane1.setVerifyInputWhenFocusTarget(false);
 
-        dataGrid.setAutoCreateRowSorter(true);
         dataGrid.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
