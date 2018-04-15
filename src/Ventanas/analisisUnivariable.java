@@ -102,7 +102,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
     }
     public double calcularDesv(){
         double desv;
-        int sumatoria;
+        double sumatoria;
         sumatoria =0;
         for(int i =0; i<lista.size();i++){
             sumatoria +=Math.pow(lista.get(i)-media,2);

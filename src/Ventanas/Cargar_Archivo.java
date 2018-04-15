@@ -189,6 +189,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                 FileReader archivos = new FileReader(abre);
                 BufferedReader lee = new BufferedReader(archivos);
                 while ((aux = lee.readLine()) != null) {
+                    //si entra aqui llego la hora de cargar los datos
                     if (cargaDatos) {
                         //Para el caso que tenga espacios la cadena, eliminarmos para compararlos
                         aux = aux.replace(" ", "");
@@ -196,7 +197,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                         String dato;
                         int numeroAtributos = campos.length;
                         if(numeroAtributos != atributos.size()){
-                            int confirmacion = JOptionPane.showConfirmDialog(null, "Una instancia bo contiene el numero de atributos necesarios\n"
+                            int confirmacion = JOptionPane.showConfirmDialog(null, "Una instancia no contiene el numero de atributos necesarios\n"
                             + "Desea agregarla de todos modos?");
                             if(confirmacion == 0){
                                     int i;
