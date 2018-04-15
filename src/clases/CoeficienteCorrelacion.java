@@ -261,7 +261,7 @@ public class CoeficienteCorrelacion {
     }
 
     public void calcularDesviacion() {
-        //Se calcula la desviacion estandar y la covarianza
+        //Se calcula la desviacion estandar
         int numeroInstancias = listaX.size();
         double desviacionEstandarX = 0;
         double desviacionEstandarY = 0;
@@ -274,7 +274,7 @@ public class CoeficienteCorrelacion {
         BigDecimal totalY = this.getTotalY2().divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
         desviacionEstandarY = (totalY.doubleValue() - Math.pow(this.getMediaY(), 2));
         desviacionEstandarY = Math.sqrt(desviacionEstandarY);
-        //Calculo de la covarianza
+        //Calculo para obtener el resultado de la sumatoria de a-media de a, b-media de B entre los n instancias
         BigDecimal totalXY = this.getTotalXY().divide(new BigDecimal(numeroInstancias), MathContext.DECIMAL32);
         covarianza = totalXY.subtract(new BigDecimal(this.getMediaY() * this.getMediaX()));
         //actualizacion de los datos
