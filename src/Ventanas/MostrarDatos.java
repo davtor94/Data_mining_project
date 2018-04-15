@@ -562,7 +562,7 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void botonAnalisisBivariableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalisisBivariableActionPerformed
         int indice1 = listaAtributos.getSelectedIndex();
-        int indice2;
+        int indice2=0;
         //Comprobar que se selecciono un atributo
         if (indice1 >= 0) {
             //Creamos un componente para preguntar por el segundo atributo
@@ -573,16 +573,23 @@ public class MostrarDatos extends javax.swing.JFrame {
             String resp = (String) JOptionPane.showInputDialog(null, "Seleccione el atributo a comparar", "Atributos", JOptionPane.QUESTION_MESSAGE, null, atributos, atributos[0]);
             //Validamos que el usuario haya seleccionado el segundo atributo
             if (resp != null) {
-                indice2 = baseDatos.getIndexAtributo(resp);
-                String tipoAtributo1 = baseDatos.getAtributos().get(indice1).getTipoDato();
-                String tipoAtributo2 = baseDatos.getAtributos().get(indice2).getTipoDato();
-                //validamos que el atributo sea diferente de si mismo y que los dos atributos sean del mismo tipo
-                if (tipoAtributo1.equals(tipoAtributo2) && indice1 != indice2) {
-                    //Creamos la nueva ventana y le pasamos los datos que ocupa
-                    AnalisisBivariable example = new AnalisisBivariable(indice1, indice2, baseDatos);
-                    example.setVisible(true);
+                boolean validoAtributo1=baseDatos.getAtributos().get(indice1).sonInstanciasNoValidas();
+                boolean validoAtributo2=baseDatos.getAtributos().get(indice2).sonInstanciasNoValidas();
+                //Validacion para evitar que truene el programa al pasarle puros datos erroneos
+                if (validoAtributo1 && validoAtributo2) {
+                    indice2 = baseDatos.getIndexAtributo(resp);
+                    String tipoAtributo1 = baseDatos.getAtributos().get(indice1).getTipoDato();
+                    String tipoAtributo2 = baseDatos.getAtributos().get(indice2).getTipoDato();
+                    //validamos que el atributo sea diferente de si mismo y que los dos atributos sean del mismo tipo
+                    if (tipoAtributo1.equals(tipoAtributo2) && indice1 != indice2) {
+                        //Creamos la nueva ventana y le pasamos los datos que ocupa
+                        AnalisisBivariable example = new AnalisisBivariable(indice1, indice2, baseDatos);
+                        example.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Los atributos no se pueden comparar, es necesario que sean del mismop tipo.");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Los atributos no se pueden comparar, es necesario que sean del mismop tipo.");
+                    JOptionPane.showMessageDialog(null, "El analisis no se puedo hacer debido a que al menos uno de los atributos posee solo instancias no validas.");
                 }
             }
         } else {
