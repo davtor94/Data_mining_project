@@ -52,7 +52,7 @@ public class CoeficienteContingencia {
             }
         }
 
-        String tabla = "";
+/*        String tabla = "";
         for (int i = 0; i < listaNombres1.size(); i++) {
             tabla += "|";
             for (int j = 0; j < listaNombres2.size(); j++) {
@@ -60,7 +60,7 @@ public class CoeficienteContingencia {
             }
             tabla += "\n";
         }
-        JOptionPane.showMessageDialog(null, tabla);
+        JOptionPane.showMessageDialog(null, tabla);*/
     }
 
     public ArrayList<String> getListaNombresHorizontal() {
@@ -107,19 +107,19 @@ public class CoeficienteContingencia {
                 //Verificamos que el valor no este ya registrado en la lista de valores
                 if (!listaNombres1.contains(auxiliar1)) {
                     listaNombres1.add(auxiliar1);
-                    JOptionPane.showMessageDialog(null, auxiliar1);
+//                    JOptionPane.showMessageDialog(null, auxiliar1);
                 }
                 //Verificamos que el valor no este ya registrado en la lista de valores
                 if (!listaNombres2.contains(auxiliar2)) {
                     listaNombres2.add(auxiliar2);
-                    JOptionPane.showMessageDialog(null, auxiliar2);
+//                    JOptionPane.showMessageDialog(null, auxiliar2);
                 }
             } else {
                 //reducir el numero de instancias para cuando hagamos los calculos
                 this.numeroInstancias--;
             }
         }
-        JOptionPane.showMessageDialog(null, this.numeroInstancias);
+//        JOptionPane.showMessageDialog(null, this.numeroInstancias);
     }
 
     public void createTable() {
@@ -155,7 +155,7 @@ public class CoeficienteContingencia {
             tablaFrecuencias.get(i).calcularTotal();
         }
 
-        String tabla = "";
+/*        String tabla = "";
         for (int i = 0; i < listaNombres1.size(); i++) {
             tabla += "|";
             for (int j = 0; j < listaNombres2.size(); j++) {
@@ -167,7 +167,7 @@ public class CoeficienteContingencia {
         for (int i = 0; i < totalesVertical.length; i++) {
             tabla += totalesVertical[i] + "|";
         }
-        JOptionPane.showMessageDialog(null, tabla);
+        JOptionPane.showMessageDialog(null, tabla);*/
     }
 
     public void calcularFrecuenciaEsperada() {
@@ -180,16 +180,16 @@ public class CoeficienteContingencia {
             for (int j = 0; j < tablaFrecuencias.get(i).getListaValores().size(); j++) {
                 total1 = tablaFrecuencias.get(i).getTotal();
                 total2 = totalesVertical[j];
-                JOptionPane.showMessageDialog(null, "(" + total1 + "+" + total2 + ")/" + numeroInstancias);
+//                JOptionPane.showMessageDialog(null, "(" + total1 + "+" + total2 + ")/" + numeroInstancias);
                 //usamos la formula la cual es frecuencia de b por frecuencia de a sobre el numero de instancias
                 frecuenciaEsperada = (total1 * total2) / numeroInstancias;
-                JOptionPane.showMessageDialog(null, frecuenciaEsperada);
+//                JOptionPane.showMessageDialog(null, frecuenciaEsperada);
                 //añadimos la frencuencia a la tabla
                 tablaFrecuencias.get(i).getListaFrecuenciasEsperadas().add(frecuenciaEsperada);
             }
         }
 
-        String tabla = "";
+/*        String tabla = "";
         for (int i = 0; i < listaNombres1.size(); i++) {
             tabla += "|";
             for (int j = 0; j < listaNombres2.size(); j++) {
@@ -198,7 +198,7 @@ public class CoeficienteContingencia {
             tabla += "\n";
         }
         tabla += "|";
-        JOptionPane.showMessageDialog(null, tabla);
+        JOptionPane.showMessageDialog(null, tabla);*/
     }
 
     public void calcularEquisCuadrada() {
@@ -210,14 +210,14 @@ public class CoeficienteContingencia {
             for (int j = 0; j < tablaFrecuencias.get(i).getListaValores().size(); j++) {
                 total1 = tablaFrecuencias.get(i).getListaValores().get(j);
                 total2 = tablaFrecuencias.get(i).getListaFrecuenciasEsperadas().get(j);
-                JOptionPane.showMessageDialog(null, "(" + total1 + "-" + total2 + ")/" + total2);
+//                JOptionPane.showMessageDialog(null, "(" + total1 + "-" + total2 + ")/" + total2);
                 equisCuadrada = Math.pow((total1 - total2), 2) / total2;
-                JOptionPane.showMessageDialog(null, equisCuadrada);
+//                JOptionPane.showMessageDialog(null, equisCuadrada);
                 tablaFrecuencias.get(i).getListaEquisCuadrada().add(equisCuadrada);
             }
         }
 
-        String tabla = "";
+/*        String tabla = "";
         for (int i = 0; i < listaNombres1.size(); i++) {
             tabla += "|";
             for (int j = 0; j < listaNombres2.size(); j++) {
@@ -226,8 +226,7 @@ public class CoeficienteContingencia {
             tabla += "\n";
         }
         tabla += "|";
-        JOptionPane.showMessageDialog(null, tabla);
-
+        JOptionPane.showMessageDialog(null, tabla);*/
     }
 
     public void calcularCoeficiente() {
@@ -239,12 +238,12 @@ public class CoeficienteContingencia {
             }
         }
         this.setEquisCuadrada(equisCuadrada);
-        JOptionPane.showMessageDialog(null, equisCuadrada);
+//        JOptionPane.showMessageDialog(null, equisCuadrada);
         //ahora siguiendo la formula lo que hacemos es sacar la raiz cuadrada de chi cuadrada sobre el numero de isntancias por la raiz de r-1 y c-1
         double coeficienteTschuprow = 0;
         coeficienteTschuprow = Math.sqrt(equisCuadrada / (numeroInstancias * Math.sqrt((listaNombres1.size() - 1) * (listaNombres2.size() - 1))));
         this.setCoeficienteTschuprow(coeficienteTschuprow);
-        JOptionPane.showMessageDialog(null, coeficienteTschuprow);
+//        JOptionPane.showMessageDialog(null, coeficienteTschuprow);
     }
 
 }
