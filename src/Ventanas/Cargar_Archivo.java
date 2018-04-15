@@ -314,7 +314,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        if(!baseDatos.equals(baseDatos2) || guardado == false){
+        if( guardado == false){
             //por si no has guardado
             int confirmacion = JOptionPane.showConfirmDialog(null, "Se han detectado cambios sin guardar\n"
                     + "Desea salir descartando los cambios?");
