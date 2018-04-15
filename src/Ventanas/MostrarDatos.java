@@ -596,12 +596,17 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void jButtonAnalisisUnivariableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalisisUnivariableActionPerformed
         int indice = listaAtributos.getSelectedIndex();
+        //validacion de seleccion de attributo
         if (indice > -1) {
+            //obtenemos el atributo seleccionado
             atributo atr = baseDatos.getAtributos().get(indice);
             if ("numeric".equals(atr.getTipoDato()) || "numerico".equals(atr.getTipoDato())
                     || "Numeric".equals(atr.getTipoDato()) || "Numerico".equals(atr.getTipoDato())) {
+                //es numerico
+                //le mandamos el atributo a la clase analisis univarable y ya
                 analisisUnivariable window = new analisisUnivariable(atr);
                 window.setVisible(true);
+                //mandamos el atributo a la clase que nos va a crear el boxplot
                 BoxAndWhiskerChart boxplot = new BoxAndWhiskerChart(atr.getNombre(), atr);
                 boxplot.pack();
                 RefineryUtilities.centerFrameOnScreen(boxplot);
@@ -612,15 +617,22 @@ public class MostrarDatos extends javax.swing.JFrame {
                     || "Categorico".equals(atr.getTipoDato()) || "categorico".equals(atr.getTipoDato())
                     || "binary".equals(atr.getTipoDato()) || "Binary".equals(atr.getTipoDato())
                     || "Binario".equals(atr.getTipoDato()) || "binario".equals(atr.getTipoDato())) {
+                //es nominal
+                //creamos el grafico
                 JFreeChart Grafica_frecuencia;
                 DefaultCategoryDataset Datos = new DefaultCategoryDataset();
+                //hasset nos devolvera solo los valores unicos
                 HashSet<String> valoresUnicos = new HashSet<>(atr.getInstancias());
                 for (String valor : valoresUnicos) {
                     int frecuencia = Collections.frequency(atr.getInstancias(), valor);
+                    //agregamos al objeto datos (que es el que interpreta la grafica de barras) el dato y la freciencia
                     Datos.addValue(frecuencia, atr.getNombre(), valor);
                 }
+                //mandamos los datos a la grafica
                 Grafica_frecuencia = ChartFactory.createBarChart("Grafica de Frecuencia ´ " + atr.getNombre() + " ' ", "Valor", "Repeticiones", Datos);
+               
                 ChartPanel Panel = new ChartPanel(Grafica_frecuencia);
+                 //ventana contenedora de la grafica
                 JFrame Ventana = new JFrame("Grafica de Frecuencia '" + atr.getNombre() + " '");
                 Ventana.getContentPane().add(Panel);
                 Ventana.pack();

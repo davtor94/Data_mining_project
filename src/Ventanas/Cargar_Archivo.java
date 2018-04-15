@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import clases.*;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 
 /**
  *
@@ -28,7 +29,10 @@ public class Cargar_Archivo extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
     }
+    
     private DataSet baseDatos = new DataSet();
+    private DataSet baseDatos2 = new DataSet();
+    //guarda la ruta original del archivo
     private File origenOriginal;
     private boolean guardado = true;
     /**
@@ -191,8 +195,21 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                 while ((aux = lee.readLine()) != null) {
                     //si entra aqui llego la hora de cargar los datos
                     if (cargaDatos) {
+                        //por si no tiene missin value
+                        if(data.getFaltante()==null){
+                            JFrame frame = new JFrame("Missing Value no detectado");
+                             data.setFaltante(JOptionPane.showInputDialog(frame, "Missing Value no encontrado \n"
+                                     + "Ingrise valor para datos faltantes"));
+                        }
+                        //por si no tiene nombre
+                        if(data.getNombre()==null){
+                            JFrame frame = new JFrame("Nombre de data set no encontrado");
+                             data.setNombre(JOptionPane.showInputDialog(frame, "Nombre de data set no encontrado \n"
+                                     + "Ingrese nombre de base de datos"));
+                        }
                         //Para el caso que tenga espacios la cadena, eliminarmos para compararlos
                         aux = aux.replace(" ", "");
+                        //Separamos la linea del archivo de texto por comas
                         String[] campos = aux.split(",");
                         String dato;
                         int numeroAtributos = campos.length;
@@ -229,14 +246,18 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                         comentarios = comentarios.replace("%%", "");
                         
                     } else if (aux.startsWith("@relation")) {
+                        //Guarda nombre del data set
                         data.setNombre(aux.substring(10));
                     } else if (aux.startsWith("@attribute")) {
+                        //Guarda atributos
                         String[] parts = aux.split(" ");
                         atributo atr = new atributo(parts[1], parts[3], parts[2]);
                         atributos.add(atr);
                     } else if (aux.startsWith("@missingValue")) {
+                        //Guarda missing value
                         data.setFaltante(aux.substring(14));
                     } else if (aux.startsWith("@data")) {
+                        
                         cargaDatos = true;
                         
                     }
@@ -273,6 +294,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
 
     private void jButtonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarArchivoActionPerformed
         baseDatos = cargarArchivo();
+        //creamos respado por si modifica 
+        baseDatos2 = baseDatos;
         if (baseDatos.getNombre() == null) {
             JOptionPane.showMessageDialog(null,
                     "El archivo debe contener: \n"
@@ -291,7 +314,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        if(!guardado){
+        if(!baseDatos.equals(baseDatos2) || guardado == false){
+            //por si no has guardado
             int confirmacion = JOptionPane.showConfirmDialog(null, "Se han detectado cambios sin guardar\n"
                     + "Desea salir descartando los cambios?");
             if(confirmacion == 0){
@@ -305,20 +329,22 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonMostrarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarTablaActionPerformed
-        if (baseDatos == null) {
+        if (baseDatos.getNombre() == null) {
+            //si el nombre == null significa que no cargo la base de datos
             JOptionPane.showMessageDialog(null,
                     "Es necesario abriri un archivo valido.",
                     "DataSet invalido!", JOptionPane.ERROR_MESSAGE);
         }
         else {
+            //abre el data grid
             MostrarDatos nueva = new MostrarDatos(baseDatos);
             nueva.setVisible(true);
             guardado = false;
         }
     }//GEN-LAST:event_jButtonMostrarTablaActionPerformed
     public void guardar_archivo(File archivo, String datos){
+        //Intenta crear un archivo nuevo con los parametros que le pasaron
         try{
-            
             FileOutputStream salida = new FileOutputStream(archivo);
             byte[] datosAguardar = datos.getBytes();
            
@@ -370,6 +396,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     private void jButtonGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarComoActionPerformed
          JFileChooser seleccionar = new  JFileChooser();
          File archivo;
+         //pide la ubicacion del nuevo archivo, asi como el nombre
          if(seleccionar.showDialog(null, "Guardar")== JFileChooser.APPROVE_OPTION){
              archivo = seleccionar.getSelectedFile();
              guardar_archivo(archivo,datasetToText(baseDatos));
@@ -378,7 +405,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGuardarComoActionPerformed
 
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-        
+        //guarda en la ubicacion orignal del archivo
          guardar_archivo(origenOriginal,datasetToText(baseDatos));        
          guardado = true;
     }//GEN-LAST:event_jButtonGuardarActionPerformed

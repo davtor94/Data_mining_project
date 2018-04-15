@@ -29,11 +29,13 @@ public class analisisUnivariable extends javax.swing.JFrame {
     public analisisUnivariable(atributo a) {
         initComponents();
         atr = a;
+        //Transformamos las instancias en un arreglo de doubles
         for (int i = 0; i < atr.getInstancias().size();i++){
             try{
                 lista.add(Double.parseDouble(atr.getInstancias().get(i)));
             }
             catch(NumberFormatException e){
+                //cae aqui cuando es un valor no numerico, y despues prosigue con las iteraciones
                  JOptionPane.showMessageDialog(null,
                             "Se ha omitido la instancia # "+i+" devido a que es un valor no numerico.",
                             "ADVERTENCIA!!!", JOptionPane.WARNING_MESSAGE);
@@ -81,6 +83,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
     
     public double calcularModa(){
         double moda=0;
+        //se crea una variable auxilar en caso de retorno inesperado
         double mod=0;
         int repeticiones;
         int repeticionesMax=0;
