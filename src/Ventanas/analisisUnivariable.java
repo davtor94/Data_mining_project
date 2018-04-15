@@ -107,7 +107,7 @@ public class analisisUnivariable extends javax.swing.JFrame {
         for(int i =0; i<lista.size();i++){
             sumatoria +=Math.pow(lista.get(i)-media,2);
         }
-        sumatoria = sumatoria / lista.size();
+        sumatoria = sumatoria / (lista.size()-1);
         desv = Math.sqrt(sumatoria);
         return desv;
     }
