@@ -697,9 +697,9 @@ public class MostrarDatos extends javax.swing.JFrame {
         //Cargamos los datos generales sobre la Base.
         datosGenerales.setText("");
         datosGenerales.append(baseDatos.getComentarios());
-        datosGenerales.append("Numero de Instancias: " + baseDatos.getNumInstancias() + "\n");
-        datosGenerales.append("Numero de Atributos: " + baseDatos.getNumAtributos() + "\n");
-        datosGenerales.append("Signo de Valor Perdido: " + baseDatos.getFaltante() + "\n");
+        datosGenerales.append("Numero de Instancias: " + baseDatos.getNumInstancias() + " \n");
+        datosGenerales.append("Numero de Atributos: " + baseDatos.getNumAtributos() + " \n");
+        datosGenerales.append("Signo de Valor Perdido: " + baseDatos.getFaltante() + " \n");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
