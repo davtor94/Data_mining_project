@@ -321,6 +321,7 @@
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonExpresionMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonExpresionActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="comboBoxAtributo">

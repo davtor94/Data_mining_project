@@ -207,6 +207,11 @@ public class MostrarDatos extends javax.swing.JFrame {
                 botonExpresionMouseClicked(evt);
             }
         });
+        botonExpresion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonExpresionActionPerformed(evt);
+            }
+        });
 
         comboBoxAtributo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -418,6 +423,9 @@ public class MostrarDatos extends javax.swing.JFrame {
                     comboBoxAtributo.addItem(baseDatos.getAtributos().get(i).getNombre());
                 }
                 comboBoxAtributo.setSelectedIndex(indice);
+                //Actualizando informacion
+                baseDatos.calcularErrores();
+                actualizarTextAreaAtributo();
             } else {
                 JOptionPane.showMessageDialog(null, "Error, El atributo no puede tener un nombre repetido o vacio.");
             }
@@ -459,6 +467,7 @@ public class MostrarDatos extends javax.swing.JFrame {
                 //Actualizando la Expresion
                 baseDatos.getAtributos().get(indice).setDominio(respuesta);
                 //Recalculando y actualizando
+                baseDatos.calcularErrores();
                 actualizarTextAreaAtributo();
                 //Actualizar la Tabla
                 dataGrid.repaint();
@@ -672,6 +681,10 @@ public class MostrarDatos extends javax.swing.JFrame {
             actualizarTextAreaAtributo();
         }
     }//GEN-LAST:event_botonEditarTipoActionPerformed
+
+    private void botonExpresionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonExpresionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonExpresionActionPerformed
 
     public void actualizarTextAreaAtributo() {
         //validamos que el indice del atributo seleccionado sea valido.
