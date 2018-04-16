@@ -261,9 +261,9 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelGraficaComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelGraficaComponentResized
- //       if (panelGrafica != null) {
- //           panel.setSize(panelGrafica.getWidth(), panelGrafica.getHeight());
- //       }
+        if (panelGrafica != null) {
+            panel.setSize(panelGrafica.getWidth(), panelGrafica.getHeight());
+        }
     }//GEN-LAST:event_panelGraficaComponentResized
 
 
