@@ -193,7 +193,7 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     public void actualizarTextAreaCategorico() {
         textAreaDatos.setText("");
         textAreaDatos.append("Coeficiente de Tschuprow: " + calculosCategoricos.getCoeficienteTschuprow() + "\n");
-//        textAreaDatos.append("Equis Cuadrada: " + calculosCategoricos.getEquisCuadrada() + "\n");
+        textAreaDatos.append("Equis Cuadrada: " + calculosCategoricos.getEquisCuadrada() + "\n");
     }
 
     /**
@@ -261,7 +261,9 @@ public class AnalisisBivariable extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelGraficaComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelGraficaComponentResized
-        panel.setSize(panelGrafica.getWidth(), panelGrafica.getHeight());
+ //       if (panelGrafica != null) {
+ //           panel.setSize(panelGrafica.getWidth(), panelGrafica.getHeight());
+ //       }
     }//GEN-LAST:event_panelGraficaComponentResized
 
 
