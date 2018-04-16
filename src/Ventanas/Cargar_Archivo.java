@@ -213,7 +213,7 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                         String[] campos = aux.split(",");
                         String dato;
                         int numeroAtributos = campos.length;
-                        if(numeroAtributos != atributos.size()){
+                        if(numeroAtributos < atributos.size()){
                             int confirmacion = JOptionPane.showConfirmDialog(null, "Una instancia no contiene el numero de atributos necesarios\n"
                             + "Desea agregarla de todos modos?");
                             if(confirmacion == 0){
@@ -230,7 +230,21 @@ public class Cargar_Archivo extends javax.swing.JFrame {
                                      atributos.get(i).getInstancias().add(data.getFaltante());
                                  }
         }
-                        }else{
+                        } else if(numeroAtributos > atributos.size()){
+                                 int confirmacion = JOptionPane.showConfirmDialog(null, "Una instancia contiene mas a el numero de atributos necesarios\n"
+                                    + "Desea agregarla de todos modos?");
+                                    if(confirmacion == 0){
+                                            int i;
+                                         for ( i = 0; i <  atributos.size(); i++) {
+                                             dato = campos[i];
+                                             if(dato.isEmpty()){
+                                                 dato = data.getFaltante();
+                                             }
+                                            atributos.get(i).getInstancias().add(dato);
+                                        }
+                                }
+                          }
+                        else{
                             for ( int i = 0; i < numeroAtributos; i++) {
                                 dato = campos[i];
                                      if(dato.isEmpty()){
