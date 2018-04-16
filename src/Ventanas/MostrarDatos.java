@@ -358,7 +358,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         for (int i = 0; i < baseDatos.getNumAtributos(); i++) {
             baseDatos.getAtributos().get(i).getInstancias().add(datos[i + 1]);
         }
-        //Recalculando los datos
+        //Recalculando los datos a mostrar
         baseDatos.setNumInstancias(baseDatos.getNumInstancias() + 1);
         baseDatos.calcularErrores();
         //Actualizando la informacion en pantalla
