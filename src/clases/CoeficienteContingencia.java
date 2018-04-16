@@ -52,7 +52,7 @@ public class CoeficienteContingencia {
             }
         }
 
-/*        String tabla = "";
+ /*       String tabla = "";
         for (int i = 0; i < listaNombres1.size(); i++) {
             tabla += "|";
             for (int j = 0; j < listaNombres2.size(); j++) {
@@ -112,7 +112,7 @@ public class CoeficienteContingencia {
                 //Verificamos que el valor no este ya registrado en la lista de valores
                 if (!listaNombres2.contains(auxiliar2)) {
                     listaNombres2.add(auxiliar2);
-//                    JOptionPane.showMessageDialog(null, auxiliar2);
+ //                   JOptionPane.showMessageDialog(null, auxiliar2);
                 }
             } else {
                 //reducir el numero de instancias para cuando hagamos los calculos
@@ -180,7 +180,7 @@ public class CoeficienteContingencia {
             for (int j = 0; j < tablaFrecuencias.get(i).getListaValores().size(); j++) {
                 total1 = tablaFrecuencias.get(i).getTotal();
                 total2 = totalesVertical[j];
-//                JOptionPane.showMessageDialog(null, "(" + total1 + "+" + total2 + ")/" + numeroInstancias);
+ //               JOptionPane.showMessageDialog(null, "(" + total1 + "*" + total2 + ")/" + numeroInstancias);
                 //usamos la formula la cual es frecuencia de b por frecuencia de a sobre el numero de instancias
                 frecuenciaEsperada = (total1 * total2) / numeroInstancias;
 //                JOptionPane.showMessageDialog(null, frecuenciaEsperada);
@@ -189,7 +189,7 @@ public class CoeficienteContingencia {
             }
         }
 
-/*        String tabla = "";
+/*        String tabla = "Frecuencia Esperada \n";
         for (int i = 0; i < listaNombres1.size(); i++) {
             tabla += "|";
             for (int j = 0; j < listaNombres2.size(); j++) {
