@@ -28,6 +28,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
     public Cargar_Archivo() {
         initComponents();
         this.setLocationRelativeTo(null);
+        jButtonGuardar.setEnabled(false);
+        jButtonGuardarComo.setEnabled(false);
     }
     
     private DataSet baseDatos = new DataSet();
@@ -324,6 +326,8 @@ public class Cargar_Archivo extends javax.swing.JFrame {
             //        baseDatos.getComentarios(),
             //        "Comentarios!", JOptionPane.INFORMATION_MESSAGE);
             acutlizarInterfaz();
+            jButtonGuardar.setEnabled(true);
+            jButtonGuardarComo.setEnabled(true);
         }
     }//GEN-LAST:event_jButtonCargarArchivoActionPerformed
 
